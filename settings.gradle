@@ -1,0 +1,21 @@
+rootProject.name = 'exbin-framework-plugins-java'
+
+include ":deps"
+
+include ":plugins:exbin-framework-language-cs_CZ"
+
+File placeholder = file("deps/_placeholder")
+if (placeholder.exists()) {
+    placeholder.delete()
+}
+
+if (!gradle.startParameter.taskNames.contains("clean") || gradle.startParameter.projectProperties.containsKey("moduleDep")) {
+    File depsDir = file("deps")
+    // Include all downloaded dependency modules
+    depsDir.listFiles().each() { childFile ->
+        if (childFile.isDirectory()) {
+            include ':deps:' + childFile.name
+        }
+    }
+}
+
