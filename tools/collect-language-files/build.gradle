@@ -1,0 +1,81 @@
+version = '0.1.0'
+
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
+}
+
+['base', 'java'].each {
+    apply plugin: it
+}
+
+task wrapper(type: Wrapper, description: 'Creates and deploys the Gradle wrapper to the current directory.') {
+    gradleVersion = '3.2'
+}
+
+sourceCompatibility = '1.7'
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+    doFirst {
+        options.fork = true
+        options.bootClasspath = "${System.properties['java.home']}/lib/rt.jar"
+        options.bootClasspath += "$File.pathSeparator${System.properties['java.home']}/jre/lib/jsse.jar"
+    }
+}
+
+// Disable tests on build
+check.dependsOn.remove(test)
+
+task sourceJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.java
+}
+
+task javadocJar (type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+if (!hasProperty('mainClass')) {
+    ext.mainClass = 'org.exbin.framework.plugins.tools.collect_language_files.CollectLanguageFiles'
+    ext.appArgs = '-dev'
+}
+
+def configureExec(task) {
+    task.main = mainClass
+    task.classpath = sourceSets.main.runtimeClasspath
+    if (hasProperty('appArgs')) {
+        task.args appArgs
+    }
+}
+
+task run(type: JavaExec) {
+    task -> configureExec(task)
+}
+
+task debug(type: JavaExec) {
+    task -> configureExec(task)
+    debug = true
+}
+
+repositories {
+    flatDir {
+        dirs "../../lib"
+    }
+    mavenLocal()
+    mavenCentral()
+}
+
+jar {
+    manifest {
+        attributes(
+            'Main-Class': mainClass,
+        )
+    }
+}
+
