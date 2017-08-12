@@ -33,7 +33,7 @@ import java.util.logging.Logger;
 public class CollectLanguageFiles {
 
     private static final String PROJECT_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-framework-java";
-    private static final String TARGET_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-plugins-java/plugins/exbin-framework-language-cs_CZ/src/main/resources";
+    private static final String TARGET_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-plugins-java/plugins/exbin-framework-language-en_US/src/main/resources";
 
     public static void main(String[] args) {
         File projectDir = new File(PROJECT_DIR + "/modules");
@@ -58,13 +58,13 @@ public class CollectLanguageFiles {
                 processModuleResources(module, prefix + "/" + child.getName());
             } else if (child.isFile() && child.getName().endsWith(".properties")) {
                 File targetDir = new File(TARGET_DIR + prefix);
-                new File(targetDir, child.getName()).delete();
-//                targetDir.mkdirs();
-//                try {
-//                    Files.copy(child.toPath(), new File(targetDir, child.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
-//                } catch (IOException ex) {
-//                    Logger.getLogger(CollectLanguageFiles.class.getName()).log(Level.SEVERE, null, ex);
-//                }
+//                new File(targetDir, child.getName()).delete();
+                targetDir.mkdirs();
+                try {
+                    Files.copy(child.toPath(), new File(targetDir, child.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException ex) {
+                    Logger.getLogger(CollectLanguageFiles.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
     }

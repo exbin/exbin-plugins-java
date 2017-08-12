@@ -18,7 +18,7 @@ task wrapper(type: Wrapper, description: 'Creates and deploys the Gradle wrapper
     gradleVersion = '3.2'
 }
 
-task('cleanDeps') << {
+task('cleanDeps').doLast {
     println "Deleting temporary dependency modules"
     File depsCheckFile = rootProject.file("deps/dependency.txt")
     if (depsCheckFile.exists()) {
