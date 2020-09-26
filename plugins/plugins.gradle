@@ -40,7 +40,7 @@ buildscript {
     }
 }
 
-['java', 'maven', 'at.bxm.svntools'].each {
+['java', 'maven-publish', 'at.bxm.svntools'].each {
     apply plugin: it
 }
 import org.gradle.util.VersionNumber
@@ -71,7 +71,7 @@ if (!gradle.startParameter.taskNames.any {it.endsWith("test")}) {
 
 task testJar(type: Jar, dependsOn: testClasses) {
     classifier "tests"
-    baseName = "test-${project.archivesBaseName}"
+    archiveBaseName = "test-${project.archivesBaseName}"
     from sourceSets.test.output
 }
 

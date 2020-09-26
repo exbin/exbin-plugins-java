@@ -16,10 +16,12 @@
 package org.exbin.framework.plugins.darcula_laf;
 
 import com.bulenkov.darcula.DarculaLaf;
+import com.bulenkov.darcula.DarculaLookAndFeelInfo;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import org.exbin.xbup.plugin.LookAndFeelApplier;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.api.XBApplicationModule;
 import org.exbin.xbup.plugin.XBModuleHandler;
@@ -27,10 +29,10 @@ import org.exbin.xbup.plugin.XBModuleHandler;
 /**
  * Darcula look and feel plugin.
  *
- * @version 0.2.0 2017/11/19
+ * @version 0.2.0 2020/09/26
  * @author ExBin Project (http://exbin.org)
  */
-public class DarculaLafModule implements XBApplicationModule {
+public class DarculaLafModule implements XBApplicationModule, LookAndFeelApplier {
 
     private XBApplication application;
 
@@ -39,19 +41,28 @@ public class DarculaLafModule implements XBApplicationModule {
 
     @Override
     public void init(XBModuleHandler moduleHandler) {
-        javax.swing.UIManager.getFont("Label.font");
-//        try {
-//            UIManager.setLookAndFeel(new DarculaLaf());
-//        } catch (UnsupportedLookAndFeelException ex) {
-//            Logger.getLogger(DarculaLafModule.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        this.application = (XBApplication) moduleHandler;
+        String className = DarculaLaf.class.getName();
+        UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo(DarculaLaf.NAME, className));
+        application.registerLafPlugin(className, this);
+    }
+
+    @Override
+    public void applyLookAndFeel(String className) {
         try {
-            moduleHandler.getClass().getClassLoader().loadClass(DarculaLaf.class.getName());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DarculaLafModule.class.getName()).log(Level.SEVERE, null, ex);
+            // Workaround for https://github.com/bulenkov/iconloader/issues/14
+            javax.swing.UIManager.getFont("Label.font");
+
+            UIManager.setLookAndFeel(DarculaLaf.class.getCanonicalName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            try {
+                UIManager.installLookAndFeel(new DarculaLookAndFeelInfo());
+                UIManager.setLookAndFeel(new DarculaLaf());
+            } catch (UnsupportedLookAndFeelException ex2) {
+                Logger.getLogger(DarculaLafModule.class.getName()).log(Level.SEVERE, null, ex2);
+            }
         }
-        UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo(DarculaLaf.NAME, DarculaLaf.class.getName()));
-//        UIManager.put("Nb.DarculaLFCustoms", new DarculaLFCustoms());
+        //UIManager.put("Nb.DarculaLFCustoms", new DarculaLFCustoms());
     }
 
     @Override

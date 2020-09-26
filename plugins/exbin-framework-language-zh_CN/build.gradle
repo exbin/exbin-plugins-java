@@ -27,6 +27,6 @@ repositories {
 }
 
 dependencies {
-    compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-api')
-    testCompile group : 'junit', name: 'junit', version: '4.10'
+    implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-api')
+    testImplementation group : 'junit', name: 'junit', version: '4.10'
 }
