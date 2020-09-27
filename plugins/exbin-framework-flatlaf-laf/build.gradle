@@ -1,6 +1,6 @@
 group = 'org.exbin.framework.plugins'
-ext.libraryName = 'Darcula Look and Feel Plugin'
-ext.libraryDescription = 'Darcula LaF plugin for ExBin Framework'
+ext.libraryName = 'FlatLag Look and Feel Plugin'
+ext.libraryDescription = 'FlatLaf plugin for ExBin Framework'
 
 apply from: '../plugins.gradle'
 
@@ -29,6 +29,6 @@ repositories {
 
 dependencies {
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-api')
-    implementation ":darcula"
+    implementation "com.formdev:flatlaf:0.42"
     testImplementation group : 'junit', name: 'junit', version: '4.10'
 }

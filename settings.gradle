@@ -4,6 +4,7 @@ include ":deps"
 
 include ":plugins:exbin-framework-language-cs_CZ"
 include ":plugins:exbin-framework-darcula-laf"
+include ":plugins:exbin-framework-flatlaf-laf"
 
 File placeholder = file("deps/_placeholder")
 if (placeholder.exists()) {
