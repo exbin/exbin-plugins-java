@@ -29,7 +29,7 @@ import org.exbin.xbup.plugin.XBModuleHandler;
 /**
  * Darcula look and feel plugin.
  *
- * @version 0.2.0 2020/09/26
+ * @version 0.2.0 2021/04/14
  * @author ExBin Project (http://exbin.org)
  */
 public class DarculaLafModule implements XBApplicationModule, LookAndFeelApplier {
@@ -57,7 +57,9 @@ public class DarculaLafModule implements XBApplicationModule, LookAndFeelApplier
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             try {
                 UIManager.installLookAndFeel(new DarculaLookAndFeelInfo());
-                UIManager.setLookAndFeel(new DarculaLaf());
+                DarculaLaf darculaLaf = new DarculaLaf();
+                darculaLaf.initialize();
+                UIManager.setLookAndFeel(darculaLaf);
             } catch (UnsupportedLookAndFeelException ex2) {
                 Logger.getLogger(DarculaLafModule.class.getName()).log(Level.SEVERE, null, ex2);
             }

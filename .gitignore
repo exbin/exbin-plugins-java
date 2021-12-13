@@ -4,8 +4,8 @@
 /deps/*
 !/deps/dependency.txt
 !/deps/*.gradle
+/deps/.gradle
 build/
 target/
 *~
 /resources/private/
-/deps/.gradle/
