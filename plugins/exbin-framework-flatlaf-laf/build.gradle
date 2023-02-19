@@ -1,5 +1,5 @@
 group = 'org.exbin.framework.plugins'
-ext.libraryName = 'FlatLag Look and Feel Plugin'
+ext.libraryName = 'FlatLaf Look and Feel Plugin'
 ext.libraryDescription = 'FlatLaf plugin for ExBin Framework'
 
 apply from: '../plugins.gradle'
@@ -30,5 +30,25 @@ repositories {
 dependencies {
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-api')
     implementation "com.formdev:flatlaf:0.42"
+    compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
     testImplementation group : 'junit', name: 'junit', version: '4.10'
 }
+
+task fatJar(type: Jar) {
+    archiveBaseName = 'exbin-framework-flatlaf-laf-fat'
+        project.configurations.runtimeClasspath.filter { File file -> !(
+            file.name.startsWith('xbup-core') ||
+            file.name.startsWith('xbup-plugin') ||
+            file.name.startsWith('paged_data') ||
+            file.name.startsWith('exbin-framework-api')
+        )}.collect {
+            from (it.isDirectory() ? it : zipTree(it).matching {
+                exclude '/LICENSE.txt'
+            })
+        }
+    duplicatesStrategy = 'exclude'
+    with jar
+    dependsOn('jar')
+}
+
+build.dependsOn fatJar

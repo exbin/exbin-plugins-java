@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,6 +17,7 @@ package org.exbin.framework.plugins.flatlaf_laf;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.UIManager;
 import org.exbin.xbup.plugin.LookAndFeelApplier;
 import org.exbin.framework.api.XBApplication;
@@ -24,11 +25,11 @@ import org.exbin.framework.api.XBApplicationModule;
 import org.exbin.xbup.plugin.XBModuleHandler;
 
 /**
- * Darcula look and feel plugin.
+ * FlatLaf look and feel plugin.
  *
- * @version 0.2.0 2020/09/27
- * @author ExBin Project (http://exbin.org)
+ * @author ExBin Project (https://exbin.org)
  */
+@ParametersAreNonnullByDefault
 public class FlatLafLafModule implements XBApplicationModule, LookAndFeelApplier {
 
     private XBApplication application;
@@ -40,19 +41,19 @@ public class FlatLafLafModule implements XBApplicationModule, LookAndFeelApplier
     public void init(XBModuleHandler moduleHandler) {
         this.application = (XBApplication) moduleHandler;
 
+        String flatDarkClassName = FlatDarkLaf.class.getName();
+        UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("FlatDark", flatDarkClassName));
+        application.registerLafPlugin(flatDarkClassName, this);
+
         String flatLightClassName = FlatLightLaf.class.getName();
         UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("FlatLight", flatLightClassName));
         application.registerLafPlugin(flatLightClassName, this);
-
-        String flatDarkClassName = FlatDarkLaf.class.getName();
-        UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("FlatDark", flatLightClassName));
-        application.registerLafPlugin(flatDarkClassName, this);
     }
 
     @Override
     public void applyLookAndFeel(String className) {
         String flatDarkClassName = FlatDarkLaf.class.getName();
-        if (flatDarkClassName.equals(flatDarkClassName)) {
+        if (className.equals(flatDarkClassName)) {
             try {
                 FlatDarkLaf.install();
                 UIManager.setLookAndFeel(new FlatDarkLaf());
