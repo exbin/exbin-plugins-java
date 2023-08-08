@@ -24,25 +24,40 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Tool to collect language files
+ * Tool to collect language files.
  *
  * @author ExBin Project (https://exbin.org)
  */
 public class CollectLanguageFiles {
 
-    private static final String PROJECT_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-framework-java";
+    private static final String PROJECT_DIR = "/home/hajdam/Software/Projekty/exbin/bined";
+    private static final String FRAMEWORK_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-framework-java";
     private static final String TARGET_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-plugins-java/plugins/exbin-framework-language-en_US/src/main/resources";
 
     public static void main(String[] args) {
         File projectDir = new File(PROJECT_DIR + "/modules");
-        File[] modules = projectDir.listFiles(new FileFilter() {
+        File[] projectModules = projectDir.listFiles(new FileFilter() {
             @Override
             public boolean accept(File file) {
                 return file.isDirectory();
             }
         });
 
-        for (File module : modules) {
+        for (File module : projectModules) {
+            if (module.isDirectory()) {
+                processModuleResources(module, "");
+            }
+        }
+
+        File frameworkDir = new File(FRAMEWORK_DIR + "/modules");
+        File[] frameworkModules = frameworkDir.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                return file.isDirectory();
+            }
+        });
+
+        for (File module : frameworkModules) {
             if (module.isDirectory()) {
                 processModuleResources(module, "");
             }
@@ -59,7 +74,9 @@ public class CollectLanguageFiles {
 //                new File(targetDir, child.getName()).delete();
                 targetDir.mkdirs();
                 try {
-                    Files.copy(child.toPath(), new File(targetDir, child.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    String fileName = child.getName();
+                    String targetFileName = fileName.substring(0, fileName.length() - 11) + ".properties"; // _cs_CZ
+                    Files.copy(child.toPath(), new File(targetDir, targetFileName).toPath(), StandardCopyOption.REPLACE_EXISTING);
                 } catch (IOException ex) {
                     Logger.getLogger(CollectLanguageFiles.class.getName()).log(Level.SEVERE, null, ex);
                 }
