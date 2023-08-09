@@ -16,7 +16,6 @@
 package org.exbin.framework.plugins.tools.collect_language_files;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -30,27 +29,17 @@ import java.util.logging.Logger;
  */
 public class AddNewLanguageFiles {
 
-    private static final String SOURCE_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-plugins-java/plugins/exbin-framework-language-cs_CZ/src/main/resources";
-    private static final String TARGET_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-plugins-java/plugins/exbin-framework-language-en_US/src/main/resources";
+    private static final String languageCode = "test";
+    private static final String SOURCE_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-plugins-java/plugins/exbin-framework-language-en_US/src/main/resources";
+    private static final String TARGET_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-plugins-java/plugins/exbin-framework-language-" + languageCode + "/src/main/resources";
 
     public static void main(String[] args) {
-        File projectDir = new File(SOURCE_DIR + "/modules");
-        File[] projectModules = projectDir.listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File file) {
-                return file.isDirectory();
-            }
-        });
-
-        for (File module : projectModules) {
-            if (module.isDirectory()) {
-                processModuleResources(module, "");
-            }
-        }
+        File projectDir = new File(SOURCE_DIR);
+        processModuleResources(projectDir, "");
     }
 
     private static void processModuleResources(File module, String prefix) {
-        File moduleResources = new File(module, "src/main/resources" + prefix);
+        File moduleResources = new File(module, prefix);
         for (File child : moduleResources.listFiles()) {
             if (child.isDirectory()) {
                 processModuleResources(module, prefix + "/" + child.getName());
@@ -60,7 +49,7 @@ public class AddNewLanguageFiles {
                 targetDir.mkdirs();
                 try {
                     String fileName = child.getName();
-                    String targetFileName = fileName.substring(0, fileName.length() - 11) + "_cs_CZ.properties";
+                    String targetFileName = fileName.substring(0, fileName.length() - 11) + "_" + languageCode + ".properties";
                     // TODO remove various lines
                     Files.copy(child.toPath(), new File(targetDir, targetFileName).toPath(), StandardCopyOption.REPLACE_EXISTING);
                 } catch (IOException ex) {

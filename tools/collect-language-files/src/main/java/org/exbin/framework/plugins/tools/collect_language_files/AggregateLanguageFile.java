@@ -15,13 +15,14 @@
  */
 package org.exbin.framework.plugins.tools.collect_language_files;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,59 +33,97 @@ import java.util.logging.Logger;
  */
 public class AggregateLanguageFile {
 
+    private static final String languageCode = "undef";
     private static final String PROJECT_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-framework-java";
     private static final String FRAMEWORK_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-framework-java";
-    private static final String TARGET_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-plugins-java/plugins/exbin-framework-language-cs_CZ/src/main/resources";
+    private static final String TARGET_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-plugins-java/plugins/exbin-framework-language-" + languageCode + "/src/main/resources";
     
-    private static final Map<String, Map<String, File>> propertyFiles = new HashMap<>();
-
     public static void main(String[] args) {
-        File projectDir = new File(PROJECT_DIR + "/modules");
-        File[] projectModules = projectDir.listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File file) {
-                return file.isDirectory();
-            }
-        });
+        File targetFile = new File(TARGET_DIR, "aggregate.properties");
+        try (FileOutputStream fos = new FileOutputStream(targetFile)) {
+            OutputStreamWriter out = new OutputStreamWriter(fos, "UTF-8");
+            File projectDir = new File(PROJECT_DIR + "/modules");
+            File[] projectModules = projectDir.listFiles(new FileFilter() {
+                @Override
+                public boolean accept(File file) {
+                    return file.isDirectory();
+                }
+            });
 
-        for (File module : projectModules) {
-            if (module.isDirectory()) {
-                processModuleResources(module, "");
+            for (File module : projectModules) {
+                if (module.isDirectory()) {
+                    String moduleName = module.getName();
+                    if (moduleName.startsWith("exbin-framework-")) {
+                        moduleName = moduleName.substring(16);
+                    }
+                    processModuleResources(module, moduleName, "", out);
+                }
             }
-        }
 
-        File frameworkDir = new File(FRAMEWORK_DIR + "/modules");
-        File[] frameworkModules = frameworkDir.listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File file) {
-                return file.isDirectory();
-            }
-        });
+            File frameworkDir = new File(FRAMEWORK_DIR + "/modules");
+            File[] frameworkModules = frameworkDir.listFiles(new FileFilter() {
+                @Override
+                public boolean accept(File file) {
+                    return file.isDirectory();
+                }
+            });
 
-        for (File module : frameworkModules) {
-            if (module.isDirectory()) {
-                processModuleResources(module, "");
+            for (File module : frameworkModules) {
+                if (module.isDirectory()) {
+                    String moduleName = module.getName();
+                    if (moduleName.startsWith("exbin-framework-")) {
+                        moduleName = moduleName.substring(16);
+                    }
+                    processModuleResources(module, moduleName, "", out);
+                }
             }
+            out.close();
+        } catch (IOException ex) {
+            Logger.getLogger(CollectLanguageFiles.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private static void processModuleResources(File module, String prefix) {
+    private static void processModuleResources(File module, String moduleName, String prefix, OutputStreamWriter out) {
         File moduleResources = new File(module, "src/main/resources" + prefix);
-        for (File child : moduleResources.listFiles()) {
-            if (child.isDirectory()) {
-                processModuleResources(module, prefix + "/" + child.getName());
-            } else if (child.isFile() && child.getName().endsWith(".properties")) {
+        File[] listFiles = moduleResources.listFiles();
+        if (listFiles == null) {
+            return;
+        }
+
+        for (File childFile : listFiles) {
+            if (childFile.isDirectory()) {
+                processModuleResources(module, moduleName, prefix + "/" + childFile.getName(), out);
+            } else if (childFile.isFile() && childFile.getName().endsWith(".properties")) {
                 File targetDir = new File(TARGET_DIR + prefix);
-//                new File(targetDir, child.getName()).delete();
-                targetDir.mkdirs();
-                try {
-                    String fileName = child.getName();
-                    String targetFileName = fileName.substring(0, fileName.length() - 11) + "_cs_CZ.properties";
-                    Files.copy(child.toPath(), new File(targetDir, targetFileName).toPath(), StandardCopyOption.REPLACE_EXISTING);
+                String fileName = childFile.getName();
+                String targetFileName = fileName.substring(0, fileName.length() - 11) + "_" + languageCode + ".properties";
+                File targetFile = new File(targetDir, targetFileName);
+
+                try (FileInputStream source = new FileInputStream(targetFile)) {
+                    InputStreamReader isr = new InputStreamReader(source, "UTF-8");
+                    try (BufferedReader reader = new BufferedReader(isr)) {
+                        while (reader.ready()) {
+                            String line = reader.readLine();
+                            if (line.isBlank()) {
+                                continue;
+                            }
+                            String propertiesFileName = childFile.getName();
+                            if (propertiesFileName.endsWith(".properties")) {
+                                propertiesFileName = propertiesFileName.substring(0, propertiesFileName.length() - 11);
+                            }
+                            out.write(moduleName + "." + propertiesFileName + "." + line + "\n");
+                        }
+                    }
                 } catch (IOException ex) {
                     Logger.getLogger(AggregateLanguageFile.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+        }
+
+        try {
+            out.flush();
+        } catch (IOException ex) {
+            Logger.getLogger(CollectLanguageFiles.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
