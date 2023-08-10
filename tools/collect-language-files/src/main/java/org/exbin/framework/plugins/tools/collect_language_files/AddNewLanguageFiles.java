@@ -29,7 +29,7 @@ import java.util.logging.Logger;
  */
 public class AddNewLanguageFiles {
 
-    private static final String languageCode = "test";
+    private static final String languageCode = "undef";
     private static final String SOURCE_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-plugins-java/plugins/exbin-framework-language-en_US/src/main/resources";
     private static final String TARGET_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-plugins-java/plugins/exbin-framework-language-" + languageCode + "/src/main/resources";
 

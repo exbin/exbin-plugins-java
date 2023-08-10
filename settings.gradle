@@ -3,6 +3,8 @@ rootProject.name = 'exbin-framework-plugins-java'
 include ":deps"
 
 include ":plugins:exbin-framework-language-cs_CZ"
+include ":plugins:exbin-framework-language-zh_CN"
+include ":plugins:exbin-framework-language-zh_TW"
 include ":plugins:exbin-framework-darcula-laf"
 include ":plugins:exbin-framework-flatlaf-laf"
 

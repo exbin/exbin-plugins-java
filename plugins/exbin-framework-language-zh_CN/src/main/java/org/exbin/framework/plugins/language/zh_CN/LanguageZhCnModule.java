@@ -21,7 +21,7 @@ import org.exbin.framework.api.XBApplicationModule;
 import org.exbin.xbup.plugin.XBModuleHandler;
 
 /**
- * Language resources plugin for Chinese language.
+ * Language resources plugin for Chinese language (simplified).
  *
  * @author ExBin Project (https://exbin.org)
  */
@@ -35,7 +35,7 @@ public class LanguageZhCnModule implements XBApplicationModule {
     @Override
     public void init(XBModuleHandler moduleHandler) {
         this.application = (XBApplication) moduleHandler;
-        application.registerLanguagePlugin(new Locale("zh", "CN"), getClass().getClassLoader());
+        application.registerLanguagePlugin(Locale.SIMPLIFIED_CHINESE, getClass().getClassLoader());
     }
 
     @Override

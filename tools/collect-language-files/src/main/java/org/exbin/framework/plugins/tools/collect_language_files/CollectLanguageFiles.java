@@ -23,6 +23,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,8 +38,25 @@ public class CollectLanguageFiles {
     private static final String PROJECT_DIR = "/home/hajdam/Software/Projekty/exbin/bined";
     private static final String FRAMEWORK_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-framework-java";
     private static final String TARGET_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-plugins-java/plugins/exbin-framework-language-en_US/src/main/resources";
+    private static final List<String> EXCEPTIONS = Arrays.asList(
+            "Application.release", "Application.mode", "Application.version", "Application.homepage", "Application.vendorId", "Application.id", "Application.lookAndFeel", "Application.product", "Application.vendor",
+            "Application.licenseFile", "Application.aboutImage", "Application.icon", "Application.authors");
 
     public static void main(String[] args) {
+        File appDir = new File(PROJECT_DIR + "/apps");
+        File[] appModules = appDir.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                return file.isDirectory();
+            }
+        });
+
+        for (File module : appModules) {
+            if (module.isDirectory()) {
+                processModuleResources(module, "");
+            }
+        }
+
         File projectDir = new File(PROJECT_DIR + "/modules");
         File[] projectModules = projectDir.listFiles(new FileFilter() {
             @Override
@@ -82,13 +101,21 @@ public class CollectLanguageFiles {
 
                 try (FileOutputStream fos = new FileOutputStream(targetFile)) {
                     OutputStreamWriter out = new OutputStreamWriter(fos, "UTF-8");
-                    
+
                     try (FileInputStream source = new FileInputStream(childFile)) {
                         InputStreamReader isr = new InputStreamReader(source, "UTF-8");
                         try (BufferedReader reader = new BufferedReader(isr)) {
                             while (reader.ready()) {
                                 String line = reader.readLine();
-                                if (line.contains(".smallIcon=") || line.contains(".icon=") || line.contains(".accelerator=") || line.contains("options.path=") || line.contains("options.name=") || (!line.isBlank() && line.indexOf("=") == line.length() - 1)) {
+                                int valuePos = line.indexOf("=");
+                                if (valuePos > 0) {
+                                    String key = line.substring(0, valuePos).trim();
+                                    if (EXCEPTIONS.contains(key)) {
+                                        continue;
+                                    }
+                                }
+
+                                if (line.contains(".smallIcon=") || line.contains(".icon=") || line.contains(".accelerator=") || line.contains("_url=") || line.contains("options.path=") || line.contains("options.name=") || (!line.isBlank() && line.indexOf("=") == line.length() - 1)) {
                                     continue;
                                 }
                                 out.write(line + "\n");

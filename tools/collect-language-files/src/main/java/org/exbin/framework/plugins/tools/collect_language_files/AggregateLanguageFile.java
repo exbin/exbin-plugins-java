@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
  * Tool to create single aggregated language file.
@@ -34,7 +35,7 @@ import java.util.logging.Logger;
 public class AggregateLanguageFile {
 
     private static final String languageCode = "undef";
-    private static final String PROJECT_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-framework-java";
+    private static final String PROJECT_DIR = "/home/hajdam/Software/Projekty/exbin/bined";
     private static final String FRAMEWORK_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-framework-java";
     private static final String TARGET_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-plugins-java/plugins/exbin-framework-language-" + languageCode + "/src/main/resources";
     
@@ -42,6 +43,21 @@ public class AggregateLanguageFile {
         File targetFile = new File(TARGET_DIR, "aggregate.properties");
         try (FileOutputStream fos = new FileOutputStream(targetFile)) {
             OutputStreamWriter out = new OutputStreamWriter(fos, "UTF-8");
+            File appDir = new File(PROJECT_DIR + "/apps");
+            File[] appModules = appDir.listFiles(new FileFilter() {
+                @Override
+                public boolean accept(File file) {
+                    return file.isDirectory();
+                }
+            });
+
+            for (File module : appModules) {
+                if (module.isDirectory()) {
+                    String moduleName = module.getName();
+                    processModuleResources(module, moduleName, "", out);
+                }
+            }
+
             File projectDir = new File(PROJECT_DIR + "/modules");
             File[] projectModules = projectDir.listFiles(new FileFilter() {
                 @Override
@@ -107,11 +123,19 @@ public class AggregateLanguageFile {
                             if (line.isBlank()) {
                                 continue;
                             }
+                            String keyValue;
+                            int valuePos = line.indexOf("=");
+                            if (valuePos > 0) {
+                                keyValue = line.substring(0, valuePos) + "=" + StringEscapeUtils.unescapeJava(line.substring(valuePos + 1));
+                            } else {
+                                keyValue = line;
+                            }
+                            
                             String propertiesFileName = childFile.getName();
                             if (propertiesFileName.endsWith(".properties")) {
                                 propertiesFileName = propertiesFileName.substring(0, propertiesFileName.length() - 11);
                             }
-                            out.write(moduleName + "." + propertiesFileName + "." + line + "\n");
+                            out.write(moduleName + "." + propertiesFileName + "." + keyValue + "\n");
                         }
                     }
                 } catch (IOException ex) {
