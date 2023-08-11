@@ -34,10 +34,11 @@ import org.apache.commons.lang3.StringEscapeUtils;
  */
 public class AggregateLanguageFile {
 
-    private static final String languageCode = "undef";
+    private static final String PLUGIN_CODE = "undef";
+    private static final String LANGUAGE_CODE = PLUGIN_CODE;
     private static final String PROJECT_DIR = "/home/hajdam/Software/Projekty/exbin/bined";
     private static final String FRAMEWORK_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-framework-java";
-    private static final String TARGET_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-plugins-java/plugins/exbin-framework-language-" + languageCode + "/src/main/resources";
+    private static final String TARGET_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-plugins-java/plugins/exbin-framework-language-" + PLUGIN_CODE + "/src/main/resources";
     
     public static void main(String[] args) {
         File targetFile = new File(TARGET_DIR, "aggregate.properties");
@@ -112,7 +113,7 @@ public class AggregateLanguageFile {
             } else if (childFile.isFile() && childFile.getName().endsWith(".properties")) {
                 File targetDir = new File(TARGET_DIR + prefix);
                 String fileName = childFile.getName();
-                String targetFileName = fileName.substring(0, fileName.length() - 11) + "_" + languageCode + ".properties";
+                String targetFileName = fileName.substring(0, fileName.length() - 11) + "_" + LANGUAGE_CODE + ".properties";
                 File targetFile = new File(targetDir, targetFileName);
 
                 try (FileInputStream source = new FileInputStream(targetFile)) {

@@ -29,9 +29,10 @@ import java.util.logging.Logger;
  */
 public class AddNewLanguageFiles {
 
-    private static final String languageCode = "undef";
+    private static final String PLUGIN_CODE = "undef";
+    private static final String LANGUAGE_CODE = PLUGIN_CODE;
     private static final String SOURCE_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-plugins-java/plugins/exbin-framework-language-en_US/src/main/resources";
-    private static final String TARGET_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-plugins-java/plugins/exbin-framework-language-" + languageCode + "/src/main/resources";
+    private static final String TARGET_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-plugins-java/plugins/exbin-framework-language-" + PLUGIN_CODE + "/src/main/resources";
 
     public static void main(String[] args) {
         File projectDir = new File(SOURCE_DIR);
@@ -49,7 +50,7 @@ public class AddNewLanguageFiles {
                 targetDir.mkdirs();
                 try {
                     String fileName = child.getName();
-                    String targetFileName = fileName.substring(0, fileName.length() - 11) + "_" + languageCode + ".properties";
+                    String targetFileName = fileName.substring(0, fileName.length() - 11) + "_" + LANGUAGE_CODE + ".properties";
                     // TODO remove various lines
                     Files.copy(child.toPath(), new File(targetDir, targetFileName).toPath(), StandardCopyOption.REPLACE_EXISTING);
                 } catch (IOException ex) {
