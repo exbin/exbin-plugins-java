@@ -38,7 +38,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
  */
 public class UpdateByAggregate {
 
-    private static final String PLUGIN_CODE = "undef";
+    private static final String PLUGIN_CODE = "zh_TW";
     private static final String LANGUAGE_CODE = PLUGIN_CODE;
     private static final String PROJECT_DIR = "/home/hajdam/Software/Projekty/exbin/bined";
     private static final String FRAMEWORK_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-framework-java";
@@ -82,13 +82,28 @@ public class UpdateByAggregate {
                         aggregatePropertyFileKeys = new HashMap<>();
                         aggregateModuleKeys.put(propertFileName, aggregatePropertyFileKeys);
                     }
-                    aggregatePropertyFileKeys.put(key, value);
+                    aggregatePropertyFileKeys.put(key.trim(), value.trim());
 
                     lineIndex++;
                 }
             }
         } catch (IOException ex) {
             Logger.getLogger(UpdateByAggregate.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        File appsDir = new File(PROJECT_DIR + "/apps");
+        File[] appsModules = appsDir.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                return file.isDirectory();
+            }
+        });
+
+        for (File module : appsModules) {
+            if (module.isDirectory()) {
+                String moduleName = module.getName();
+                processModuleResources(module, moduleName, "");
+            }
         }
 
         File projectDir = new File(PROJECT_DIR + "/modules");
@@ -180,7 +195,7 @@ public class UpdateByAggregate {
                                     if (valuePos > 0) {
                                         String key = line.substring(0, valuePos);
 
-                                        String override = aggregatePropertyFileKeys.get(key);
+                                        String override = aggregatePropertyFileKeys.get(key.trim());
                                         if (override != null) {
                                             out.write(key + "=" + StringEscapeUtils.escapeJava(override) + "\n");
                                         } else {

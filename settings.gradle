@@ -5,6 +5,8 @@ include ":deps"
 include ":plugins:exbin-framework-language-cs_CZ"
 include ":plugins:exbin-framework-language-zh_Hans"
 include ":plugins:exbin-framework-language-zh_Hant"
+include ":plugins:exbin-framework-language-zh_HK"
+include ":plugins:exbin-framework-language-zh_TW"
 include ":plugins:exbin-framework-darcula-laf"
 include ":plugins:exbin-framework-flatlaf-laf"
 
