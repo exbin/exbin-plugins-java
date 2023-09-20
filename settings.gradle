@@ -9,6 +9,8 @@ include ":plugins:exbin-framework-language-zh_HK"
 include ":plugins:exbin-framework-language-zh_TW"
 include ":plugins:exbin-framework-darcula-laf"
 include ":plugins:exbin-framework-flatlaf-laf"
+include ":plugins:exbin-framework-vaqua-laf"
+include ":plugins:exbin-framework-napkin-laf"
 
 File placeholder = file("deps/_placeholder")
 if (placeholder.exists()) {
