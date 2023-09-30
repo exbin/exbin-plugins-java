@@ -16,6 +16,9 @@
 package org.exbin.framework.plugins.language.zh_HK;
 
 import java.util.Locale;
+import java.util.Optional;
+import javax.swing.ImageIcon;
+import org.exbin.framework.api.LanguageProvider;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.api.XBApplicationModule;
 import org.exbin.xbup.plugin.XBModuleHandler;
@@ -35,7 +38,26 @@ public class LanguageZhHkModule implements XBApplicationModule {
     @Override
     public void init(XBModuleHandler moduleHandler) {
         this.application = (XBApplication) moduleHandler;
-        application.registerLanguagePlugin(new Locale("zh", "HK"), getClass().getClassLoader());
+        try {
+            application.registerLanguagePlugin(new LanguageProvider() {
+                @Override
+                public Locale getLocale() {
+                    return new Locale("zh", "HK");
+                }
+
+                @Override
+                public Optional<ClassLoader> getClassLoader() {
+                    return Optional.of(getClass().getClassLoader());
+                }
+
+                @Override
+                public Optional<ImageIcon> getFlag() {
+                    return Optional.of(new ImageIcon(getClass().getResource("/resources/images/flags/hk.png")));
+                }
+            });
+        } catch (Throwable ex) {
+            application.registerLanguagePlugin(new Locale("zh", "HK"), getClass().getClassLoader());
+        }
     }
 
     @Override

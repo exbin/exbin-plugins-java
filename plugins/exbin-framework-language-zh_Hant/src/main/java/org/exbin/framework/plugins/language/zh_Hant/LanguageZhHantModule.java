@@ -16,6 +16,9 @@
 package org.exbin.framework.plugins.language.zh_Hant;
 
 import java.util.Locale;
+import java.util.Optional;
+import javax.swing.ImageIcon;
+import org.exbin.framework.api.LanguageProvider;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.api.XBApplicationModule;
 import org.exbin.xbup.plugin.XBModuleHandler;
@@ -35,7 +38,26 @@ public class LanguageZhHantModule implements XBApplicationModule {
     @Override
     public void init(XBModuleHandler moduleHandler) {
         this.application = (XBApplication) moduleHandler;
-        application.registerLanguagePlugin(Locale.forLanguageTag("zh-Hant"), getClass().getClassLoader());
+        try {
+            application.registerLanguagePlugin(new LanguageProvider() {
+                @Override
+                public Locale getLocale() {
+                    return Locale.forLanguageTag("zh-Hant");
+                }
+
+                @Override
+                public Optional<ClassLoader> getClassLoader() {
+                    return Optional.of(getClass().getClassLoader());
+                }
+
+                @Override
+                public Optional<ImageIcon> getFlag() {
+                    return Optional.of(new ImageIcon(getClass().getResource("/resources/images/flags/mo.png")));
+                }
+            });
+        } catch (Throwable ex) {
+            application.registerLanguagePlugin(Locale.forLanguageTag("zh-Hant"), getClass().getClassLoader());
+        }
     }
 
     @Override
