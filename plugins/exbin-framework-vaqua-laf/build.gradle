@@ -39,7 +39,7 @@ task fatJar(type: Jar) {
         project.configurations.runtimeClasspath.filter { File file -> !(
             file.name.startsWith('xbup-core') ||
             file.name.startsWith('xbup-plugin') ||
-            file.name.startsWith('paged_data') ||
+            file.name.startsWith('binary_data') ||
             file.name.startsWith('exbin-framework-api')
         )}.collect {
             from (it.isDirectory() ? it : zipTree(it).matching {

@@ -39,7 +39,7 @@ public class AggregateLanguageFile {
     private static final String PROJECT_DIR = "/home/hajdam/Software/Projekty/exbin/bined";
     private static final String FRAMEWORK_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-framework-java";
     private static final String TARGET_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-plugins-java/plugins/exbin-framework-language-" + PLUGIN_CODE + "/src/main/resources";
-    
+
     public static void main(String[] args) {
         File targetFile = new File(TARGET_DIR, "aggregate.properties");
         try (FileOutputStream fos = new FileOutputStream(targetFile)) {
@@ -96,7 +96,7 @@ public class AggregateLanguageFile {
             }
             out.close();
         } catch (IOException ex) {
-            Logger.getLogger(CollectLanguageFiles.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AggregateLanguageFile.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -131,7 +131,7 @@ public class AggregateLanguageFile {
                             } else {
                                 keyValue = line;
                             }
-                            
+
                             String propertiesFileName = childFile.getName();
                             if (propertiesFileName.endsWith(".properties")) {
                                 propertiesFileName = propertiesFileName.substring(0, propertiesFileName.length() - 11);
@@ -148,7 +148,7 @@ public class AggregateLanguageFile {
         try {
             out.flush();
         } catch (IOException ex) {
-            Logger.getLogger(CollectLanguageFiles.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AggregateLanguageFile.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
