@@ -31,8 +31,8 @@ public class AddNewLanguageFiles {
 
     private static final String PLUGIN_CODE = "undef";
     private static final String LANGUAGE_CODE = PLUGIN_CODE;
-    private static final String SOURCE_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-plugins-java/plugins/exbin-framework-language-en_US/src/main/resources";
-    private static final String TARGET_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-plugins-java/plugins/exbin-framework-language-" + PLUGIN_CODE + "/src/main/resources";
+    private static final String SOURCE_DIR = "../../plugins/exbin-framework-language-en_US/src/main/resources";
+    private static final String TARGET_DIR = "../../plugins/exbin-framework-language-" + PLUGIN_CODE + "/src/main/resources";
 
     public static void main(String[] args) {
         File projectDir = new File(SOURCE_DIR);

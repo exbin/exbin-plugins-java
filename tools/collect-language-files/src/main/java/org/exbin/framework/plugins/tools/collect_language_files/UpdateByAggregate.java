@@ -32,7 +32,7 @@ import java.util.logging.Logger;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
- * Tool to create single aggregated language file.
+ * Tool to update language files from single aggregated file.
  *
  * @author ExBin Project (https://exbin.org)
  */
@@ -43,6 +43,7 @@ public class UpdateByAggregate {
     private static final String PROJECT_DIR = "/home/hajdam/Software/Projekty/exbin/bined";
     private static final String FRAMEWORK_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-framework-java";
     private static final String TARGET_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-plugins-java/plugins/exbin-framework-language-" + PLUGIN_CODE + "/src/main/resources";
+    private static boolean generateDiffFile = true;
 
     private static final Map<String, Map<String, Map<String, String>>> aggregateKeys = new HashMap<>();
 
@@ -90,6 +91,17 @@ public class UpdateByAggregate {
         } catch (IOException ex) {
             Logger.getLogger(UpdateByAggregate.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        FileOutputStream diffFos = null;
+        OutputStreamWriter diffOut = null;
+        if (generateDiffFile) {
+            try {
+                diffFos = new FileOutputStream(new File(TARGET_DIR, "diff.properties"));
+                diffOut = new OutputStreamWriter(diffFos, "UTF-8");
+            } catch (IOException ex) {
+                Logger.getLogger(UpdateByAggregate.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
 
         File appsDir = new File(PROJECT_DIR + "/apps");
         File[] appsModules = appsDir.listFiles(new FileFilter() {
@@ -102,7 +114,7 @@ public class UpdateByAggregate {
         for (File module : appsModules) {
             if (module.isDirectory()) {
                 String moduleName = module.getName();
-                processModuleResources(module, moduleName, "");
+                processModuleResources(module, moduleName, "", diffOut);
             }
         }
 
@@ -120,7 +132,7 @@ public class UpdateByAggregate {
                 if (moduleName.startsWith("exbin-framework-")) {
                     moduleName = moduleName.substring(16);
                 }
-                processModuleResources(module, moduleName, "");
+                processModuleResources(module, moduleName, "", diffOut);
             }
         }
 
@@ -138,12 +150,23 @@ public class UpdateByAggregate {
                 if (moduleName.startsWith("exbin-framework-")) {
                     moduleName = moduleName.substring(16);
                 }
-                processModuleResources(module, moduleName, "");
+                processModuleResources(module, moduleName, "", diffOut);
+            }
+        }
+        
+        if (diffOut != null) {
+            try {
+                diffOut.close();
+                if (diffFos != null) {
+                    diffFos.close();
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(UpdateByAggregate.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
 
-    private static void processModuleResources(File module, String moduleName, String prefix) {
+    private static void processModuleResources(File module, String moduleName, String prefix, OutputStreamWriter diffOut) {
         File moduleResources = new File(module, "src/main/resources" + prefix);
         File[] listFiles = moduleResources.listFiles();
         if (listFiles == null) {
@@ -151,14 +174,14 @@ public class UpdateByAggregate {
         }
 
         Map<String, Map<String, String>> aggregateModuleKeys = aggregateKeys.get(moduleName);
-        if (aggregateModuleKeys == null) {
+        if (aggregateModuleKeys == null && diffOut == null) {
             // No aggregate overrides
             return;
         }
 
         for (File childFile : listFiles) {
             if (childFile.isDirectory()) {
-                processModuleResources(module, moduleName, prefix + "/" + childFile.getName());
+                processModuleResources(module, moduleName, prefix + "/" + childFile.getName(), diffOut);
             } else if (childFile.isFile() && childFile.getName().endsWith(".properties")) {
                 File targetDir = new File(TARGET_DIR + prefix);
                 String fileName = childFile.getName();
@@ -177,8 +200,8 @@ public class UpdateByAggregate {
                 if (propertiesFileName.endsWith(".properties")) {
                     propertiesFileName = propertiesFileName.substring(0, propertiesFileName.length() - 11);
                 }
-                Map<String, String> aggregatePropertyFileKeys = aggregateModuleKeys.get(propertiesFileName);
-                if (aggregatePropertyFileKeys == null) {
+                Map<String, String> aggregatePropertyFileKeys = aggregateModuleKeys == null ? null : aggregateModuleKeys.get(propertiesFileName);
+                if (aggregatePropertyFileKeys == null && diffOut == null) {
                     // No aggregate overrides
                     continue;
                 }
@@ -195,10 +218,13 @@ public class UpdateByAggregate {
                                     if (valuePos > 0) {
                                         String key = line.substring(0, valuePos);
 
-                                        String override = aggregatePropertyFileKeys.get(key.trim());
+                                        String override = aggregatePropertyFileKeys == null ? null : aggregatePropertyFileKeys.get(key.trim());
                                         if (override != null) {
                                             out.write(key + "=" + StringEscapeUtils.escapeJava(override) + "\n");
                                         } else {
+                                            if (diffOut != null) {
+                                                diffOut.write(moduleName + "." + propertiesFileName + "." + line + "\n");
+                                            }
                                             out.write(line + "\n");
                                         }
                                     } else {

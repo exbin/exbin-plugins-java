@@ -29,7 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Tool to collect language files.
+ * Tool to collect language files. Fixed target to en_US.
  *
  * @author ExBin Project (https://exbin.org)
  */

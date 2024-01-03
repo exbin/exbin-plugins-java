@@ -23,6 +23,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -34,13 +37,122 @@ import org.apache.commons.lang3.StringEscapeUtils;
  */
 public class AggregateLanguageFile {
 
-    private static final String PLUGIN_CODE = "undef";
+    private static final String PLUGIN_CODE = "zh_Hant";
     private static final String LANGUAGE_CODE = PLUGIN_CODE;
-    private static final String PROJECT_DIR = "/home/hajdam/Software/Projekty/exbin/bined";
-    private static final String FRAMEWORK_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-framework-java";
-    private static final String TARGET_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-plugins-java/plugins/exbin-framework-language-" + PLUGIN_CODE + "/src/main/resources";
+    private static final String PROJECT_DIR = "../../../bined";
+    private static final String FRAMEWORK_DIR = "../../../exbin-framework-java";
+    private static final String TARGET_DIR = "../../plugins/exbin-framework-language-" + PLUGIN_CODE + "/src/main/resources";
+    private static final Set<String> subGroups = new HashSet<>(Arrays.asList("bined", "editor"));
 
     public static void main(String[] args) {
+        aggregateByCollecting();
+        // aggregateMatchingOnly();
+    }
+
+    private static void aggregateByCollecting() {
+        File targetFile = new File(TARGET_DIR, "aggregate.properties");
+        try (FileOutputStream fos = new FileOutputStream(targetFile)) {
+            OutputStreamWriter out = new OutputStreamWriter(fos, "UTF-8");
+            processModuleDir(TARGET_DIR + "/org/exbin/bined/editor", "bined-editor", out);
+
+            File processedFolder = new File(TARGET_DIR, "org/exbin/framework");
+            File[] listFiles = processedFolder.listFiles();
+            if (listFiles == null) {
+                return;
+            }
+
+            for (File childFile : listFiles) {
+                if (subGroups.contains(childFile.getName())) {
+                    continue;
+                }
+
+                if (childFile.isDirectory()) {
+                    processModuleDir(TARGET_DIR + "/org/exbin/framework/" + childFile.getName(), childFile.getName(), out);
+                }
+            }
+            
+            for (String subGroup : subGroups) {
+                processedFolder = new File(TARGET_DIR, "org/exbin/framework/" + subGroup);
+                listFiles = processedFolder.listFiles();
+                if (listFiles == null) {
+                    return;
+                }
+
+                for (File childFile : listFiles) {
+                    if ("resources".equals(childFile.getName()) || "options".equals(childFile.getName()) || "gui".equals(childFile.getName())) {
+                        processModuleDir(TARGET_DIR + "/org/exbin/framework/" + subGroup + "/" + childFile.getName(), subGroup, out);
+                    } else if (childFile.isDirectory()) {
+                        processModuleDir(TARGET_DIR + "/org/exbin/framework/" + subGroup + "/" + childFile.getName(), subGroup + "-" + childFile.getName(), out);
+                    }
+                }
+            }
+            
+            out.close();
+        } catch (IOException ex) {
+            Logger.getLogger(AggregateLanguageFile.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private static void processModuleDir(String directory, String module, OutputStreamWriter out) {
+        // Temporary conversion
+        /*
+        if ("bined-blockedit".equals(module)) {
+            module = "bined-operation";
+        } else if ("bined-clipboard".equals(module)) {
+            module = "bined-tool-content";
+        } */
+
+        File moduleDir = new File(directory);
+        File[] listFiles = moduleDir.listFiles();
+        if (listFiles == null) {
+            return;
+        }
+
+        for (File childFile : listFiles) {
+            if (childFile.isDirectory()) {
+                if ("operation".equals(module) && "undo".equals(childFile.getName())) {
+                    module = "operation-undo";
+                } else if ("help".equals(module) && "online".equals(childFile.getName())) {
+                    module = "help-online";
+                }
+                processModuleDir(directory + "/" + childFile.getName(), module, out);
+            } else if (childFile.isFile() && childFile.getName().endsWith(LANGUAGE_CODE + ".properties")) {
+                String fileName = childFile.getName();
+                String propertiesFileName = fileName.substring(0, fileName.length() - 12 - LANGUAGE_CODE.length());
+
+                try (FileInputStream source = new FileInputStream(childFile)) {
+                    InputStreamReader isr = new InputStreamReader(source, "UTF-8");
+                    try (BufferedReader reader = new BufferedReader(isr)) {
+                        while (reader.ready()) {
+                            String line = reader.readLine();
+                            if (line.isBlank()) {
+                                continue;
+                            }
+                            String keyValue;
+                            int valuePos = line.indexOf("=");
+                            if (valuePos > 0) {
+                                keyValue = line.substring(0, valuePos) + "=" + StringEscapeUtils.unescapeJava(line.substring(valuePos + 1));
+                            } else {
+                                keyValue = line;
+                            }
+
+                            out.write(module + "." + propertiesFileName + "." + keyValue + "\n");
+                        }
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(AggregateLanguageFile.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+
+        try {
+            out.flush();
+        } catch (IOException ex) {
+            Logger.getLogger(AggregateLanguageFile.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private static void aggregateMatchingOnly() {
         File targetFile = new File(TARGET_DIR, "aggregate.properties");
         try (FileOutputStream fos = new FileOutputStream(targetFile)) {
             OutputStreamWriter out = new OutputStreamWriter(fos, "UTF-8");
