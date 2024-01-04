@@ -37,7 +37,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
  */
 public class AggregateLanguageFile {
 
-    private static final String PLUGIN_CODE = "zh_Hant";
+    private static final String PLUGIN_CODE = "undef";
     private static final String LANGUAGE_CODE = PLUGIN_CODE;
     private static final String PROJECT_DIR = "../../../bined";
     private static final String FRAMEWORK_DIR = "../../../exbin-framework-java";
@@ -110,12 +110,17 @@ public class AggregateLanguageFile {
 
         for (File childFile : listFiles) {
             if (childFile.isDirectory()) {
+                String childModule = module;
                 if ("operation".equals(module) && "undo".equals(childFile.getName())) {
-                    module = "operation-undo";
+                    childModule = "operation-undo";
                 } else if ("help".equals(module) && "online".equals(childFile.getName())) {
-                    module = "help-online";
+                    childModule = "help-online";
+                } else if ("bined-operation".equals(module) && "bouncycastle".equals(childFile.getName())) {
+                    childModule = "bined-operation-bouncycastle";
+                } else if ("bined-tool".equals(module) && "content".equals(childFile.getName())) {
+                    childModule = "bined-tool-content";
                 }
-                processModuleDir(directory + "/" + childFile.getName(), module, out);
+                processModuleDir(directory + "/" + childFile.getName(), childModule, out);
             } else if (childFile.isFile() && childFile.getName().endsWith(LANGUAGE_CODE + ".properties")) {
                 String fileName = childFile.getName();
                 String propertiesFileName = fileName.substring(0, fileName.length() - 12 - LANGUAGE_CODE.length());

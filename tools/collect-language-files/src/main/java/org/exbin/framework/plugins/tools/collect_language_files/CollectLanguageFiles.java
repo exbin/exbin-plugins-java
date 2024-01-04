@@ -35,9 +35,9 @@ import java.util.logging.Logger;
  */
 public class CollectLanguageFiles {
 
-    private static final String PROJECT_DIR = "/home/hajdam/Software/Projekty/exbin/bined";
-    private static final String FRAMEWORK_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-framework-java";
-    private static final String TARGET_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-plugins-java/plugins/exbin-framework-language-en_US/src/main/resources";
+    private static final String PROJECT_DIR = "../../../bined";
+    private static final String FRAMEWORK_DIR = "../../../exbin-framework-java";
+    private static final String TARGET_DIR = "../../plugins/exbin-framework-language-en_US/src/main/resources";
     private static final List<String> EXCEPTIONS = Arrays.asList(
             "Application.release", "Application.mode", "Application.version", "Application.homepage", "Application.vendorId", "Application.id", "Application.lookAndFeel", "Application.product", "Application.vendor",
             "Application.licenseFile", "Application.aboutImage", "Application.icon", "Application.authors");

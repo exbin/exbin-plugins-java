@@ -38,11 +38,11 @@ import org.apache.commons.lang3.StringEscapeUtils;
  */
 public class UpdateByAggregate {
 
-    private static final String PLUGIN_CODE = "zh_TW";
+    private static final String PLUGIN_CODE = "undef";
     private static final String LANGUAGE_CODE = PLUGIN_CODE;
-    private static final String PROJECT_DIR = "/home/hajdam/Software/Projekty/exbin/bined";
-    private static final String FRAMEWORK_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-framework-java";
-    private static final String TARGET_DIR = "/home/hajdam/Software/Projekty/exbin/exbin-plugins-java/plugins/exbin-framework-language-" + PLUGIN_CODE + "/src/main/resources";
+    private static final String PROJECT_DIR = "../../../bined";
+    private static final String FRAMEWORK_DIR = "../../../exbin-framework-java";
+    private static final String TARGET_DIR = "../../plugins/exbin-framework-language-" + PLUGIN_CODE + "/src/main/resources";
     private static boolean generateDiffFile = true;
 
     private static final Map<String, Map<String, Map<String, String>>> aggregateKeys = new HashMap<>();
