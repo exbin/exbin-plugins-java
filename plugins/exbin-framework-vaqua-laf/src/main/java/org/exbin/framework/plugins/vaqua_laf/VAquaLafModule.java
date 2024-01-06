@@ -50,7 +50,7 @@ public class VAquaLafModule implements XBApplicationModule, LookAndFeelApplier {
     public void applyLookAndFeel(String className) {
         try {
             UIManager.setLookAndFeel(VAQUA_LAF_CLASS);
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             System.err.println("Failed to initialize LaF");
         }
     }

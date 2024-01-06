@@ -50,7 +50,7 @@ public class NapkinLafModule implements XBApplicationModule, LookAndFeelApplier 
     public void applyLookAndFeel(String className) {
         try {
             UIManager.setLookAndFeel(NAPKIN_LAF_CLASS);
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             Logger.getLogger(NapkinLafModule.class.getName()).log(Level.SEVERE, "Failed to initialize LaF", ex);
         }
     }

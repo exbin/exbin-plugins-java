@@ -57,14 +57,14 @@ public class FlatLafLafModule implements XBApplicationModule, LookAndFeelApplier
             try {
                 FlatDarkLaf.install();
                 UIManager.setLookAndFeel(new FlatDarkLaf());
-            } catch (Exception ex) {
+            } catch (Throwable ex) {
                 System.err.println("Failed to initialize LaF");
             }
         } else {
             try {
                 FlatLightLaf.install();
                 UIManager.setLookAndFeel(new FlatLightLaf());
-            } catch (Exception ex) {
+            } catch (Throwable ex) {
                 System.err.println("Failed to initialize LaF");
             }
         }
