@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<module>
+  <id>org.exbin.framework.plugins.language.ja_JP.LanguageJaJpModule</id>
+  <name>Japanese language plugin</name>
+  <description>Japanese language plugin</description>
+  <dependency>
+  </dependency>
+</module>

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<module>
+  <id>org.exbin.framework.plugins.language.zh_Hans.LanguageZhHansModule</id>
+  <name>Chinese language plugin</name>
+  <description>Module to provide various utilities</description>
+  <dependency>
+  </dependency>
+</module>

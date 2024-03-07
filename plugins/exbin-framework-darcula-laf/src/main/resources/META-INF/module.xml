@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<module>
+  <id>org.exbin.framework.plugins.darcula_laf.DarculaLafModule</id>
+  <name>Darcula look and feel plugin</name>
+  <description>Module to provide Darcula look and feel</description>
+  <dependency>
+  </dependency>
+</module>

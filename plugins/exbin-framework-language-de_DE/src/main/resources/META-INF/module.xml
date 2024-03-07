@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<module>
+  <id>org.exbin.framework.plugins.language.de_DE.LanguageDeDeModule</id>
+  <name>German language plugin</name>
+  <description>German language plugin</description>
+  <dependency>
+  </dependency>
+</module>

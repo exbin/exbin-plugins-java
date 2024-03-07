@@ -1,20 +1,14 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+}
+
 group = 'org.exbin.framework.plugins'
 ext.libraryName = 'ExBin kr_KO Language Plugin'
 ext.libraryDescription = 'Korean language plugin for ExBin Framework'
 
 apply from: '../plugins.gradle'
-
-buildscript {
-    repositories {
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-    }
-    dependencies {
-        classpath "at.bxm.gradleplugins:gradle-svntools-plugin:2.2"
-        classpath "org.tmatesoft.svnkit:svnkit:1.10.1"
-    }
-}
 
 if (!hasProperty('mainClass')) {
     ext.mainClass = ''
@@ -29,6 +23,7 @@ repositories {
 }
 
 dependencies {
-    implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-api')
+    implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'core', 'exbin-framework')
+    implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-language-api')
     testImplementation group : 'junit', name: 'junit', version: '4.13.2'
 }

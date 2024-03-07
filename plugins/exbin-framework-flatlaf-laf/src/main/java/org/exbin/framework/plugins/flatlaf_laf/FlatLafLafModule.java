@@ -19,10 +19,8 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.UIManager;
-import org.exbin.xbup.plugin.LookAndFeelApplier;
-import org.exbin.framework.api.XBApplication;
-import org.exbin.framework.api.XBApplicationModule;
-import org.exbin.xbup.plugin.XBModuleHandler;
+import org.exbin.framework.LookAndFeelApplier;
+import org.exbin.framework.Module;
 
 /**
  * FlatLaf look and feel plugin.
@@ -30,24 +28,16 @@ import org.exbin.xbup.plugin.XBModuleHandler;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class FlatLafLafModule implements XBApplicationModule, LookAndFeelApplier {
-
-    private XBApplication application;
+public class FlatLafLafModule implements Module, LookAndFeelApplier {
 
     public FlatLafLafModule() {
-    }
-
-    @Override
-    public void init(XBModuleHandler moduleHandler) {
-        this.application = (XBApplication) moduleHandler;
-
         String flatDarkClassName = FlatDarkLaf.class.getName();
         UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("FlatDark", flatDarkClassName));
-        application.registerLafPlugin(flatDarkClassName, this);
+        // registerLafPlugin(flatDarkClassName, this);
 
         String flatLightClassName = FlatLightLaf.class.getName();
         UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("FlatLight", flatLightClassName));
-        application.registerLafPlugin(flatLightClassName, this);
+        // registerLafPlugin(flatLightClassName, this);
     }
 
     @Override
@@ -70,7 +60,6 @@ public class FlatLafLafModule implements XBApplicationModule, LookAndFeelApplier
         }
     }
 
-    @Override
     public void unregisterModule(String moduleId) {
     }
 }

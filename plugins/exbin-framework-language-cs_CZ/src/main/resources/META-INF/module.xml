@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<module>
+  <id>org.exbin.framework.plugins.language.cs_CZ.LanguageCsCzModule</id>
+  <name>Czech language plugin</name>
+  <description>Czech language plugin</description>
+  <dependency>
+  </dependency>
+</module>

@@ -19,10 +19,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.UIManager;
-import org.exbin.xbup.plugin.LookAndFeelApplier;
-import org.exbin.framework.api.XBApplication;
-import org.exbin.framework.api.XBApplicationModule;
-import org.exbin.xbup.plugin.XBModuleHandler;
+import org.exbin.framework.LookAndFeelApplier;
+import org.exbin.framework.Module;
 
 /**
  * Napkin look and feel plugin.
@@ -30,20 +28,13 @@ import org.exbin.xbup.plugin.XBModuleHandler;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class NapkinLafModule implements XBApplicationModule, LookAndFeelApplier {
+public class NapkinLafModule implements Module, LookAndFeelApplier {
 
     public static final String NAPKIN_LAF_CLASS = "net.sourceforge.napkinlaf.NapkinLookAndFeel";
-    private XBApplication application;
 
     public NapkinLafModule() {
-    }
-
-    @Override
-    public void init(XBModuleHandler moduleHandler) {
-        this.application = (XBApplication) moduleHandler;
-
         UIManager.installLookAndFeel("Napkin", NAPKIN_LAF_CLASS);
-        application.registerLafPlugin(NAPKIN_LAF_CLASS, this);
+        // registerLafPlugin(NAPKIN_LAF_CLASS, this);
     }
 
     @Override
@@ -55,7 +46,6 @@ public class NapkinLafModule implements XBApplicationModule, LookAndFeelApplier 
         }
     }
 
-    @Override
     public void unregisterModule(String moduleId) {
     }
 }

@@ -21,29 +21,20 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import org.exbin.xbup.plugin.LookAndFeelApplier;
-import org.exbin.framework.api.XBApplication;
-import org.exbin.framework.api.XBApplicationModule;
-import org.exbin.xbup.plugin.XBModuleHandler;
+import org.exbin.framework.LookAndFeelApplier;
+import org.exbin.framework.Module;
 
 /**
  * Darcula look and feel plugin.
  *
  * @author ExBin Project (https://exbin.org)
  */
-public class DarculaLafModule implements XBApplicationModule, LookAndFeelApplier {
-
-    private XBApplication application;
+public class DarculaLafModule implements Module, LookAndFeelApplier {
 
     public DarculaLafModule() {
-    }
-
-    @Override
-    public void init(XBModuleHandler moduleHandler) {
-        this.application = (XBApplication) moduleHandler;
         String className = DarculaLaf.class.getName();
         UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo(DarculaLaf.NAME, className));
-        application.registerLafPlugin(className, this);
+        // registerLafPlugin(className, this);
     }
 
     @Override
@@ -66,7 +57,6 @@ public class DarculaLafModule implements XBApplicationModule, LookAndFeelApplier
         //UIManager.put("Nb.DarculaLFCustoms", new DarculaLFCustoms());
     }
 
-    @Override
     public void unregisterModule(String moduleId) {
     }
 }

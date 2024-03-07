@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<module>
+  <id>org.exbin.framework.plugins.vaqua_laf.VAquaLafModule</id>
+  <name>VAqua look and feel plugin</name>
+  <description>Module to provide VAqua look and feel</description>
+  <dependency>
+  </dependency>
+</module>

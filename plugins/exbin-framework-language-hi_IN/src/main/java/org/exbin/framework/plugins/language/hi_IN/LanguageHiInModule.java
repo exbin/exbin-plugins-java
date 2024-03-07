@@ -18,49 +18,38 @@ package org.exbin.framework.plugins.language.hi_IN;
 import java.util.Locale;
 import java.util.Optional;
 import javax.swing.ImageIcon;
-import org.exbin.framework.api.LanguageProvider;
-import org.exbin.framework.api.XBApplication;
-import org.exbin.framework.api.XBApplicationModule;
-import org.exbin.xbup.plugin.XBModuleHandler;
+import org.exbin.framework.App;
+import org.exbin.framework.Module;
+import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.language.api.LanguageProvider;
 
 /**
  * Language resources plugin for Hindi language.
  *
  * @author ExBin Project (https://exbin.org)
  */
-public class LanguageHiInModule implements XBApplicationModule {
-
-    private XBApplication application;
+public class LanguageHiInModule implements Module {
 
     public LanguageHiInModule() {
+        LanguageModuleApi languageModule = App.getModule(LanguageModuleApi.class);
+        languageModule.registerLanguagePlugin(new LanguageProvider() {
+            @Override
+            public Locale getLocale() {
+                return new Locale("hi", "IN");
+            }
+
+            @Override
+            public Optional<ClassLoader> getClassLoader() {
+                return Optional.of(getClass().getClassLoader());
+            }
+
+            @Override
+            public Optional<ImageIcon> getFlag() {
+                return Optional.of(new ImageIcon(getClass().getResource("/resources/images/flags/in.png")));
+            }
+        });
     }
 
-    @Override
-    public void init(XBModuleHandler moduleHandler) {
-        this.application = (XBApplication) moduleHandler;
-        try {
-            application.registerLanguagePlugin(new LanguageProvider() {
-                @Override
-                public Locale getLocale() {
-                    return new Locale("hi", "IN");
-                }
-
-                @Override
-                public Optional<ClassLoader> getClassLoader() {
-                    return Optional.of(getClass().getClassLoader());
-                }
-
-                @Override
-                public Optional<ImageIcon> getFlag() {
-                    return Optional.of(new ImageIcon(getClass().getResource("/resources/images/flags/in.png")));
-                }
-            });
-        } catch (Throwable ex) {
-            application.registerLanguagePlugin(new Locale("hi", "IN"), getClass().getClassLoader());
-        }
-    }
-
-    @Override
     public void unregisterModule(String moduleId) {
     }
 }

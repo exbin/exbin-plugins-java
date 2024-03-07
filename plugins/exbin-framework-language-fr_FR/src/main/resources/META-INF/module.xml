@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<module>
+  <id>org.exbin.framework.plugins.language.fr_FR.LanguageFrFrModule</id>
+  <name>French language plugin</name>
+  <description>French language plugin</description>
+  <dependency>
+  </dependency>
+</module>

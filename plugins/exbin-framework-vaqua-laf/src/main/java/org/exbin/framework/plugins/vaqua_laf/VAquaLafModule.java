@@ -17,10 +17,8 @@ package org.exbin.framework.plugins.vaqua_laf;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.UIManager;
-import org.exbin.xbup.plugin.LookAndFeelApplier;
-import org.exbin.framework.api.XBApplication;
-import org.exbin.framework.api.XBApplicationModule;
-import org.exbin.xbup.plugin.XBModuleHandler;
+import org.exbin.framework.LookAndFeelApplier;
+import org.exbin.framework.Module;
 
 /**
  * VAqua look and feel plugin.
@@ -28,21 +26,14 @@ import org.exbin.xbup.plugin.XBModuleHandler;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class VAquaLafModule implements XBApplicationModule, LookAndFeelApplier {
+public class VAquaLafModule implements Module, LookAndFeelApplier {
 
     public static final String VAQUA_LAF_CLASS = "org.violetlib.aqua.AquaLookAndFeel";
-    private XBApplication application;
 
     public VAquaLafModule() {
-    }
-
-    @Override
-    public void init(XBModuleHandler moduleHandler) {
-        this.application = (XBApplication) moduleHandler;
-
         if (System.getProperty("os.name", "").startsWith("Mac OS")) {
             UIManager.installLookAndFeel("VAqua", VAQUA_LAF_CLASS);
-            application.registerLafPlugin(VAQUA_LAF_CLASS, this);
+            // registerLafPlugin(VAQUA_LAF_CLASS, this);
         }
     }
 
@@ -55,7 +46,6 @@ public class VAquaLafModule implements XBApplicationModule, LookAndFeelApplier {
         }
     }
 
-    @Override
     public void unregisterModule(String moduleId) {
     }
 }

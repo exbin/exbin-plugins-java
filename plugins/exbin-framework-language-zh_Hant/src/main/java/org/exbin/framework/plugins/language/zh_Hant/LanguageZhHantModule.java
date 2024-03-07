@@ -18,49 +18,38 @@ package org.exbin.framework.plugins.language.zh_Hant;
 import java.util.Locale;
 import java.util.Optional;
 import javax.swing.ImageIcon;
-import org.exbin.framework.api.LanguageProvider;
-import org.exbin.framework.api.XBApplication;
-import org.exbin.framework.api.XBApplicationModule;
-import org.exbin.xbup.plugin.XBModuleHandler;
+import org.exbin.framework.App;
+import org.exbin.framework.Module;
+import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.language.api.LanguageProvider;
 
 /**
  * Language resources plugin for Chinese language (traditional).
  *
  * @author ExBin Project (https://exbin.org)
  */
-public class LanguageZhHantModule implements XBApplicationModule {
-
-    private XBApplication application;
+public class LanguageZhHantModule implements Module {
 
     public LanguageZhHantModule() {
+        LanguageModuleApi languageModule = App.getModule(LanguageModuleApi.class);
+        languageModule.registerLanguagePlugin(new LanguageProvider() {
+            @Override
+            public Locale getLocale() {
+                return Locale.forLanguageTag("zh-Hant");
+            }
+
+            @Override
+            public Optional<ClassLoader> getClassLoader() {
+                return Optional.of(getClass().getClassLoader());
+            }
+
+            @Override
+            public Optional<ImageIcon> getFlag() {
+                return Optional.of(new ImageIcon(getClass().getResource("/resources/images/flags/mo.png")));
+            }
+        });
     }
 
-    @Override
-    public void init(XBModuleHandler moduleHandler) {
-        this.application = (XBApplication) moduleHandler;
-        try {
-            application.registerLanguagePlugin(new LanguageProvider() {
-                @Override
-                public Locale getLocale() {
-                    return Locale.forLanguageTag("zh-Hant");
-                }
-
-                @Override
-                public Optional<ClassLoader> getClassLoader() {
-                    return Optional.of(getClass().getClassLoader());
-                }
-
-                @Override
-                public Optional<ImageIcon> getFlag() {
-                    return Optional.of(new ImageIcon(getClass().getResource("/resources/images/flags/mo.png")));
-                }
-            });
-        } catch (Throwable ex) {
-            application.registerLanguagePlugin(Locale.forLanguageTag("zh-Hant"), getClass().getClassLoader());
-        }
-    }
-
-    @Override
     public void unregisterModule(String moduleId) {
     }
 }
