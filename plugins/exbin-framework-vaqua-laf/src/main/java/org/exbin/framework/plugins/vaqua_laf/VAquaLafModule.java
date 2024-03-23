@@ -15,10 +15,13 @@
  */
 package org.exbin.framework.plugins.vaqua_laf;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.UIManager;
-import org.exbin.framework.LookAndFeelApplier;
+import org.exbin.framework.App;
 import org.exbin.framework.Module;
+import org.exbin.framework.ui.api.LafProvider;
+import org.exbin.framework.ui.api.UiModuleApi;
 
 /**
  * VAqua look and feel plugin.
@@ -26,18 +29,41 @@ import org.exbin.framework.Module;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class VAquaLafModule implements Module, LookAndFeelApplier {
+public class VAquaLafModule implements Module {
 
     public static final String VAQUA_LAF_CLASS = "org.violetlib.aqua.AquaLookAndFeel";
 
     public VAquaLafModule() {
         if (System.getProperty("os.name", "").startsWith("Mac OS")) {
-            UIManager.installLookAndFeel("VAqua", VAQUA_LAF_CLASS);
-            // registerLafPlugin(VAQUA_LAF_CLASS, this);
+            UiModuleApi languageModule = App.getModule(UiModuleApi.class);
+            languageModule.registerLafPlugin(new LafProvider() {
+                @Nonnull
+                @Override
+                public String getLafId() {
+                    return VAQUA_LAF_CLASS;
+                }
+
+                @Nonnull
+                @Override
+                public String getLafName() {
+                    return "VAqua";
+                }
+
+                @Override
+                public void installLaf() {
+                    UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo(getLafName(), getLafId()));
+//                UIManager.installLookAndFeel("VAqua", VAQUA_LAF_CLASS);
+                    // registerLafPlugin(flatDarkClassName, this);
+                }
+
+                @Override
+                public void applyLaf() {
+                    applyLookAndFeel(getLafId());
+                }
+            });
         }
     }
 
-    @Override
     public void applyLookAndFeel(String className) {
         try {
             UIManager.setLookAndFeel(VAQUA_LAF_CLASS);

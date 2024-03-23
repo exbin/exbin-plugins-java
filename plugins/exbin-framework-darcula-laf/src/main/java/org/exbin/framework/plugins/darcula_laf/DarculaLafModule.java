@@ -19,25 +19,49 @@ import com.bulenkov.darcula.DarculaLaf;
 import com.bulenkov.darcula.DarculaLookAndFeelInfo;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import org.exbin.framework.LookAndFeelApplier;
+import org.exbin.framework.App;
 import org.exbin.framework.Module;
+import org.exbin.framework.ui.api.LafProvider;
+import org.exbin.framework.ui.api.UiModuleApi;
 
 /**
  * Darcula look and feel plugin.
  *
  * @author ExBin Project (https://exbin.org)
  */
-public class DarculaLafModule implements Module, LookAndFeelApplier {
+@ParametersAreNonnullByDefault
+public class DarculaLafModule implements Module {
 
     public DarculaLafModule() {
-        String className = DarculaLaf.class.getName();
-        UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo(DarculaLaf.NAME, className));
-        // registerLafPlugin(className, this);
+        UiModuleApi languageModule = App.getModule(UiModuleApi.class);
+        languageModule.registerLafPlugin(new LafProvider() {
+            @Override
+            public String getLafId() {
+                return DarculaLaf.class.getName();
+            }
+
+            @Override
+            public void applyLaf() {
+                String className = DarculaLaf.class.getName();
+                applyLookAndFeel(className);
+            }
+
+            @Override
+            public String getLafName() {
+                return DarculaLaf.NAME;
+            }
+
+            @Override
+            public void installLaf() {
+                String className = DarculaLaf.class.getName();
+                UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo(DarculaLaf.NAME, className));
+            }
+        });
     }
 
-    @Override
     public void applyLookAndFeel(String className) {
         try {
             // Workaround for https://github.com/bulenkov/iconloader/issues/14

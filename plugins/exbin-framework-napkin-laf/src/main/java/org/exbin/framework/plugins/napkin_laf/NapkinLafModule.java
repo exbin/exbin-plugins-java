@@ -17,10 +17,13 @@ package org.exbin.framework.plugins.napkin_laf;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.UIManager;
-import org.exbin.framework.LookAndFeelApplier;
+import org.exbin.framework.App;
 import org.exbin.framework.Module;
+import org.exbin.framework.ui.api.LafProvider;
+import org.exbin.framework.ui.api.UiModuleApi;
 
 /**
  * Napkin look and feel plugin.
@@ -28,16 +31,38 @@ import org.exbin.framework.Module;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class NapkinLafModule implements Module, LookAndFeelApplier {
+public class NapkinLafModule implements Module {
 
     public static final String NAPKIN_LAF_CLASS = "net.sourceforge.napkinlaf.NapkinLookAndFeel";
 
     public NapkinLafModule() {
-        UIManager.installLookAndFeel("Napkin", NAPKIN_LAF_CLASS);
-        // registerLafPlugin(NAPKIN_LAF_CLASS, this);
+        UiModuleApi languageModule = App.getModule(UiModuleApi.class);
+        languageModule.registerLafPlugin(new LafProvider() {
+            @Nonnull
+            @Override
+            public String getLafId() {
+                return NAPKIN_LAF_CLASS;
+            }
+
+            @Nonnull
+            @Override
+            public String getLafName() {
+                return "Napkin";
+            }
+
+            @Override
+            public void installLaf() {
+                UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo(getLafName(), getLafId()));
+                // registerLafPlugin(flatDarkClassName, this);
+            }
+
+            @Override
+            public void applyLaf() {
+                applyLookAndFeel(getLafId());
+            }
+        });
     }
 
-    @Override
     public void applyLookAndFeel(String className) {
         try {
             UIManager.setLookAndFeel(NAPKIN_LAF_CLASS);

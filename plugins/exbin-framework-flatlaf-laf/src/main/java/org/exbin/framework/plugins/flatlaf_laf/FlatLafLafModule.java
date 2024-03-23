@@ -19,8 +19,10 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.UIManager;
-import org.exbin.framework.LookAndFeelApplier;
+import org.exbin.framework.App;
 import org.exbin.framework.Module;
+import org.exbin.framework.ui.api.LafProvider;
+import org.exbin.framework.ui.api.UiModuleApi;
 
 /**
  * FlatLaf look and feel plugin.
@@ -28,19 +30,60 @@ import org.exbin.framework.Module;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class FlatLafLafModule implements Module, LookAndFeelApplier {
+public class FlatLafLafModule implements Module {
+
+    public static final String FLATLAF_DARK = "FlatDark";
+    public static final String FLATLAF_LIGHT = "FlatLight";
 
     public FlatLafLafModule() {
-        String flatDarkClassName = FlatDarkLaf.class.getName();
-        UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("FlatDark", flatDarkClassName));
-        // registerLafPlugin(flatDarkClassName, this);
+        UiModuleApi languageModule = App.getModule(UiModuleApi.class);
+        languageModule.registerLafPlugin(new LafProvider() {
+            @Override
+            public String getLafId() {
+                return FlatDarkLaf.class.getName();
+            }
 
-        String flatLightClassName = FlatLightLaf.class.getName();
-        UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo("FlatLight", flatLightClassName));
-        // registerLafPlugin(flatLightClassName, this);
+            @Override
+            public String getLafName() {
+                return FLATLAF_DARK;
+            }
+
+            @Override
+            public void installLaf() {
+                UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo(getLafName(), getLafId()));
+                // registerLafPlugin(flatDarkClassName, this);
+            }
+
+            @Override
+            public void applyLaf() {
+                applyLookAndFeel(getLafId());
+            }
+        });
+
+        languageModule.registerLafPlugin(new LafProvider() {
+            @Override
+            public String getLafId() {
+                return FlatLightLaf.class.getName();
+            }
+
+            @Override
+            public String getLafName() {
+                return FLATLAF_LIGHT;
+            }
+
+            @Override
+            public void installLaf() {
+                UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo(getLafName(), getLafId()));
+                // registerLafPlugin(flatDarkClassName, this);
+            }
+
+            @Override
+            public void applyLaf() {
+                applyLookAndFeel(getLafId());
+            }
+        });
     }
 
-    @Override
     public void applyLookAndFeel(String className) {
         String flatDarkClassName = FlatDarkLaf.class.getName();
         if (className.equals(flatDarkClassName)) {

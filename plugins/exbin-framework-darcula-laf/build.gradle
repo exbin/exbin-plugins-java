@@ -25,6 +25,27 @@ repositories {
 
 dependencies {
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'core', 'exbin-framework')
+    implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-ui-api')
+    compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
     implementation ":darcula"
     testImplementation group : 'junit', name: 'junit', version: '4.13.2'
 }
+
+task fatJar(type: Jar) {
+    archiveBaseName = 'exbin-framework-darcula-laf-fat'
+        project.configurations.runtimeClasspath.filter { File file -> !(
+            file.name.startsWith('xbup-core') ||
+            file.name.startsWith('xbup-plugin') ||
+            file.name.startsWith('binary_data') ||
+            file.name.startsWith('exbin-framework-api')
+        )}.collect {
+            from (it.isDirectory() ? it : zipTree(it).matching {
+                exclude '/LICENSE.txt'
+            })
+        }
+    duplicatesStrategy = 'exclude'
+    with jar
+    dependsOn('jar')
+}
+
+build.dependsOn fatJar
