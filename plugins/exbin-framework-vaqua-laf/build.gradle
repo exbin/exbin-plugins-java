@@ -33,11 +33,9 @@ dependencies {
 
 task fatJar(type: Jar) {
     archiveBaseName = 'exbin-framework-vaqua-laf'
-        project.configurations.runtimeClasspath.filter { File file -> !(
-            file.name.startsWith('xbup-core') ||
-            file.name.startsWith('xbup-plugin') ||
-            file.name.startsWith('binary_data') ||
-            file.name.startsWith('exbin-framework-api')
+        project.configurations.runtimeClasspath.filter { File file -> (
+            file.name.startsWith('exbin-framework-vaqua-laf') ||
+            file.name.startsWith('VAqua11')
         )}.collect {
             from (it.isDirectory() ? it : zipTree(it).matching {
                 exclude '/LICENSE.txt'

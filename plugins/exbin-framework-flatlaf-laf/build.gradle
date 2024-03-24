@@ -33,11 +33,9 @@ dependencies {
 
 task fatJar(type: Jar) {
     archiveBaseName = 'exbin-framework-flatlaf-laf-fat'
-        project.configurations.runtimeClasspath.filter { File file -> !(
-            file.name.startsWith('xbup-core') ||
-            file.name.startsWith('xbup-plugin') ||
-            file.name.startsWith('binary_data') ||
-            file.name.startsWith('exbin-framework-api')
+        project.configurations.runtimeClasspath.filter { File file -> (
+            file.name.startsWith('exbin-framework-flatlaf-laf') ||
+            file.name.startsWith('flatlaf')
         )}.collect {
             from (it.isDirectory() ? it : zipTree(it).matching {
                 exclude '/LICENSE.txt'
