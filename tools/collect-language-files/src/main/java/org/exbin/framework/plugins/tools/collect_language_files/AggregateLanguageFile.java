@@ -39,6 +39,8 @@ public class AggregateLanguageFile {
 
     private static final String PLUGIN_CODE = "undef";
     private static final String LANGUAGE_CODE = PLUGIN_CODE;
+//    private static final String PLUGIN_CODE = "en_US";
+//    private static final String LANGUAGE_CODE = "";
     private static final String PROJECT_DIR = "../../../bined";
     private static final String FRAMEWORK_DIR = "../../../exbin-framework-java";
     private static final String TARGET_DIR = "../../plugins/exbin-framework-language-" + PLUGIN_CODE + "/src/main/resources";
@@ -123,7 +125,7 @@ public class AggregateLanguageFile {
                 processModuleDir(directory + "/" + childFile.getName(), childModule, out);
             } else if (childFile.isFile() && childFile.getName().endsWith(LANGUAGE_CODE + ".properties")) {
                 String fileName = childFile.getName();
-                String propertiesFileName = fileName.substring(0, fileName.length() - 12 - LANGUAGE_CODE.length());
+                String propertiesFileName = fileName.substring(0, fileName.length() - (LANGUAGE_CODE.isEmpty() ? 11 : 12 + LANGUAGE_CODE.length()));
 
                 try (FileInputStream source = new FileInputStream(childFile)) {
                     InputStreamReader isr = new InputStreamReader(source, "UTF-8");

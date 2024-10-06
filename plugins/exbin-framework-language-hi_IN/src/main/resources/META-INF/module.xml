@@ -2,6 +2,8 @@
 <module>
   <id>org.exbin.framework.plugins.language.hi_IN.LanguageHiInModule</id>
   <name>Hindi language plugin</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://exbin.org</homepage>
   <description>Hindi language plugin</description>
   <dependency>
   </dependency>

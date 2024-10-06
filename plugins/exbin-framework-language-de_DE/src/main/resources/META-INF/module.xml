@@ -2,6 +2,8 @@
 <module>
   <id>org.exbin.framework.plugins.language.de_DE.LanguageDeDeModule</id>
   <name>German language plugin</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://exbin.org</homepage>
   <description>German language plugin</description>
   <dependency>
   </dependency>

@@ -2,6 +2,8 @@
 <module>
   <id>org.exbin.framework.plugins.language.ja_JP.LanguageJaJpModule</id>
   <name>Japanese language plugin</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://exbin.org</homepage>
   <description>Japanese language plugin</description>
   <dependency>
   </dependency>

@@ -2,6 +2,8 @@
 <module>
   <id>org.exbin.framework.plugins.napkin_laf.NapkinLafModule</id>
   <name>Napkin look and feel plugin</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://exbin.org</homepage>
   <description>Module to provide Napkin look and feel</description>
   <dependency>
   </dependency>
