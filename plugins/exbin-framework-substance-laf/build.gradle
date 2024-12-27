@@ -1,0 +1,49 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+}
+
+group = 'org.exbin.framework.plugins'
+ext.libraryName = 'Substance Look and Feel Plugin'
+ext.libraryDescription = 'FlatLaf plugin for ExBin Framework'
+
+apply from: '../plugins.gradle'
+
+if (!hasProperty('mainClass')) {
+    ext.mainClass = ''
+}
+
+repositories {
+    flatDir {
+        dirs "../../lib"
+        dirs "lib"
+    }
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'core', 'exbin-framework')
+    implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-ui-api')
+    implementation "com.github.insubstantial:substance:7.3"
+    compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
+    testImplementation group : 'junit', name: 'junit', version: '4.13.2'
+}
+
+task fatJar(type: Jar) {
+    archiveBaseName = 'exbin-framework-substance-laf-fat'
+        project.configurations.runtimeClasspath.filter { File file -> (
+            file.name.startsWith('exbin-framework-substance-laf') ||
+            file.name.startsWith('substance')
+        )}.collect {
+            from (it.isDirectory() ? it : zipTree(it).matching {
+                exclude '/LICENSE.txt'
+            })
+        }
+    duplicatesStrategy = 'exclude'
+    with jar
+    dependsOn('jar')
+}
+
+build.dependsOn fatJar

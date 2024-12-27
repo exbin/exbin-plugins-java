@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<module>
+  <plugin>org.exbin.framework.plugins.substance_laf.SubstanceLafModule</plugin>
+  <name>Substance look and feel plugin</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://exbin.org</homepage>
+  <description>Module to provide Substance look and feel</description>
+  <dependency>
+    <module id="org.exbin.framework.ui.api.UiModuleApi" />
+    <library jar="substance-7.3.jar" />
+    <library jar="laf-plugin-7.3.jar" />
+    <library jar="laf-widget-7.3.jar" />
+    <library jar="trident-7.3.jar" />
+  </dependency>
+</module>

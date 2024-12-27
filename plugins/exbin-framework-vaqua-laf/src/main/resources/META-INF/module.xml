@@ -6,5 +6,6 @@
   <homepage>https://exbin.org</homepage>
   <description>Module to provide VAqua look and feel</description>
   <dependency>
+    <module id="org.exbin.framework.ui.api.UiModuleApi" />
   </dependency>
 </module>

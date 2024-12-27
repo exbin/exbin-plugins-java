@@ -13,29 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.plugins.flatlaf_laf;
+package org.exbin.framework.plugins.substance_laf;
 
-import com.formdev.flatlaf.FlatDarkLaf;
-import com.formdev.flatlaf.FlatLightLaf;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.UIManager;
 import org.exbin.framework.App;
 import org.exbin.framework.PluginModule;
 import org.exbin.framework.ui.api.LafProvider;
 import org.exbin.framework.ui.api.UiModuleApi;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.skin.SubstanceAutumnLookAndFeel;
+import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 
 /**
- * FlatLaf look and feel plugin.
+ * Substance look and feel plugin.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class FlatLafLafModule implements PluginModule {
+public class SubstanceLafModule implements PluginModule {
 
-    public static final String FLATLAF_DARK = "FlatDark";
-    public static final String FLATLAF_LIGHT = "FlatLight";
+    public static final String SUBSTANCE_GRAPHITE = "Substance Graphite";
+    public static final String SUBSTANCE_AUTUMN = "Substance Autumn";
 
-    public FlatLafLafModule() {
+    public SubstanceLafModule() {
     }
 
     @Override
@@ -44,12 +45,12 @@ public class FlatLafLafModule implements PluginModule {
         uiModule.registerLafPlugin(new LafProvider() {
             @Override
             public String getLafId() {
-                return FlatDarkLaf.class.getName();
+                return SubstanceLookAndFeel.class.getName();
             }
 
             @Override
             public String getLafName() {
-                return FLATLAF_DARK;
+                return SUBSTANCE_GRAPHITE;
             }
 
             @Override
@@ -67,12 +68,12 @@ public class FlatLafLafModule implements PluginModule {
         uiModule.registerLafPlugin(new LafProvider() {
             @Override
             public String getLafId() {
-                return FlatLightLaf.class.getName();
+                return SubstanceAutumnLookAndFeel.class.getName();
             }
 
             @Override
             public String getLafName() {
-                return FLATLAF_LIGHT;
+                return SUBSTANCE_AUTUMN;
             }
 
             @Override
@@ -89,19 +90,19 @@ public class FlatLafLafModule implements PluginModule {
     }
 
     public void applyLookAndFeel(String className) {
-        String flatDarkClassName = FlatDarkLaf.class.getName();
-        if (className.equals(flatDarkClassName)) {
+        String substanceGraphiteClassName = SubstanceGraphiteLookAndFeel.class.getName();
+        if (className.equals(substanceGraphiteClassName)) {
             try {
-                FlatDarkLaf.install();
-                UIManager.setLookAndFeel(new FlatDarkLaf());
+                UIManager.setLookAndFeel(new SubstanceGraphiteLookAndFeel());
             } catch (Throwable ex) {
+                ex.printStackTrace();
                 System.err.println("Failed to initialize LaF");
             }
         } else {
             try {
-                FlatLightLaf.install();
-                UIManager.setLookAndFeel(new FlatLightLaf());
+                UIManager.setLookAndFeel(new SubstanceAutumnLookAndFeel());
             } catch (Throwable ex) {
+                ex.printStackTrace();
                 System.err.println("Failed to initialize LaF");
             }
         }

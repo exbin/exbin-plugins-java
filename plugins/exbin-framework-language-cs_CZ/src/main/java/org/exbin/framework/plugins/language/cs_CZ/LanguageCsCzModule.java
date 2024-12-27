@@ -19,7 +19,7 @@ import java.util.Locale;
 import java.util.Optional;
 import javax.swing.ImageIcon;
 import org.exbin.framework.App;
-import org.exbin.framework.Module;
+import org.exbin.framework.PluginModule;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.language.api.LanguageProvider;
 
@@ -28,9 +28,13 @@ import org.exbin.framework.language.api.LanguageProvider;
  *
  * @author ExBin Project (https://exbin.org)
  */
-public class LanguageCsCzModule implements Module {
+public class LanguageCsCzModule implements PluginModule {
 
     public LanguageCsCzModule() {
+    }
+
+    @Override
+    public void register() {
         LanguageModuleApi languageModule = App.getModule(LanguageModuleApi.class);
         languageModule.registerLanguagePlugin(new LanguageProvider() {
             @Override

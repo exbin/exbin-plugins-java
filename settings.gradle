@@ -17,6 +17,7 @@ include ":plugins:exbin-framework-darcula-laf"
 include ":plugins:exbin-framework-flatlaf-laf"
 include ":plugins:exbin-framework-vaqua-laf"
 include ":plugins:exbin-framework-napkin-laf"
+include ":plugins:exbin-framework-substance-laf"
 
 File placeholder = file("deps/_placeholder")
 if (placeholder.exists()) {

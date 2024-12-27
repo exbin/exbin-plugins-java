@@ -23,7 +23,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.exbin.framework.App;
-import org.exbin.framework.Module;
+import org.exbin.framework.PluginModule;
 import org.exbin.framework.ui.api.LafProvider;
 import org.exbin.framework.ui.api.UiModuleApi;
 
@@ -33,9 +33,13 @@ import org.exbin.framework.ui.api.UiModuleApi;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class DarculaLafModule implements Module {
+public class DarculaLafModule implements PluginModule {
 
     public DarculaLafModule() {
+    }
+
+    @Override
+    public void register() {
         UiModuleApi languageModule = App.getModule(UiModuleApi.class);
         languageModule.registerLafPlugin(new LafProvider() {
             @Override

@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.UIManager;
 import org.exbin.framework.App;
-import org.exbin.framework.Module;
+import org.exbin.framework.PluginModule;
 import org.exbin.framework.ui.api.LafProvider;
 import org.exbin.framework.ui.api.UiModuleApi;
 
@@ -31,11 +31,15 @@ import org.exbin.framework.ui.api.UiModuleApi;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class NapkinLafModule implements Module {
+public class NapkinLafModule implements PluginModule {
 
     public static final String NAPKIN_LAF_CLASS = "net.sourceforge.napkinlaf.NapkinLookAndFeel";
 
     public NapkinLafModule() {
+    }
+
+    @Override
+    public void register() {
         UiModuleApi languageModule = App.getModule(UiModuleApi.class);
         languageModule.registerLafPlugin(new LafProvider() {
             @Nonnull
