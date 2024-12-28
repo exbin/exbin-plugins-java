@@ -18,6 +18,7 @@ include ":plugins:exbin-framework-flatlaf-laf"
 include ":plugins:exbin-framework-vaqua-laf"
 include ":plugins:exbin-framework-napkin-laf"
 include ":plugins:exbin-framework-substance-laf"
+include ":plugins:exbin-framework-iconset-test"
 
 File placeholder = file("deps/_placeholder")
 if (placeholder.exists()) {
