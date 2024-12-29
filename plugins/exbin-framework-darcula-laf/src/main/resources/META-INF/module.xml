@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <module>
-  <plugin>org.exbin.framework.plugins.darcula_laf.DarculaLafModule</plugin>
+  <plugin>org.exbin.framework.plugin.darcula_laf.DarculaLafModule</plugin>
   <name>Darcula look and feel plugin</name>
   <provider>ExBin Project</provider>
   <homepage>https://exbin.org</homepage>

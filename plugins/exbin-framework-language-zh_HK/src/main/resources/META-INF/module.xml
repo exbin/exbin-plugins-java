@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <module>
-  <plugin>org.exbin.framework.plugins.language.zh_HK.LanguageZhHkModule</plugin>
+  <plugin>org.exbin.framework.plugin.language.zh_HK.LanguageZhHkModule</plugin>
   <name>Chinese language plugin</name>
   <provider>ExBin Project</provider>
   <homepage>https://exbin.org</homepage>

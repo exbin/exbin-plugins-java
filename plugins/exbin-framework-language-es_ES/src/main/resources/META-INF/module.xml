@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <module>
-  <id>org.exbin.framework.plugins.language.es_ES.LanguageEsEsModule</id>
+  <id>org.exbin.framework.plugin.language.es_ES.LanguageEsEsModule</id>
   <name>Spanish language plugin</name>
   <provider>ExBin Project</provider>
   <homepage>https://exbin.org</homepage>

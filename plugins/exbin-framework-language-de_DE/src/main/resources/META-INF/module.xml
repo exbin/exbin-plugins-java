@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <module>
-  <id>org.exbin.framework.plugins.language.de_DE.LanguageDeDeModule</id>
+  <id>org.exbin.framework.plugin.language.de_DE.LanguageDeDeModule</id>
   <name>German language plugin</name>
   <provider>ExBin Project</provider>
   <homepage>https://exbin.org</homepage>

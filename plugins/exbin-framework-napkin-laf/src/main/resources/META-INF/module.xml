@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <module>
-  <plugin>org.exbin.framework.plugins.napkin_laf.NapkinLafModule</plugin>
+  <plugin>org.exbin.framework.plugin.napkin_laf.NapkinLafModule</plugin>
   <name>Napkin look and feel plugin</name>
   <provider>ExBin Project</provider>
   <homepage>https://exbin.org</homepage>

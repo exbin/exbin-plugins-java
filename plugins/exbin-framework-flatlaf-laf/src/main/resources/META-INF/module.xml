@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 <module>
-  <plugin>org.exbin.framework.plugins.flatlaf_laf.FlatLafLafModule</plugin>
+  <plugin>org.exbin.framework.plugin.flatlaf_laf.FlatLafLafModule</plugin>
   <name>FlatLaf look and feel plugin</name>
   <provider>ExBin Project</provider>
   <homepage>https://exbin.org</homepage>
   <description>Module to provide FlatLaf look and feel</description>
   <dependency>
     <module id="org.exbin.framework.ui.api.UiModuleApi" />
+    <module id="org.exbin.framework.language.api.LanguageModuleApi" />
   </dependency>
 </module>

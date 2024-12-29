@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <module>
-  <plugin>org.exbin.framework.plugins.language.cs_CZ.LanguageCsCzModule</plugin>
+  <plugin>org.exbin.framework.plugin.language.cs_CZ.LanguageCsCzModule</plugin>
   <name>Czech language plugin</name>
   <provider>ExBin Project</provider>
   <homepage>https://exbin.org</homepage>
