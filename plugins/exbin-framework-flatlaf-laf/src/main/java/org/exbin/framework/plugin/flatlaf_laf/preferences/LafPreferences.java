@@ -33,5 +33,4 @@ public class LafPreferences {
     public LafPreferences(LafPreferences preferences) {
         this.preferences = preferences;
     }
-
 }

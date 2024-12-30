@@ -13,15 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.plugin.flatlaf_laf.options;
+package org.exbin.framework.plugin.flatlaf_laf.options.impl;
 
+import org.exbin.framework.plugin.flatlaf_laf.options.*;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.framework.options.api.OptionsData;
 
 /**
- * FlatLaf preferences.
+ * LaF options.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public interface LafOptions {
+public class LafOptionsImpl implements OptionsData, LafOptions {
+
 }

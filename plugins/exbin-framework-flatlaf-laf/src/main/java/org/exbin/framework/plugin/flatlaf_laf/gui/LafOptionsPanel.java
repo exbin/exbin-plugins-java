@@ -20,14 +20,17 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.App;
 import org.exbin.framework.language.api.LanguageModuleApi;
+import org.exbin.framework.options.api.OptionsComponent;
+import org.exbin.framework.options.api.OptionsModifiedListener;
+import org.exbin.framework.plugin.flatlaf_laf.options.impl.LafOptionsImpl;
 
 /**
- * Options panel.
+ * FlatLaf options panel.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class LafOptionsPanel extends javax.swing.JPanel {
+public class LafOptionsPanel extends javax.swing.JPanel implements OptionsComponent<LafOptionsImpl> {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(LafOptionsPanel.class);
 
@@ -49,18 +52,44 @@ public class LafOptionsPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        unifiedWindowTitleBarCheckBox = new javax.swing.JCheckBox();
+
+        unifiedWindowTitleBarCheckBox.setText(resourceBundle.getString("unifiedWindowTitleBarCheckBox.text")); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 691, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(unifiedWindowTitleBarCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, 679, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 460, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(unifiedWindowTitleBarCheckBox)
+                .addContainerGap(433, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox unifiedWindowTitleBarCheckBox;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void loadFromOptions(LafOptionsImpl options) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void saveToOptions(LafOptionsImpl options) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void setOptionsModifiedListener(OptionsModifiedListener listener) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
