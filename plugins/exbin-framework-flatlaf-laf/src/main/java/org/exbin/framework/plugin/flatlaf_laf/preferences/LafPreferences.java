@@ -16,6 +16,7 @@
 package org.exbin.framework.plugin.flatlaf_laf.preferences;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.framework.preferences.api.Preferences;
 
 /**
  * FlatLaf preferences.
@@ -25,12 +26,20 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 public class LafPreferences {
 
-    public static final String PREFERENCES_UNIFIED_WINDOW_TITLEBAR = "flatlaf.unifiedWindowTitleBar";
+    public static final String PREFERENCES_UNIFIED_WINDOW_TITLE_BAR = "flatlaf.unifiedWindowTitleBar";
     public static final String PREFERENCES_EMBEDDED_MENU_BAR = "flatlaf.embeddedMenuBar";
 
-    private final LafPreferences preferences;
+    private final Preferences preferences;
 
-    public LafPreferences(LafPreferences preferences) {
+    public LafPreferences(Preferences preferences) {
         this.preferences = preferences;
+    }
+
+    public boolean isUnifiedWindowTitleBar() {
+        return preferences.getBoolean(PREFERENCES_UNIFIED_WINDOW_TITLE_BAR, false);
+    }
+
+    public void setUnifiedWindowTitleBar(boolean unifiedWindowTitleBar) {
+        preferences.putBoolean(PREFERENCES_UNIFIED_WINDOW_TITLE_BAR, unifiedWindowTitleBar);
     }
 }

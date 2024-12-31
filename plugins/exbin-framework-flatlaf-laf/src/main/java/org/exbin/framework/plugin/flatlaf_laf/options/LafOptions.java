@@ -24,4 +24,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
  */
 @ParametersAreNonnullByDefault
 public interface LafOptions {
+
+    boolean isUnifiedWindowTitleBar();
+
+    void setUnifiedWindowTitleBar(boolean unifiedWindowTitleBar);
 }

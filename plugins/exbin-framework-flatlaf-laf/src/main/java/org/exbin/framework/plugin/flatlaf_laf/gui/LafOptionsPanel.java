@@ -34,11 +34,14 @@ public class LafOptionsPanel extends javax.swing.JPanel implements OptionsCompon
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(LafOptionsPanel.class);
 
+    private OptionsModifiedListener optionsModifiedListener;
+
     public LafOptionsPanel() {
         initComponents();
     }
 
     @Nonnull
+    @Override
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
@@ -52,9 +55,21 @@ public class LafOptionsPanel extends javax.swing.JPanel implements OptionsCompon
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        accentColorLabel = new javax.swing.JLabel();
+        accentColorComboBox = new javax.swing.JComboBox<>();
         unifiedWindowTitleBarCheckBox = new javax.swing.JCheckBox();
 
+        accentColorLabel.setText(resourceBundle.getString("accentColorLabel.text")); // NOI18N
+
+        accentColorComboBox.setEnabled(false);
+        accentColorComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                accentColorComboBoxjComboBoxItemStateChanged(evt);
+            }
+        });
+
         unifiedWindowTitleBarCheckBox.setText(resourceBundle.getString("unifiedWindowTitleBarCheckBox.text")); // NOI18N
+        unifiedWindowTitleBarCheckBox.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -62,34 +77,56 @@ public class LafOptionsPanel extends javax.swing.JPanel implements OptionsCompon
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(unifiedWindowTitleBarCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, 679, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(unifiedWindowTitleBarCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(accentColorLabel)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(accentColorComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(accentColorLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(accentColorComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(unifiedWindowTitleBarCheckBox)
-                .addContainerGap(433, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void accentColorComboBoxjComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_accentColorComboBoxjComboBoxItemStateChanged
+        notifyModified();
+    }//GEN-LAST:event_accentColorComboBoxjComboBoxItemStateChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> accentColorComboBox;
+    private javax.swing.JLabel accentColorLabel;
     private javax.swing.JCheckBox unifiedWindowTitleBarCheckBox;
     // End of variables declaration//GEN-END:variables
 
+    private void notifyModified() {
+        if (optionsModifiedListener != null) {
+            optionsModifiedListener.wasModified();
+        }
+    }
+
     @Override
     public void loadFromOptions(LafOptionsImpl options) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        unifiedWindowTitleBarCheckBox.setSelected(options.isUnifiedWindowTitleBar());
+
     }
 
     @Override
     public void saveToOptions(LafOptionsImpl options) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        options.setUnifiedWindowTitleBar(unifiedWindowTitleBarCheckBox.isSelected());
     }
 
     @Override
-    public void setOptionsModifiedListener(OptionsModifiedListener listener) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void setOptionsModifiedListener(OptionsModifiedListener optionsModifiedListener) {
+        this.optionsModifiedListener = optionsModifiedListener;
     }
 }

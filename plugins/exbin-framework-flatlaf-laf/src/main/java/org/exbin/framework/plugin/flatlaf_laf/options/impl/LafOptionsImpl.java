@@ -27,4 +27,15 @@ import org.exbin.framework.options.api.OptionsData;
 @ParametersAreNonnullByDefault
 public class LafOptionsImpl implements OptionsData, LafOptions {
 
+    private boolean unifiedWindowTitleBar = false;
+
+    @Override
+    public boolean isUnifiedWindowTitleBar() {
+        return unifiedWindowTitleBar;
+    }
+
+    @Override
+    public void setUnifiedWindowTitleBar(boolean unifiedWindowTitleBar) {
+        this.unifiedWindowTitleBar = unifiedWindowTitleBar;
+    }
 }
