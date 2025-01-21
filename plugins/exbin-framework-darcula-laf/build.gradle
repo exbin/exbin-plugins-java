@@ -27,7 +27,7 @@ dependencies {
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'core', 'exbin-framework')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-ui-api')
     compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
-    implementation ":darcula"
+    implementation ":darcula-2021.7"
     testImplementation group : 'junit', name: 'junit', version: '4.13.2'
 }
 
@@ -35,7 +35,7 @@ task fatJar(type: Jar) {
     archiveBaseName = 'exbin-framework-darcula-laf-fat'
         project.configurations.runtimeClasspath.filter { File file -> (
             file.name.startsWith('exbin-framework-darcula-laf') ||
-            file.name.startsWith('darcula')
+            file.name.startsWith('darcula-2021.7')
         )}.collect {
             from (it.isDirectory() ? it : zipTree(it).matching {
                 exclude '/LICENSE.txt'

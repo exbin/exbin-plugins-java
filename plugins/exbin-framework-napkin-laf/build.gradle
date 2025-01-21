@@ -46,4 +46,4 @@ task fatJar(type: Jar) {
     dependsOn('jar')
 }
 
-build.dependsOn fatJar
+// build.dependsOn fatJar

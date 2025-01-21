@@ -37,7 +37,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
  */
 public class AggregateLanguageFile {
 
-    private static final String PLUGIN_CODE = "undef";
+    private static final String PLUGIN_CODE = "cs_CZ";
     private static final String LANGUAGE_CODE = PLUGIN_CODE;
 //    private static final String PLUGIN_CODE = "en_US";
 //    private static final String LANGUAGE_CODE = "";
@@ -47,8 +47,8 @@ public class AggregateLanguageFile {
     private static final Set<String> subGroups = new HashSet<>(Arrays.asList("bined", "editor"));
 
     public static void main(String[] args) {
-        aggregateByCollecting();
-        // aggregateMatchingOnly();
+        // aggregateByCollecting();
+        aggregateMatchingOnly();
     }
 
     private static void aggregateByCollecting() {
@@ -132,7 +132,7 @@ public class AggregateLanguageFile {
                     try (BufferedReader reader = new BufferedReader(isr)) {
                         while (reader.ready()) {
                             String line = reader.readLine();
-                            if (line.isBlank()) {
+                            if (line.isEmpty()) {
                                 continue;
                             }
                             String keyValue;
@@ -160,7 +160,7 @@ public class AggregateLanguageFile {
     }
 
     private static void aggregateMatchingOnly() {
-        File targetFile = new File(TARGET_DIR, "aggregate.properties");
+        File targetFile = new File(TARGET_DIR, "aggregate-matching.properties");
         try (FileOutputStream fos = new FileOutputStream(targetFile)) {
             OutputStreamWriter out = new OutputStreamWriter(fos, "UTF-8");
             File appDir = new File(PROJECT_DIR + "/apps");
@@ -180,6 +180,24 @@ public class AggregateLanguageFile {
 
             File projectDir = new File(PROJECT_DIR + "/modules");
             File[] projectModules = projectDir.listFiles(new FileFilter() {
+                @Override
+                public boolean accept(File file) {
+                    return file.isDirectory();
+                }
+            });
+
+            for (File module : projectModules) {
+                if (module.isDirectory()) {
+                    String moduleName = module.getName();
+                    if (moduleName.startsWith("exbin-framework-")) {
+                        moduleName = moduleName.substring(16);
+                    }
+                    processModuleResources(module, moduleName, "", out);
+                }
+            }
+
+            projectDir = new File(PROJECT_DIR + "/plugins");
+            projectModules = projectDir.listFiles(new FileFilter() {
                 @Override
                 public boolean accept(File file) {
                     return file.isDirectory();
@@ -240,7 +258,7 @@ public class AggregateLanguageFile {
                     try (BufferedReader reader = new BufferedReader(isr)) {
                         while (reader.ready()) {
                             String line = reader.readLine();
-                            if (line.isBlank()) {
+                            if (line.isEmpty()) {
                                 continue;
                             }
                             String keyValue;

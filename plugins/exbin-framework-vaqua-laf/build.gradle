@@ -32,7 +32,7 @@ dependencies {
 }
 
 task fatJar(type: Jar) {
-    archiveBaseName = 'exbin-framework-vaqua-laf'
+    archiveBaseName = 'exbin-framework-vaqua-laf-fat'
         project.configurations.runtimeClasspath.filter { File file -> (
             file.name.startsWith('exbin-framework-vaqua-laf') ||
             file.name.startsWith('VAqua11')
@@ -46,4 +46,3 @@ task fatJar(type: Jar) {
     dependsOn('jar')
 }
 
-build.dependsOn fatJar

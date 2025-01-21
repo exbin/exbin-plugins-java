@@ -40,7 +40,7 @@ public class CollectLanguageFiles {
     private static final String TARGET_DIR = "../../plugins/exbin-framework-language-en_US/src/main/resources";
     private static final List<String> EXCEPTIONS = Arrays.asList(
             "Application.release", "Application.mode", "Application.version", "Application.homepage", "Application.vendorId", "Application.id", "Application.lookAndFeel", "Application.product", "Application.vendor",
-            "Application.licenseFile", "Application.aboutImage", "Application.icon", "Application.authors");
+            "Application.licenseFile", "Application.aboutImage", "Application.icon", "Application.authors", "locale.englishFlag");
 
     public static void main(String[] args) {
         File appDir = new File(PROJECT_DIR + "/apps");
@@ -71,6 +71,20 @@ public class CollectLanguageFiles {
             }
         }
 
+        projectDir = new File(PROJECT_DIR + "/plugins");
+        projectModules = projectDir.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                return file.isDirectory();
+            }
+        });
+
+        for (File module : projectModules) {
+            if (module.isDirectory()) {
+                processModuleResources(module, "");
+            }
+        }
+
         File frameworkDir = new File(FRAMEWORK_DIR + "/modules");
         File[] frameworkModules = frameworkDir.listFiles(new FileFilter() {
             @Override
@@ -88,6 +102,10 @@ public class CollectLanguageFiles {
 
     private static void processModuleResources(File module, String prefix) {
         File moduleResources = new File(module, "src/main/resources" + prefix);
+        if (!moduleResources.isDirectory()) {
+            return;
+        }
+
         for (File childFile : moduleResources.listFiles()) {
             if (childFile.isDirectory()) {
                 processModuleResources(module, prefix + "/" + childFile.getName());
@@ -115,7 +133,7 @@ public class CollectLanguageFiles {
                                     }
                                 }
 
-                                if (line.contains(".smallIcon=") || line.contains(".icon=") || line.contains(".accelerator=") || line.contains("_url=") || line.contains("options.path=") || line.contains("options.name=") || (!line.isBlank() && line.indexOf("=") == line.length() - 1)) {
+                                if (line.contains(".smallIcon=") || line.contains(".icon=") || line.contains(".accelerator=") || line.contains("_url=") || line.contains("options.path=") || line.contains("options.name=") || (!line.isEmpty() && line.indexOf("=") == line.length() - 1)) {
                                     continue;
                                 }
                                 out.write(line + "\n");
