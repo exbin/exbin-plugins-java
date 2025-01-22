@@ -19,18 +19,22 @@ import java.util.Locale;
 import java.util.Optional;
 import javax.swing.ImageIcon;
 import org.exbin.framework.App;
-import org.exbin.framework.Module;
+import org.exbin.framework.PluginModule;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.language.api.LanguageProvider;
 
 /**
- * Language resources plugin for Chinese language (traditional).
+ * Language resources plugin for Chinese language (traditional / Honk Kong).
  *
  * @author ExBin Project (https://exbin.org)
  */
-public class LanguageZhHkModule implements Module {
+public class LanguageZhHkModule implements PluginModule {
 
     public LanguageZhHkModule() {
+    }
+
+    @Override
+    public void register() {
         LanguageModuleApi languageModule = App.getModule(LanguageModuleApi.class);
         languageModule.registerLanguagePlugin(new LanguageProvider() {
             @Override

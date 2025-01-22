@@ -37,7 +37,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
  */
 public class AggregateLanguageFile {
 
-    private static final String PLUGIN_CODE = "cs_CZ";
+    private static final String PLUGIN_CODE = "undef";
     private static final String LANGUAGE_CODE = PLUGIN_CODE;
 //    private static final String PLUGIN_CODE = "en_US";
 //    private static final String LANGUAGE_CODE = "";
@@ -47,8 +47,8 @@ public class AggregateLanguageFile {
     private static final Set<String> subGroups = new HashSet<>(Arrays.asList("bined", "editor"));
 
     public static void main(String[] args) {
-        // aggregateByCollecting();
-        aggregateMatchingOnly();
+        aggregateByCollecting();
+        // aggregateMatchingOnly();
     }
 
     private static void aggregateByCollecting() {

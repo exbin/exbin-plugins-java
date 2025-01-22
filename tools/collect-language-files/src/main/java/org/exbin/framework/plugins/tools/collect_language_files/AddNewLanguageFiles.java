@@ -29,7 +29,7 @@ import java.util.logging.Logger;
  */
 public class AddNewLanguageFiles {
 
-    private static final String PLUGIN_CODE = "cs_CZ";
+    private static final String PLUGIN_CODE = "undef";
     private static final String LANGUAGE_CODE = PLUGIN_CODE;
     private static final String SOURCE_DIR = "../../plugins/exbin-framework-language-en_US/src/main/resources";
     private static final String TARGET_DIR = "../../plugins/exbin-framework-language-" + PLUGIN_CODE + "/src/main/resources";

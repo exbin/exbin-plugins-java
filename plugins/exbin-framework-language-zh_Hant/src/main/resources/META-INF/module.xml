@@ -4,7 +4,7 @@
   <name>Chinese language plugin</name>
   <provider>ExBin Project</provider>
   <homepage>https://exbin.org</homepage>
-  <description>Module to provide various utilities</description>
+  <description>Chinese language (traditional characters) plugin</description>
   <dependency>
     <module id="org.exbin.framework.language.api.LanguageModuleApi" />
   </dependency>
