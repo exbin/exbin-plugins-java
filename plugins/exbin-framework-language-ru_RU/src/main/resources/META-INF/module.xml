@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<module>
+  <plugin>org.exbin.framework.plugin.language.ru_RU.LanguageRuRuModule</plugin>
+  <name>Russian language</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://exbin.org</homepage>
+  <description>Russian language plugin</description>
+  <dependency>
+    <module id="org.exbin.framework.language.api.LanguageModuleApi" />
+  </dependency>
+</module>

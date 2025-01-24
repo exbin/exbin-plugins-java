@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<module>
+  <plugin>org.exbin.framework.plugin.language.fi_FI.LanguageFiFiModule</plugin>
+  <name>Finnish language</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://exbin.org</homepage>
+  <description>Finnish language plugin</description>
+  <dependency>
+    <module id="org.exbin.framework.language.api.LanguageModuleApi" />
+  </dependency>
+</module>

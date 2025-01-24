@@ -44,7 +44,7 @@ public class AggregateLanguageFile {
     private static final String PROJECT_DIR = "../../../bined";
     private static final String FRAMEWORK_DIR = "../../../exbin-framework-java";
     private static final String TARGET_DIR = "../../plugins/exbin-framework-language-" + PLUGIN_CODE + "/src/main/resources";
-    private static final Set<String> subGroups = new HashSet<>(Arrays.asList("bined", "editor"));
+    private static final Set<String> subGroups = new HashSet<>(Arrays.asList("bined", "editor", "addon", "action", "window", "operation"));
 
     public static void main(String[] args) {
         aggregateByCollecting();
@@ -72,7 +72,7 @@ public class AggregateLanguageFile {
                     processModuleDir(TARGET_DIR + "/org/exbin/framework/" + childFile.getName(), childFile.getName(), out);
                 }
             }
-            
+
             for (String subGroup : subGroups) {
                 processedFolder = new File(TARGET_DIR, "org/exbin/framework/" + subGroup);
                 listFiles = processedFolder.listFiles();
@@ -88,14 +88,14 @@ public class AggregateLanguageFile {
                     }
                 }
             }
-            
+
             out.close();
         } catch (IOException ex) {
             Logger.getLogger(AggregateLanguageFile.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private static void processModuleDir(String directory, String module, OutputStreamWriter out) {
+    private static void processModuleDir(String directory, String moduleName, OutputStreamWriter out) {
         // Temporary conversion
         /*
         if ("bined-blockedit".equals(module)) {
@@ -112,14 +112,13 @@ public class AggregateLanguageFile {
 
         for (File childFile : listFiles) {
             if (childFile.isDirectory()) {
-                String childModule = module;
-                if ("operation".equals(module) && "undo".equals(childFile.getName())) {
-                    childModule = "operation-undo";
-                } else if ("help".equals(module) && "online".equals(childFile.getName())) {
+                String childModule = moduleName;
+                // Additional groups
+                if ("help".equals(moduleName) && "online".equals(childFile.getName())) {
                     childModule = "help-online";
-                } else if ("bined-operation".equals(module) && "bouncycastle".equals(childFile.getName())) {
+                } else if ("bined-operation".equals(moduleName) && "bouncycastle".equals(childFile.getName())) {
                     childModule = "bined-operation-bouncycastle";
-                } else if ("bined-tool".equals(module) && "content".equals(childFile.getName())) {
+                } else if ("bined-tool".equals(moduleName) && "content".equals(childFile.getName())) {
                     childModule = "bined-tool-content";
                 }
                 processModuleDir(directory + "/" + childFile.getName(), childModule, out);
@@ -143,7 +142,7 @@ public class AggregateLanguageFile {
                                 keyValue = line;
                             }
 
-                            out.write(module + "." + propertiesFileName + "." + keyValue + "\n");
+                            out.write(moduleName + "." + propertiesFileName + "." + keyValue + "\n");
                         }
                     }
                 } catch (IOException ex) {
