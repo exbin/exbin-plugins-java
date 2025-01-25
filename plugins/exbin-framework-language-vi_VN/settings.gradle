@@ -1,0 +1,3 @@
+rootProject.name = 'exbin-framework-language-vi_VN'
+
+apply from: '../plugins-settings.gradle'

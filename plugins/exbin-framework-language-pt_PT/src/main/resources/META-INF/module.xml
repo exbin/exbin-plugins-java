@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<module>
+  <plugin>org.exbin.framework.plugin.language.pt_PT.LanguagePtPtModule</plugin>
+  <name>Portuguese language</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://exbin.org</homepage>
+  <description>Portuguese language plugin</description>
+  <dependency>
+    <module id="org.exbin.framework.language.api.LanguageModuleApi" />
+  </dependency>
+</module>
