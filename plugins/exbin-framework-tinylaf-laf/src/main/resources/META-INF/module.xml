@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<module>
+  <plugin>org.exbin.framework.plugin.tinylaf_laf.TinyLafLafModule</plugin>
+  <name>TinyLaf look and feel</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://exbin.org</homepage>
+  <description>Module to provide TinyLaf look and feel</description>
+  <dependency>
+    <module id="org.exbin.framework.ui.api.UiModuleApi" />
+    <module id="org.exbin.framework.language.api.LanguageModuleApi" />
+    <module id="org.exbin.framework.preferences.api.PreferencesModuleApi" />
+    <library maven="net.sf.tinylaf:tinylaf:1.4.0" />
+  </dependency>
+</module>
