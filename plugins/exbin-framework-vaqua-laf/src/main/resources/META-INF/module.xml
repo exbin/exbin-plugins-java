@@ -7,6 +7,8 @@
   <description>Module to provide VAqua look and feel</description>
   <dependency>
     <module id="org.exbin.framework.ui.api.UiModuleApi" />
-    <library jar="VAqua11.jar" />
+    <library maven="org.violetlib:vaqua:13" />
+    <library maven="org.violetlib:vappearances:4" />
+    <library maven="org.violetlib:jnr:14" />
   </dependency>
 </module>

@@ -10,6 +10,8 @@ ext.libraryDescription = 'VAqua plugin for ExBin Framework'
 
 apply from: '../plugins.gradle'
 
+version = '0.2.4.1'
+
 if (!hasProperty('mainClass')) {
     ext.mainClass = ''
 }
@@ -26,11 +28,11 @@ repositories {
 dependencies {
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'core', 'exbin-framework')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-ui-api')
-    implementation ":VAqua11"
+    implementation "org.violetlib:vaqua:13"
     compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
     testImplementation group : 'junit', name: 'junit', version: '4.13.2'
 }
-
+/*
 task fatJar(type: Jar) {
     archiveBaseName = 'exbin-framework-vaqua-laf-fat'
         project.configurations.runtimeClasspath.filter { File file -> (
@@ -45,4 +47,4 @@ task fatJar(type: Jar) {
     with jar
     dependsOn('jar')
 }
-
+*/
