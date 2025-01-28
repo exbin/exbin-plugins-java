@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<module>
+  <plugin>org.exbin.framework.plugins.iconset.nullsilck.IconSetNullSilckModule</plugin>
+  <name>NullSilck icon set</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://exbin.org</homepage>
+  <description>NullSilck icon set</description>
+  <dependency>
+    <module id="org.exbin.framework.language.api.LanguageModuleApi" />
+  </dependency>
+</module>

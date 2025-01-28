@@ -28,6 +28,7 @@ include ":plugins:exbin-framework-napkin-laf"
 include ":plugins:exbin-framework-substance-laf"
 include ":plugins:exbin-framework-tinylaf-laf"
 include ":plugins:exbin-framework-iconset-test"
+include ":plugins:exbin-framework-nullsilck-iconset"
 
 File placeholder = file("deps/_placeholder")
 if (placeholder.exists()) {

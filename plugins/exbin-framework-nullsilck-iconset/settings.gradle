@@ -1,0 +1,3 @@
+rootProject.name = 'exbin-framework-nullsilck-iconset'
+
+apply from: '../plugins-settings.gradle'
