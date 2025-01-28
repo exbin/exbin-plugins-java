@@ -15,9 +15,10 @@
  */
 package org.exbin.framework.plugin.flatlaf_laf.options.impl;
 
-import org.exbin.framework.plugin.flatlaf_laf.options.*;
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.exbin.framework.options.api.OptionsData;
+import org.exbin.framework.plugin.flatlaf_laf.options.LafOptions;
 
 /**
  * LaF options.
@@ -27,15 +28,61 @@ import org.exbin.framework.options.api.OptionsData;
 @ParametersAreNonnullByDefault
 public class LafOptionsImpl implements OptionsData, LafOptions {
 
-    private boolean unifiedWindowTitleBar = false;
+    private boolean useBuildInTheme = true;
+    private String buildInTheme = "";
+    private String customFileTheme = "";
+    private boolean useWindowDecorations = false;
+    private boolean embeddedMenuBar = false;
 
     @Override
-    public boolean isUnifiedWindowTitleBar() {
-        return unifiedWindowTitleBar;
+    public boolean isUseBuildInTheme() {
+        return useBuildInTheme;
     }
 
     @Override
-    public void setUnifiedWindowTitleBar(boolean unifiedWindowTitleBar) {
-        this.unifiedWindowTitleBar = unifiedWindowTitleBar;
+    public void setUseBuildInTheme(boolean use) {
+        useBuildInTheme = use;
+    }
+
+    @Nonnull
+    @Override
+    public String getBuildInTheme() {
+        return buildInTheme;
+    }
+
+    @Override
+    public void setBuildInTheme(String buildInTheme) {
+        this.buildInTheme = buildInTheme;
+    }
+
+    @Nonnull
+    @Override
+    public String getCustomFileTheme() {
+        return customFileTheme;
+    }
+
+    @Override
+    public void setCustomThemeFile(String customFileTheme) {
+        this.customFileTheme = customFileTheme;
+    }
+
+    @Override
+    public boolean isUseWindowDecorations() {
+        return useWindowDecorations;
+    }
+
+    @Override
+    public void setUseWindowDecorations(boolean useWindowDecorations) {
+        this.useWindowDecorations = useWindowDecorations;
+    }
+
+    @Override
+    public boolean isEmbeddedMenuBar() {
+        return embeddedMenuBar;
+    }
+
+    @Override
+    public void setEmbeddedMenuBar(boolean embeddedMenuBar) {
+        this.embeddedMenuBar = embeddedMenuBar;
     }
 }

@@ -15,12 +15,21 @@
  */
 package org.exbin.framework.plugin.flatlaf_laf;
 
+import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.FlatPropertiesLaf;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
+import com.formdev.flatlaf.util.SystemInfo;
+import java.io.File;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.UIManager;
 import org.exbin.framework.App;
 import org.exbin.framework.PluginModule;
@@ -28,6 +37,7 @@ import org.exbin.framework.plugin.flatlaf_laf.gui.LafOptionsPanel;
 import org.exbin.framework.plugin.flatlaf_laf.options.impl.LafOptionsImpl;
 import org.exbin.framework.plugin.flatlaf_laf.preferences.LafPreferences;
 import org.exbin.framework.preferences.api.Preferences;
+import org.exbin.framework.preferences.api.PreferencesModuleApi;
 import org.exbin.framework.ui.api.ConfigurableLafProvider;
 import org.exbin.framework.ui.api.LafOptionsHandler;
 import org.exbin.framework.ui.api.UiModuleApi;
@@ -40,9 +50,13 @@ import org.exbin.framework.ui.api.UiModuleApi;
 @ParametersAreNonnullByDefault
 public class FlatLafLafModule implements PluginModule {
 
-    public static final String FLATLAF_DARK = "FlatDark";
-    public static final String FLATLAF_LIGHT = "FlatLight";
-    public static final String FLATLAF_INTELLIJ = "FlatLafIntelliJ";
+    public static final String FLATLAF = "FlatLaf";
+    public static final String FLATLAF_DARK = FlatDarkLaf.NAME;
+    public static final String FLATLAF_LIGHT = FlatLightLaf.NAME;
+    public static final String FLATLAF_INTELLIJ = FlatIntelliJLaf.NAME;
+    public static final String FLATLAF_DARCULA = FlatDarculaLaf.NAME;
+    public static final String FLATLAF_MAC_DARK = FlatMacDarkLaf.NAME;
+    public static final String FLATLAF_MAC_LIGHT = FlatMacLightLaf.NAME;
 
     public FlatLafLafModule() {
     }
@@ -54,44 +68,13 @@ public class FlatLafLafModule implements PluginModule {
             @Nonnull
             @Override
             public String getLafId() {
-                return FlatDarkLaf.class.getName();
+                return FlatLaf.class.getName();
             }
 
             @Nonnull
             @Override
             public String getLafName() {
-                return FLATLAF_DARK;
-            }
-
-            @Override
-            public void installLaf() {
-                UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo(getLafName(), getLafId()));
-                // registerLafPlugin(flatDarkClassName, this);
-            }
-
-            @Override
-            public void applyLaf() {
-                applyLookAndFeel(getLafId());
-            }
-
-            @Nonnull
-            @Override
-            public LafOptionsHandler getOptionsHandler() {
-                return new FlatLafLafOptionsHandler();
-            }
-        });
-
-        uiModule.registerLafPlugin(new ConfigurableLafProvider() {
-            @Nonnull
-            @Override
-            public String getLafId() {
-                return FlatLightLaf.class.getName();
-            }
-
-            @Nonnull
-            @Override
-            public String getLafName() {
-                return FLATLAF_LIGHT;
+                return FLATLAF;
             }
 
             @Override
@@ -114,58 +97,84 @@ public class FlatLafLafModule implements PluginModule {
     }
 
     public void applyLookAndFeel(String className) {
-        String flatDarkClassName = FlatDarkLaf.class.getName();
-        String flatLightClassName = FlatLightLaf.class.getName();
-        if (className.equals(flatDarkClassName)) {
-            try {
-                FlatDarkLaf.install();
-                FlatDarkLaf flatDarkLaf = new FlatDarkLaf();
-                UIManager.setLookAndFeel(flatDarkLaf);
-            } catch (Throwable ex) {
-                System.err.println("Failed to initialize LaF");
+        try {
+            PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
+            Preferences preferences = preferencesModule.getAppPreferences();
+            LafPreferences lafPreferences = new LafPreferences(preferences);
+
+            if (lafPreferences.isUseWindowDecorations()) {
+                if (SystemInfo.isLinux) {
+                    // enable custom window decorations
+                    JFrame.setDefaultLookAndFeelDecorated(true);
+                    JDialog.setDefaultLookAndFeelDecorated(true);
+                }
+                System.setProperty("flatlaf.useWindowDecorations", "true");
             }
-        } else if (className.equals(flatLightClassName)) {
-            try {
-                FlatLightLaf.install();
-                FlatLightLaf flatLightLaf = new FlatLightLaf();
-                UIManager.setLookAndFeel(flatLightLaf);
-            } catch (Throwable ex) {
-                System.err.println("Failed to initialize LaF");
+            if (lafPreferences.isEmbeddedMenuBar()) {
+                System.setProperty("flatlaf.menuBarEmbedded", "true");
             }
-        } else {
-            try {
-                FlatIntelliJLaf.install();
-                FlatIntelliJLaf flatLaf = new FlatIntelliJLaf();
-                UIManager.setLookAndFeel(flatLaf);
-            } catch (Throwable ex) {
-                System.err.println("Failed to initialize LaF");
+
+            if (lafPreferences.isUseBuildInTheme()) {
+                String buildInTheme = lafPreferences.getBuildInTheme();
+                if (buildInTheme != null && !buildInTheme.isEmpty()) {
+                    if (FLATLAF_DARK.equals(buildInTheme)) {
+                        UIManager.setLookAndFeel(new FlatDarkLaf());
+                    } else if (FLATLAF_LIGHT.equals(buildInTheme)) {
+                        UIManager.setLookAndFeel(new FlatLightLaf());
+                    } else if (FLATLAF_INTELLIJ.equals(buildInTheme)) {
+                        UIManager.setLookAndFeel(new FlatIntelliJLaf());
+                    } else if (FLATLAF_DARCULA.equals(buildInTheme)) {
+                        UIManager.setLookAndFeel(new FlatDarculaLaf());
+                    } else if (FLATLAF_MAC_DARK.equals(buildInTheme)) {
+                        UIManager.setLookAndFeel(new FlatMacDarkLaf());
+                    } else if (FLATLAF_MAC_LIGHT.equals(buildInTheme)) {
+                        UIManager.setLookAndFeel(new FlatMacLightLaf());
+                    }
+                } else {
+                    UIManager.setLookAndFeel(new FlatDarkLaf());
+                }
+            } else {
+                String customThemeFile = lafPreferences.getCustomFileTheme();
+                UIManager.setLookAndFeel(new FlatPropertiesLaf("Custom", new File(customThemeFile)));
             }
+        } catch (Throwable ex) {
+            System.err.println("Failed to initialize LaF");
         }
     }
 
     @ParametersAreNonnullByDefault
     private class FlatLafLafOptionsHandler implements LafOptionsHandler {
 
-        private LafOptionsImpl lafOptions = new LafOptionsImpl();
+        private LafOptionsPanel lafOptionsPanel = new LafOptionsPanel();
 
         @Nonnull
         @Override
         public JComponent createOptionsComponent() {
-            LafOptionsPanel lafOptionsPanel = new LafOptionsPanel();
-            lafOptionsPanel.loadFromOptions(lafOptions);
             return lafOptionsPanel;
         }
 
         @Override
         public void loadFromPreferences(Preferences preferences) {
+            LafOptionsImpl lafOptions = new LafOptionsImpl();
             LafPreferences lafPreferences = new LafPreferences(preferences);
-            lafOptions.setUnifiedWindowTitleBar(lafPreferences.isUnifiedWindowTitleBar());
+            lafOptions.setUseBuildInTheme(lafPreferences.isUseBuildInTheme());
+            lafOptions.setBuildInTheme(lafPreferences.getBuildInTheme());
+            lafOptions.setCustomThemeFile(lafPreferences.getCustomFileTheme());
+            lafOptions.setUseWindowDecorations(lafPreferences.isUseWindowDecorations());
+            lafOptions.setEmbeddedMenuBar(lafPreferences.isEmbeddedMenuBar());
+            lafOptionsPanel.loadFromOptions(lafOptions);
         }
 
         @Override
         public void saveToPreferences(Preferences preferences) {
+            LafOptionsImpl lafOptions = new LafOptionsImpl();
+            lafOptionsPanel.saveToOptions(lafOptions);
             LafPreferences lafPreferences = new LafPreferences(preferences);
-            lafPreferences.setUnifiedWindowTitleBar(lafOptions.isUnifiedWindowTitleBar());
+            lafPreferences.setUseBuildInTheme(lafOptions.isUseBuildInTheme());
+            lafPreferences.setBuildInTheme(lafOptions.getBuildInTheme());
+            lafPreferences.setCustomThemeFile(lafOptions.getCustomFileTheme());
+            lafPreferences.setUseWindowDecorations(lafOptions.isUseWindowDecorations());
+            lafPreferences.setEmbeddedMenuBar(lafOptions.isEmbeddedMenuBar());
         }
     }
 }

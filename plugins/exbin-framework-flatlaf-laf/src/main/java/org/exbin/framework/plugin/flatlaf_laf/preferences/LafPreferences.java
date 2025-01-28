@@ -15,7 +15,9 @@
  */
 package org.exbin.framework.plugin.flatlaf_laf.preferences;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import org.exbin.framework.plugin.flatlaf_laf.options.LafOptions;
 import org.exbin.framework.preferences.api.Preferences;
 
 /**
@@ -24,9 +26,12 @@ import org.exbin.framework.preferences.api.Preferences;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class LafPreferences {
+public class LafPreferences implements LafOptions {
 
-    public static final String PREFERENCES_UNIFIED_WINDOW_TITLE_BAR = "flatlaf.unifiedWindowTitleBar";
+    public static final String PREFERENCES_USE_BUILDIN_THEME = "flatlaf.useBuildInTheme";
+    public static final String PREFERENCES_BUILDIN_THEME = "flatlaf.buildInTheme";
+    public static final String PREFERENCES_CUSTOM_THEME_FILE = "flatlaf.customThemeFile";
+    public static final String PREFERENCES_USE_WINDOW_DECORATIONS = "flatlaf.useWindowDecorations";
     public static final String PREFERENCES_EMBEDDED_MENU_BAR = "flatlaf.embeddedMenuBar";
 
     private final Preferences preferences;
@@ -35,11 +40,55 @@ public class LafPreferences {
         this.preferences = preferences;
     }
 
-    public boolean isUnifiedWindowTitleBar() {
-        return preferences.getBoolean(PREFERENCES_UNIFIED_WINDOW_TITLE_BAR, false);
+    @Override
+    public boolean isUseBuildInTheme() {
+        return preferences.getBoolean(PREFERENCES_USE_BUILDIN_THEME, true);
     }
 
-    public void setUnifiedWindowTitleBar(boolean unifiedWindowTitleBar) {
-        preferences.putBoolean(PREFERENCES_UNIFIED_WINDOW_TITLE_BAR, unifiedWindowTitleBar);
+    @Override
+    public void setUseBuildInTheme(boolean useBuildInTheme) {
+        preferences.putBoolean(PREFERENCES_USE_BUILDIN_THEME, useBuildInTheme);
+    }
+
+    @Nonnull
+    @Override
+    public String getBuildInTheme() {
+        return preferences.get(PREFERENCES_BUILDIN_THEME, "");
+    }
+
+    @Override
+    public void setBuildInTheme(String buildInTheme) {
+        preferences.put(PREFERENCES_BUILDIN_THEME, buildInTheme);
+    }
+
+    @Nonnull
+    @Override
+    public String getCustomFileTheme() {
+        return preferences.get(PREFERENCES_CUSTOM_THEME_FILE, "");
+    }
+
+    @Override
+    public void setCustomThemeFile(String customFileTheme) {
+        preferences.put(PREFERENCES_CUSTOM_THEME_FILE, customFileTheme);
+    }
+
+    @Override
+    public boolean isUseWindowDecorations() {
+        return preferences.getBoolean(PREFERENCES_USE_WINDOW_DECORATIONS, false);
+    }
+
+    @Override
+    public void setUseWindowDecorations(boolean useWindowDecorations) {
+        preferences.putBoolean(PREFERENCES_USE_WINDOW_DECORATIONS, useWindowDecorations);
+    }
+
+    @Override
+    public boolean isEmbeddedMenuBar() {
+        return preferences.getBoolean(PREFERENCES_EMBEDDED_MENU_BAR, false);
+    }
+
+    @Override
+    public void setEmbeddedMenuBar(boolean embeddedMenuBar) {
+        preferences.putBoolean(PREFERENCES_EMBEDDED_MENU_BAR, embeddedMenuBar);
     }
 }

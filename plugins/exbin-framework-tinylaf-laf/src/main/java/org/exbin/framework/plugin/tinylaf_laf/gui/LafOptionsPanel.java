@@ -276,8 +276,11 @@ public class LafOptionsPanel extends javax.swing.JPanel implements OptionsCompon
     public void saveToOptions(LafOptionsImpl options) {
         options.setUseBuildInTheme(includedRadioButton.isSelected());
         options.setBuildInTheme(themeComboBox.getSelectedIndex() == 0 ? "" : (String) themeComboBox.getSelectedItem());
+        options.setCustomThemeFile(customThemeFileTextField.getText());
         options.setFramesDecoration(framesDecorationCheckBox.isSelected());
         options.setDialogsDecoration(dialogsDecorationCheckBox.isSelected());
+        options.setNoEraseOnResize(noEraseOnResizeCheckBox.isSelected());
+        options.setDynamicLayout(dynamicLayoutCheckBox.isSelected());
     }
 
     @Override

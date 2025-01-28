@@ -10,6 +10,8 @@ ext.libraryDescription = 'FlatLaf plugin for ExBin Framework'
 
 apply from: '../plugins.gradle'
 
+version = "0.2.4.1"
+
 if (!hasProperty('mainClass')) {
     ext.mainClass = ''
 }
@@ -30,11 +32,11 @@ dependencies {
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-options-api')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-preferences-api')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-utils')
-    implementation "com.formdev:flatlaf:0.42"
+    implementation "com.formdev:flatlaf:3.5.4"
     compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
     testImplementation group : 'junit', name: 'junit', version: '4.13.2'
 }
-
+/*
 task fatJar(type: Jar) {
     archiveBaseName = 'exbin-framework-flatlaf-laf-fat'
         project.configurations.runtimeClasspath.filter { File file -> (
@@ -51,3 +53,4 @@ task fatJar(type: Jar) {
 }
 
 build.dependsOn fatJar
+*/

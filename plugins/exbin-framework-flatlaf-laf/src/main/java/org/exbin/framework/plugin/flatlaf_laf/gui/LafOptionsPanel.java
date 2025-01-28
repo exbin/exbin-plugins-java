@@ -15,13 +15,18 @@
  */
 package org.exbin.framework.plugin.flatlaf_laf.gui;
 
+import java.io.File;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
 import org.exbin.framework.App;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.options.api.OptionsComponent;
 import org.exbin.framework.options.api.OptionsModifiedListener;
+import org.exbin.framework.plugin.flatlaf_laf.FlatLafLafModule;
 import org.exbin.framework.plugin.flatlaf_laf.options.impl.LafOptionsImpl;
 
 /**
@@ -38,6 +43,19 @@ public class LafOptionsPanel extends javax.swing.JPanel implements OptionsCompon
 
     public LafOptionsPanel() {
         initComponents();
+        init();
+    }
+
+    private void init() {
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+        themeComboBox.setModel(model);
+        model.addElement(resourceBundle.getString("defaultTheme.name"));
+        model.addElement(FlatLafLafModule.FLATLAF_DARK);
+        model.addElement(FlatLafLafModule.FLATLAF_LIGHT);
+        model.addElement(FlatLafLafModule.FLATLAF_INTELLIJ);
+        model.addElement(FlatLafLafModule.FLATLAF_DARCULA);
+        model.addElement(FlatLafLafModule.FLATLAF_MAC_DARK);
+        model.addElement(FlatLafLafModule.FLATLAF_MAC_LIGHT);
     }
 
     @Nonnull
@@ -55,9 +73,46 @@ public class LafOptionsPanel extends javax.swing.JPanel implements OptionsCompon
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        themeButtonGroup = new javax.swing.ButtonGroup();
+        themeLabel = new javax.swing.JLabel();
+        includedRadioButton = new javax.swing.JRadioButton();
+        themeComboBox = new javax.swing.JComboBox<>();
+        customThemeRadioButton = new javax.swing.JRadioButton();
+        customThemeFileTextField = new javax.swing.JTextField();
+        selectFileButton = new javax.swing.JButton();
         accentColorLabel = new javax.swing.JLabel();
         accentColorComboBox = new javax.swing.JComboBox<>();
-        unifiedWindowTitleBarCheckBox = new javax.swing.JCheckBox();
+        useWindowDecorationsCheckBox = new javax.swing.JCheckBox();
+        embeddedMenuBarCheckBox = new javax.swing.JCheckBox();
+
+        themeLabel.setText(resourceBundle.getString("themeLabel.text")); // NOI18N
+
+        themeButtonGroup.add(includedRadioButton);
+        includedRadioButton.setSelected(true);
+        includedRadioButton.setText(resourceBundle.getString("includedRadioButton.text")); // NOI18N
+        includedRadioButton.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                includedRadioButtoncustomThemeRadioButtonItemStateChanged(evt);
+            }
+        });
+
+        themeButtonGroup.add(customThemeRadioButton);
+        customThemeRadioButton.setText(resourceBundle.getString("customThemeRadioButton.text")); // NOI18N
+        customThemeRadioButton.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                customThemeRadioButtonItemStateChanged(evt);
+            }
+        });
+
+        customThemeFileTextField.setEnabled(false);
+
+        selectFileButton.setText(resourceBundle.getString("selectFileButton.text")); // NOI18N
+        selectFileButton.setEnabled(false);
+        selectFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectFileButtonActionPerformed(evt);
+            }
+        });
 
         accentColorLabel.setText(resourceBundle.getString("accentColorLabel.text")); // NOI18N
 
@@ -68,8 +123,9 @@ public class LafOptionsPanel extends javax.swing.JPanel implements OptionsCompon
             }
         });
 
-        unifiedWindowTitleBarCheckBox.setText(resourceBundle.getString("unifiedWindowTitleBarCheckBox.text")); // NOI18N
-        unifiedWindowTitleBarCheckBox.setEnabled(false);
+        useWindowDecorationsCheckBox.setText(resourceBundle.getString("useWindowDecorationsCheckBox.text")); // NOI18N
+
+        embeddedMenuBarCheckBox.setText(resourceBundle.getString("embeddedMenuBarCheckBox.text")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -78,22 +134,49 @@ public class LafOptionsPanel extends javax.swing.JPanel implements OptionsCompon
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(unifiedWindowTitleBarCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(accentColorLabel)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(accentColorComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(21, 21, 21)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(customThemeFileTextField)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(selectFileButton))
+                            .addComponent(themeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(useWindowDecorationsCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
+                    .addComponent(embeddedMenuBarCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
+                    .addComponent(accentColorComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(themeLabel)
+                            .addComponent(includedRadioButton)
+                            .addComponent(customThemeRadioButton)
+                            .addComponent(accentColorLabel))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(themeLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(includedRadioButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(themeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(customThemeRadioButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(customThemeFileTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(selectFileButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(useWindowDecorationsCheckBox)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(embeddedMenuBarCheckBox)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(accentColorLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(accentColorComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(unifiedWindowTitleBarCheckBox)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -102,10 +185,53 @@ public class LafOptionsPanel extends javax.swing.JPanel implements OptionsCompon
         notifyModified();
     }//GEN-LAST:event_accentColorComboBoxjComboBoxItemStateChanged
 
+    private void includedRadioButtoncustomThemeRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_includedRadioButtoncustomThemeRadioButtonItemStateChanged
+        boolean customTheme = customThemeRadioButton.isSelected();
+        customThemeFileTextField.setEnabled(customTheme);
+        selectFileButton.setEnabled(customTheme);
+        themeComboBox.setEnabled(!customTheme);
+    }//GEN-LAST:event_includedRadioButtoncustomThemeRadioButtonItemStateChanged
+
+    private void customThemeRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_customThemeRadioButtonItemStateChanged
+        boolean customTheme = customThemeRadioButton.isSelected();
+        customThemeFileTextField.setEnabled(customTheme);
+        selectFileButton.setEnabled(customTheme);
+        themeComboBox.setEnabled(!customTheme);
+    }//GEN-LAST:event_customThemeRadioButtonItemStateChanged
+
+    private void selectFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectFileButtonActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setAcceptAllFileFilterUsed(true);
+        fileChooser.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File f) {
+                return true;
+            }
+
+            @Nonnull
+            @Override
+            public String getDescription() {
+                return resourceBundle.getString("themesFileFilter.description");
+            }
+        });
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            customThemeFileTextField.setText(fileChooser.getSelectedFile().getAbsolutePath());
+        }
+    }//GEN-LAST:event_selectFileButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> accentColorComboBox;
     private javax.swing.JLabel accentColorLabel;
-    private javax.swing.JCheckBox unifiedWindowTitleBarCheckBox;
+    private javax.swing.JTextField customThemeFileTextField;
+    private javax.swing.JRadioButton customThemeRadioButton;
+    private javax.swing.JCheckBox embeddedMenuBarCheckBox;
+    private javax.swing.JRadioButton includedRadioButton;
+    private javax.swing.JButton selectFileButton;
+    private javax.swing.ButtonGroup themeButtonGroup;
+    private javax.swing.JComboBox<String> themeComboBox;
+    private javax.swing.JLabel themeLabel;
+    private javax.swing.JCheckBox useWindowDecorationsCheckBox;
     // End of variables declaration//GEN-END:variables
 
     private void notifyModified() {
@@ -116,13 +242,34 @@ public class LafOptionsPanel extends javax.swing.JPanel implements OptionsCompon
 
     @Override
     public void loadFromOptions(LafOptionsImpl options) {
-        unifiedWindowTitleBarCheckBox.setSelected(options.isUnifiedWindowTitleBar());
-
+        boolean useBuildInTheme = options.isUseBuildInTheme();
+        if (useBuildInTheme) {
+            includedRadioButton.setSelected(true);
+        } else {
+            customThemeRadioButton.setSelected(true);
+        }
+        String buildInTheme = options.getBuildInTheme();
+        if (!buildInTheme.isEmpty()) {
+            for (int i = 0; i < themeComboBox.getItemCount(); i++) {
+                String item = themeComboBox.getItemAt(i);
+                if (buildInTheme.equals(item)) {
+                    themeComboBox.setSelectedIndex(i);
+                    break;
+                }
+            }
+        }
+        customThemeFileTextField.setText(options.getCustomFileTheme());
+        useWindowDecorationsCheckBox.setSelected(options.isUseWindowDecorations());
+        embeddedMenuBarCheckBox.setSelected(options.isEmbeddedMenuBar());
     }
 
     @Override
     public void saveToOptions(LafOptionsImpl options) {
-        options.setUnifiedWindowTitleBar(unifiedWindowTitleBarCheckBox.isSelected());
+        options.setUseBuildInTheme(includedRadioButton.isSelected());
+        options.setBuildInTheme(themeComboBox.getSelectedIndex() == 0 ? "" : (String) themeComboBox.getSelectedItem());
+        options.setCustomThemeFile(customThemeFileTextField.getText());
+        options.setUseWindowDecorations(useWindowDecorationsCheckBox.isSelected());
+        options.setEmbeddedMenuBar(embeddedMenuBarCheckBox.isSelected());
     }
 
     @Override

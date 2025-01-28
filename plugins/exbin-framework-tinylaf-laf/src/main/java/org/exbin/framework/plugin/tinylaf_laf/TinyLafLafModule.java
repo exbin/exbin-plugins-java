@@ -130,18 +130,17 @@ public class TinyLafLafModule implements PluginModule {
     @ParametersAreNonnullByDefault
     private class TinyLafLafOptionsHandler implements LafOptionsHandler {
 
-        private LafOptionsImpl lafOptions = new LafOptionsImpl();
+        private LafOptionsPanel lafOptionsPanel = new LafOptionsPanel();
 
         @Nonnull
         @Override
         public JComponent createOptionsComponent() {
-            LafOptionsPanel lafOptionsPanel = new LafOptionsPanel();
-            lafOptionsPanel.loadFromOptions(lafOptions);
             return lafOptionsPanel;
         }
 
         @Override
         public void loadFromPreferences(Preferences preferences) {
+            LafOptionsImpl lafOptions = new LafOptionsImpl();
             LafPreferences lafPreferences = new LafPreferences(preferences);
             lafOptions.setUseBuildInTheme(lafPreferences.isUseBuildInTheme());
             lafOptions.setBuildInTheme(lafPreferences.getBuildInTheme());
@@ -150,10 +149,13 @@ public class TinyLafLafModule implements PluginModule {
             lafOptions.setFramesDecoration(lafPreferences.isFramesDecoration());
             lafOptions.setNoEraseOnResize(lafPreferences.isNoEraseOnResize());
             lafOptions.setDynamicLayout(lafPreferences.isDynamicLayout());
+            lafOptionsPanel.loadFromOptions(lafOptions);
         }
 
         @Override
         public void saveToPreferences(Preferences preferences) {
+            LafOptionsImpl lafOptions = new LafOptionsImpl();
+            lafOptionsPanel.saveToOptions(lafOptions);
             LafPreferences lafPreferences = new LafPreferences(preferences);
             lafPreferences.setUseBuildInTheme(lafOptions.isUseBuildInTheme());
             lafPreferences.setBuildInTheme(lafOptions.getBuildInTheme());

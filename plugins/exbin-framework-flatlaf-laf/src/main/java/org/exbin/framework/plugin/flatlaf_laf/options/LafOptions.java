@@ -15,6 +15,7 @@
  */
 package org.exbin.framework.plugin.flatlaf_laf.options;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
@@ -25,7 +26,25 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 public interface LafOptions {
 
-    boolean isUnifiedWindowTitleBar();
+    boolean isUseBuildInTheme();
 
-    void setUnifiedWindowTitleBar(boolean unifiedWindowTitleBar);
+    void setUseBuildInTheme(boolean use);
+
+    @Nonnull
+    String getBuildInTheme();
+
+    void setBuildInTheme(String buildInTheme);
+
+    @Nonnull
+    String getCustomFileTheme();
+
+    void setCustomThemeFile(String customFileTheme);
+
+    boolean isUseWindowDecorations();
+
+    void setUseWindowDecorations(boolean useWindowDecorations);
+
+    boolean isEmbeddedMenuBar();
+
+    void setEmbeddedMenuBar(boolean embeddedMenuBar);
 }
