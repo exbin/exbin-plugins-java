@@ -27,7 +27,7 @@ import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.options.api.OptionsComponent;
 import org.exbin.framework.options.api.OptionsModifiedListener;
 import org.exbin.framework.plugin.flatlaf_laf.FlatLafLafModule;
-import org.exbin.framework.plugin.flatlaf_laf.options.impl.LafOptionsImpl;
+import org.exbin.framework.plugin.flatlaf_laf.options.LafOptions;
 
 /**
  * FlatLaf options panel.
@@ -35,7 +35,7 @@ import org.exbin.framework.plugin.flatlaf_laf.options.impl.LafOptionsImpl;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class LafOptionsPanel extends javax.swing.JPanel implements OptionsComponent<LafOptionsImpl> {
+public class LafOptionsPanel extends javax.swing.JPanel implements OptionsComponent<LafOptions> {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(LafOptionsPanel.class);
 
@@ -241,7 +241,7 @@ public class LafOptionsPanel extends javax.swing.JPanel implements OptionsCompon
     }
 
     @Override
-    public void loadFromOptions(LafOptionsImpl options) {
+    public void loadFromOptions(LafOptions options) {
         boolean useBuildInTheme = options.isUseBuildInTheme();
         if (useBuildInTheme) {
             includedRadioButton.setSelected(true);
@@ -264,7 +264,7 @@ public class LafOptionsPanel extends javax.swing.JPanel implements OptionsCompon
     }
 
     @Override
-    public void saveToOptions(LafOptionsImpl options) {
+    public void saveToOptions(LafOptions options) {
         options.setUseBuildInTheme(includedRadioButton.isSelected());
         options.setBuildInTheme(themeComboBox.getSelectedIndex() == 0 ? "" : (String) themeComboBox.getSelectedItem());
         options.setCustomThemeFile(customThemeFileTextField.getText());

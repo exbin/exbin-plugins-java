@@ -6,7 +6,7 @@
   <homepage>https://exbin.org</homepage>
   <description>Module to provide Napkin look and feel</description>
   <dependency>
-    <module id="org.exbin.framework.ui.api.UiModuleApi" />
+    <module id="org.exbin.framework.ui.theme.api.UiThemeModuleApi" />
     <library jar="napkinlaf-1.2.1-SNAPSHOT.jar" />
   </dependency>
 </module>

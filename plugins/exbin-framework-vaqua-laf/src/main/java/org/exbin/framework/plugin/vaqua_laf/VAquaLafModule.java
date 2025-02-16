@@ -20,8 +20,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.UIManager;
 import org.exbin.framework.App;
 import org.exbin.framework.Module;
-import org.exbin.framework.ui.api.LafProvider;
-import org.exbin.framework.ui.api.UiModuleApi;
+import org.exbin.framework.ui.theme.api.LafProvider;
+import org.exbin.framework.ui.theme.api.UiThemeModuleApi;
 
 /**
  * VAqua look and feel plugin.
@@ -35,8 +35,8 @@ public class VAquaLafModule implements Module {
 
     public VAquaLafModule() {
         if (System.getProperty("os.name", "").startsWith("Mac OS")) {
-            UiModuleApi languageModule = App.getModule(UiModuleApi.class);
-            languageModule.registerLafPlugin(new LafProvider() {
+            UiThemeModuleApi themeModule = App.getModule(UiThemeModuleApi.class);
+            themeModule.registerLafPlugin(new LafProvider() {
                 @Nonnull
                 @Override
                 public String getLafId() {

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.plugin.flatlaf_laf.options;
+package org.exbin.framework.plugin.tinylaf_laf.preferences;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -21,18 +21,20 @@ import org.exbin.framework.options.api.OptionsData;
 import org.exbin.framework.preferences.api.OptionsStorage;
 
 /**
- * FlatLaf options.
+ * TinyLaf options.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
 public class LafOptions implements OptionsData {
 
-    public static final String KEY_USE_BUILDIN_THEME = "flatlaf.useBuildInTheme";
-    public static final String KEY_BUILDIN_THEME = "flatlaf.buildInTheme";
-    public static final String KEY_CUSTOM_THEME_FILE = "flatlaf.customThemeFile";
-    public static final String KEY_USE_WINDOW_DECORATIONS = "flatlaf.useWindowDecorations";
-    public static final String KEY_EMBEDDED_MENU_BAR = "flatlaf.embeddedMenuBar";
+    public static final String KEY_USE_BUILDIN_THEME = "tinylaf.useBuildInTheme";
+    public static final String KEY_BUILDIN_THEME = "tinylaf.buildInTheme";
+    public static final String KEY_CUSTOM_THEME_FILE = "tinylaf.customThemeFile";
+    public static final String KEY_FRAMES_DECORATION = "tinylaf.framesDecoration";
+    public static final String KEY_DIALOGS_DECORATION = "tinylaf.dialogsDecoration";
+    public static final String KEY_NO_ERASE_ON_RESIZE = "tinylaf.noEraseOnResize";
+    public static final String KEY_DYNAMIC_LAYOUT = "tinylaf.dynamicLayout";
 
     private final OptionsStorage storage;
 
@@ -44,8 +46,8 @@ public class LafOptions implements OptionsData {
         return storage.getBoolean(KEY_USE_BUILDIN_THEME, true);
     }
 
-    public void setUseBuildInTheme(boolean useBuildInTheme) {
-        storage.putBoolean(KEY_USE_BUILDIN_THEME, useBuildInTheme);
+    public void setUseBuildInTheme(boolean use) {
+        storage.putBoolean(KEY_USE_BUILDIN_THEME, use);
     }
 
     @Nonnull
@@ -66,20 +68,36 @@ public class LafOptions implements OptionsData {
         storage.put(KEY_CUSTOM_THEME_FILE, customFileTheme);
     }
 
-    public boolean isUseWindowDecorations() {
-        return storage.getBoolean(KEY_USE_WINDOW_DECORATIONS, false);
+    public boolean isFramesDecoration() {
+        return storage.getBoolean(KEY_FRAMES_DECORATION, false);
     }
 
-    public void setUseWindowDecorations(boolean useWindowDecorations) {
-        storage.putBoolean(KEY_USE_WINDOW_DECORATIONS, useWindowDecorations);
+    public void setFramesDecoration(boolean framesDecoration) {
+        storage.putBoolean(KEY_FRAMES_DECORATION, framesDecoration);
     }
 
-    public boolean isEmbeddedMenuBar() {
-        return storage.getBoolean(KEY_EMBEDDED_MENU_BAR, false);
+    public boolean isDialogsDecoration() {
+        return storage.getBoolean(KEY_DIALOGS_DECORATION, false);
     }
 
-    public void setEmbeddedMenuBar(boolean embeddedMenuBar) {
-        storage.putBoolean(KEY_EMBEDDED_MENU_BAR, embeddedMenuBar);
+    public void setDialogsDecoration(boolean dialogsDecoration) {
+        storage.putBoolean(KEY_DIALOGS_DECORATION, dialogsDecoration);
+    }
+
+    public boolean isNoEraseOnResize() {
+        return storage.getBoolean(KEY_NO_ERASE_ON_RESIZE, true);
+    }
+
+    public void setNoEraseOnResize(boolean noEraseOnResize) {
+        storage.putBoolean(KEY_NO_ERASE_ON_RESIZE, noEraseOnResize);
+    }
+
+    public boolean isDynamicLayout() {
+        return storage.getBoolean(KEY_DYNAMIC_LAYOUT, true);
+    }
+
+    public void setDynamicLayout(boolean dynamicLayout) {
+        storage.putBoolean(KEY_DYNAMIC_LAYOUT, dynamicLayout);
     }
 
     @Override
@@ -87,8 +105,10 @@ public class LafOptions implements OptionsData {
         LafOptions with = (LafOptions) options;
         with.setBuildInTheme(getBuildInTheme());
         with.setCustomThemeFile(getCustomFileTheme());
-        with.setEmbeddedMenuBar(isEmbeddedMenuBar());
+        with.setDialogsDecoration(isDialogsDecoration());
+        with.setDynamicLayout(isDynamicLayout());
+        with.setFramesDecoration(isFramesDecoration());
+        with.setNoEraseOnResize(isNoEraseOnResize());
         with.setUseBuildInTheme(isUseBuildInTheme());
-        with.setUseWindowDecorations(isUseWindowDecorations());
     }
 }

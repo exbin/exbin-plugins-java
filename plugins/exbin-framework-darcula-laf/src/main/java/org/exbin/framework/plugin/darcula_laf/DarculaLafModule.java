@@ -24,8 +24,8 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.exbin.framework.App;
 import org.exbin.framework.PluginModule;
-import org.exbin.framework.ui.api.LafProvider;
-import org.exbin.framework.ui.api.UiModuleApi;
+import org.exbin.framework.ui.theme.api.LafProvider;
+import org.exbin.framework.ui.theme.api.UiThemeModuleApi;
 
 /**
  * Darcula look and feel plugin.
@@ -40,8 +40,8 @@ public class DarculaLafModule implements PluginModule {
 
     @Override
     public void register() {
-        UiModuleApi languageModule = App.getModule(UiModuleApi.class);
-        languageModule.registerLafPlugin(new LafProvider() {
+        UiThemeModuleApi themeModule = App.getModule(UiThemeModuleApi.class);
+        themeModule.registerLafPlugin(new LafProvider() {
             @Override
             public String getLafId() {
                 return DarculaLaf.class.getName();

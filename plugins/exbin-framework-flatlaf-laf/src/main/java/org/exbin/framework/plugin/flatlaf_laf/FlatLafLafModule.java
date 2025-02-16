@@ -34,13 +34,12 @@ import javax.swing.UIManager;
 import org.exbin.framework.App;
 import org.exbin.framework.PluginModule;
 import org.exbin.framework.plugin.flatlaf_laf.gui.LafOptionsPanel;
-import org.exbin.framework.plugin.flatlaf_laf.options.impl.LafOptionsImpl;
-import org.exbin.framework.plugin.flatlaf_laf.preferences.LafPreferences;
-import org.exbin.framework.preferences.api.Preferences;
+import org.exbin.framework.plugin.flatlaf_laf.options.LafOptions;
+import org.exbin.framework.preferences.api.OptionsStorage;
 import org.exbin.framework.preferences.api.PreferencesModuleApi;
-import org.exbin.framework.ui.api.ConfigurableLafProvider;
-import org.exbin.framework.ui.api.LafOptionsHandler;
-import org.exbin.framework.ui.api.UiModuleApi;
+import org.exbin.framework.ui.theme.api.ConfigurableLafProvider;
+import org.exbin.framework.ui.theme.api.LafOptionsHandler;
+import org.exbin.framework.ui.theme.api.UiThemeModuleApi;
 
 /**
  * FlatLaf look and feel plugin.
@@ -63,8 +62,8 @@ public class FlatLafLafModule implements PluginModule {
 
     @Override
     public void register() {
-        UiModuleApi uiModule = App.getModule(UiModuleApi.class);
-        uiModule.registerLafPlugin(new ConfigurableLafProvider() {
+        UiThemeModuleApi themeModule = App.getModule(UiThemeModuleApi.class);
+        themeModule.registerLafPlugin(new ConfigurableLafProvider() {
             @Nonnull
             @Override
             public String getLafId() {
@@ -99,8 +98,8 @@ public class FlatLafLafModule implements PluginModule {
     public void applyLookAndFeel(String className) {
         try {
             PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-            Preferences preferences = preferencesModule.getAppPreferences();
-            LafPreferences lafPreferences = new LafPreferences(preferences);
+            OptionsStorage preferences = preferencesModule.getAppPreferences();
+            LafOptions lafPreferences = new LafOptions(preferences);
 
             if (lafPreferences.isUseWindowDecorations()) {
                 if (SystemInfo.isLinux) {
@@ -154,27 +153,13 @@ public class FlatLafLafModule implements PluginModule {
         }
 
         @Override
-        public void loadFromPreferences(Preferences preferences) {
-            LafOptionsImpl lafOptions = new LafOptionsImpl();
-            LafPreferences lafPreferences = new LafPreferences(preferences);
-            lafOptions.setUseBuildInTheme(lafPreferences.isUseBuildInTheme());
-            lafOptions.setBuildInTheme(lafPreferences.getBuildInTheme());
-            lafOptions.setCustomThemeFile(lafPreferences.getCustomFileTheme());
-            lafOptions.setUseWindowDecorations(lafPreferences.isUseWindowDecorations());
-            lafOptions.setEmbeddedMenuBar(lafPreferences.isEmbeddedMenuBar());
-            lafOptionsPanel.loadFromOptions(lafOptions);
+        public void loadFromPreferences(OptionsStorage preferences) {
+            lafOptionsPanel.loadFromOptions(new LafOptions(preferences));
         }
 
         @Override
-        public void saveToPreferences(Preferences preferences) {
-            LafOptionsImpl lafOptions = new LafOptionsImpl();
-            lafOptionsPanel.saveToOptions(lafOptions);
-            LafPreferences lafPreferences = new LafPreferences(preferences);
-            lafPreferences.setUseBuildInTheme(lafOptions.isUseBuildInTheme());
-            lafPreferences.setBuildInTheme(lafOptions.getBuildInTheme());
-            lafPreferences.setCustomThemeFile(lafOptions.getCustomFileTheme());
-            lafPreferences.setUseWindowDecorations(lafOptions.isUseWindowDecorations());
-            lafPreferences.setEmbeddedMenuBar(lafOptions.isEmbeddedMenuBar());
+        public void saveToPreferences(OptionsStorage preferences) {
+            lafOptionsPanel.saveToOptions(new LafOptions(preferences));
         }
     }
 }

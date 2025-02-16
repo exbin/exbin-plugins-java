@@ -6,7 +6,7 @@
   <homepage>https://exbin.org</homepage>
   <description>Module to provide Substance look and feel</description>
   <dependency>
-    <module id="org.exbin.framework.ui.api.UiModuleApi" />
+    <module id="org.exbin.framework.ui.theme.api.UiThemeModuleApi" />
     <library maven="com.github.insubstantial:substance:7.3" />
     <library maven="com.github.insubstantial:laf-plugin:7.3" />
     <library maven="com.github.insubstantial:laf-widget:7.3" />

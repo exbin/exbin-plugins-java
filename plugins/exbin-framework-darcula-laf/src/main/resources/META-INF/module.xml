@@ -6,7 +6,7 @@
   <homepage>https://exbin.org</homepage>
   <description>Module to provide Darcula look and feel</description>
   <dependency>
-    <module id="org.exbin.framework.ui.api.UiModuleApi" />
+    <module id="org.exbin.framework.ui.theme.api.UiThemeModuleApi" />
     <library maven="org.freeplane.bulenkov:darcula:2021.7" />
   </dependency>
 </module>

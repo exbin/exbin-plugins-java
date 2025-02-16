@@ -19,8 +19,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.UIManager;
 import org.exbin.framework.App;
 import org.exbin.framework.PluginModule;
-import org.exbin.framework.ui.api.LafProvider;
-import org.exbin.framework.ui.api.UiModuleApi;
+import org.exbin.framework.ui.theme.api.LafProvider;
+import org.exbin.framework.ui.theme.api.UiThemeModuleApi;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.skin.SubstanceAutumnLookAndFeel;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
@@ -41,8 +41,8 @@ public class SubstanceLafModule implements PluginModule {
 
     @Override
     public void register() {
-        UiModuleApi uiModule = App.getModule(UiModuleApi.class);
-        uiModule.registerLafPlugin(new LafProvider() {
+        UiThemeModuleApi themeModule = App.getModule(UiThemeModuleApi.class);
+        themeModule.registerLafPlugin(new LafProvider() {
             @Override
             public String getLafId() {
                 return SubstanceLookAndFeel.class.getName();
@@ -65,7 +65,7 @@ public class SubstanceLafModule implements PluginModule {
             }
         });
 
-        uiModule.registerLafPlugin(new LafProvider() {
+        themeModule.registerLafPlugin(new LafProvider() {
             @Override
             public String getLafId() {
                 return SubstanceAutumnLookAndFeel.class.getName();
