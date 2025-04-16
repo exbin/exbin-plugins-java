@@ -1,0 +1,36 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+}
+
+group = 'org.exbin.framework.plugins'
+ext.libraryName = 'Radiance Look and Feel Plugin'
+ext.libraryDescription = 'Radiance LaF plugin for ExBin Framework'
+
+apply from: '../plugins.gradle'
+
+sourceCompatibility = '9'
+
+targetCompatibility = '9'
+
+if (!hasProperty('mainClass')) {
+    ext.mainClass = ''
+}
+
+repositories {
+    flatDir {
+        dirs "../../lib"
+        dirs "lib"
+    }
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'core', 'exbin-framework')
+    implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'modules', 'exbin-framework-ui-theme-api')
+    compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
+    implementation "org.pushing-pixels:radiance-theming:7.5.0"
+    testImplementation group : 'junit', name: 'junit', version: '4.13.2'
+}

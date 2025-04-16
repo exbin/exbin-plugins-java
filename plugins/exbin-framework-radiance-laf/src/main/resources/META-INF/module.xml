@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<module>
+  <plugin>org.exbin.framework.plugin.radiance_laf.RadianceLafModule</plugin>
+  <name>Radiance look and feel plugin</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://exbin.org</homepage>
+  <description>Module to provide Radiance look and feel</description>
+  <dependency>
+    <module id="org.exbin.framework.ui.theme.api.UiThemeModuleApi" />
+    <library maven="org.pushing-pixels:radiance-theming:7.5.0" />
+    <library maven="org.pushing-pixels:radiance-common:7.5.0" />
+    <library maven="org.pushing-pixels:radiance-animation:7.5.0" />
+  </dependency>
+</module>
