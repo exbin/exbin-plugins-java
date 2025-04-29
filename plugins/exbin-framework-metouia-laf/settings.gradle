@@ -1,0 +1,3 @@
+rootProject.name = 'exbin-framework-metouia-laf'
+
+apply from: '../plugins-settings.gradle'

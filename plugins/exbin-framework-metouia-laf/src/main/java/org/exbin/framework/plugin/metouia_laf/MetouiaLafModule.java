@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.plugin.napkin_laf;
+package org.exbin.framework.plugin.metouia_laf;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,16 +26,16 @@ import org.exbin.framework.ui.theme.api.LafProvider;
 import org.exbin.framework.ui.theme.api.UiThemeModuleApi;
 
 /**
- * Napkin look and feel plugin.
+ * Metouia look and feel plugin.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class NapkinLafModule implements PluginModule {
+public class MetouiaLafModule implements PluginModule {
 
-    public static final String NAPKIN_LAF_CLASS = "net.sourceforge.napkinlaf.NapkinLookAndFeel";
+    public static final String METOUIA_LAF_CLASS = "net.sourceforge.mlf.metouia.MetouiaLookAndFeel";
 
-    public NapkinLafModule() {
+    public MetouiaLafModule() {
     }
 
     @Override
@@ -45,13 +45,13 @@ public class NapkinLafModule implements PluginModule {
             @Nonnull
             @Override
             public String getLafId() {
-                return NAPKIN_LAF_CLASS;
+                return METOUIA_LAF_CLASS;
             }
 
             @Nonnull
             @Override
             public String getLafName() {
-                return "Napkin";
+                return "Metouia";
             }
 
             @Override
@@ -68,9 +68,9 @@ public class NapkinLafModule implements PluginModule {
 
     public void applyLookAndFeel(String className) {
         try {
-            UIManager.setLookAndFeel(NAPKIN_LAF_CLASS);
+            UIManager.setLookAndFeel(METOUIA_LAF_CLASS);
         } catch (Throwable ex) {
-            Logger.getLogger(NapkinLafModule.class.getName()).log(Level.SEVERE, "Failed to initialize LaF", ex);
+            Logger.getLogger(MetouiaLafModule.class.getName()).log(Level.SEVERE, "Failed to initialize LaF", ex);
         }
     }
 
