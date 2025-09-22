@@ -1,6 +1,6 @@
 // Shared modules build
 
-version = '0.2.2'
+version = '0.3.0-SNAPSHOT'
 def repositoryName = "xbup-java"
 def githubProfile = 'exbin'
 def libraryUrl = 'https://xbup.exbin.org'
@@ -16,16 +16,17 @@ ext.depsXbupJava = [
 ext.depsExbinAuxiliaryJava = [
     githubProfile: 'exbin',
     githubRepo   : 'exbin-auxiliary-java',
-    version      : '0.2.1'
+    version      : '0.3.0-SNAPSHOT'
 ]
 
 import org.gradle.util.VersionNumber
 
 apply from: '../deps_processing.gradle'
 
-sourceCompatibility = '1.8'
-
-targetCompatibility = '1.8'
+java {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+}
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
@@ -33,13 +34,6 @@ tasks.withType(JavaCompile) {
     options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
     doFirst {
         options.fork = true
-        if (JavaVersion.current() == JavaVersion.VERSION_1_8) {
-            if (VersionNumber.parse(gradle.gradleVersion) >= VersionNumber.parse('5.0')) {
-                options.bootstrapClasspath = files("${System.properties['java.home']}/lib/rt.jar", "${System.properties['java.home']}/jre/lib/jsse.jar")
-            } else {
-                options.bootClasspath = "${System.properties['java.home']}/lib/rt.jar$File.pathSeparator${System.properties['java.home']}/jre/lib/jsse.jar"
-            }
-        }
     }
 }
 
@@ -50,7 +44,9 @@ if (!gradle.startParameter.taskNames.any { it.endsWith("test") }) {
 
 task testJar(type: Jar, dependsOn: testClasses) {
     archiveClassifier = 'tests'
-    archiveBaseName = "test-${project.archivesBaseName}"
+    base {
+        archivesName = "test-${project.name}"
+    }
     from sourceSets.test.output
 }
 
