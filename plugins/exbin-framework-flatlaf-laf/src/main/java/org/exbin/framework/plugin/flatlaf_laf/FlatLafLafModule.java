@@ -35,8 +35,8 @@ import org.exbin.framework.App;
 import org.exbin.framework.PluginModule;
 import org.exbin.framework.plugin.flatlaf_laf.gui.LafOptionsPanel;
 import org.exbin.framework.plugin.flatlaf_laf.options.LafOptions;
-import org.exbin.framework.preferences.api.OptionsStorage;
-import org.exbin.framework.preferences.api.PreferencesModuleApi;
+import org.exbin.framework.options.api.OptionsStorage;
+import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.ui.theme.api.ConfigurableLafProvider;
 import org.exbin.framework.ui.theme.api.LafOptionsHandler;
 import org.exbin.framework.ui.theme.api.UiThemeModuleApi;
@@ -97,11 +97,11 @@ public class FlatLafLafModule implements PluginModule {
 
     public void applyLookAndFeel(String className) {
         try {
-            PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-            OptionsStorage preferences = preferencesModule.getAppPreferences();
-            LafOptions lafPreferences = new LafOptions(preferences);
+            OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
+            OptionsStorage optionsStorage = optionsModule.getAppOptions();
+            LafOptions lafOptions = new LafOptions(optionsStorage);
 
-            if (lafPreferences.isUseWindowDecorations()) {
+            if (lafOptions.isUseWindowDecorations()) {
                 if (SystemInfo.isLinux) {
                     // enable custom window decorations
                     JFrame.setDefaultLookAndFeelDecorated(true);
@@ -109,12 +109,12 @@ public class FlatLafLafModule implements PluginModule {
                 }
                 System.setProperty("flatlaf.useWindowDecorations", "true");
             }
-            if (lafPreferences.isEmbeddedMenuBar()) {
+            if (lafOptions.isEmbeddedMenuBar()) {
                 System.setProperty("flatlaf.menuBarEmbedded", "true");
             }
 
-            if (lafPreferences.isUseBuildInTheme()) {
-                String buildInTheme = lafPreferences.getBuildInTheme();
+            if (lafOptions.isUseBuildInTheme()) {
+                String buildInTheme = lafOptions.getBuildInTheme();
                 if (buildInTheme != null && !buildInTheme.isEmpty()) {
                     if (FLATLAF_DARK.equals(buildInTheme)) {
                         UIManager.setLookAndFeel(new FlatDarkLaf());
@@ -133,7 +133,7 @@ public class FlatLafLafModule implements PluginModule {
                     UIManager.setLookAndFeel(new FlatDarkLaf());
                 }
             } else {
-                String customThemeFile = lafPreferences.getCustomFileTheme();
+                String customThemeFile = lafOptions.getCustomFileTheme();
                 UIManager.setLookAndFeel(new FlatPropertiesLaf("Custom", new File(customThemeFile)));
             }
         } catch (Throwable ex) {

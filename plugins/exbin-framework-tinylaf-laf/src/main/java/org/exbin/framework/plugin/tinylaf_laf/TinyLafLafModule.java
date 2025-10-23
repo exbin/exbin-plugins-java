@@ -29,9 +29,9 @@ import net.sf.tinylaf.TinyLookAndFeel;
 import org.exbin.framework.App;
 import org.exbin.framework.PluginModule;
 import org.exbin.framework.plugin.tinylaf_laf.gui.LafOptionsPanel;
-import org.exbin.framework.plugin.tinylaf_laf.preferences.LafOptions;
-import org.exbin.framework.preferences.api.OptionsStorage;
-import org.exbin.framework.preferences.api.PreferencesModuleApi;
+import org.exbin.framework.plugin.tinylaf_laf.options.LafOptions;
+import org.exbin.framework.options.api.OptionsStorage;
+import org.exbin.framework.options.api.OptionsModuleApi;
 import org.exbin.framework.ui.theme.api.ConfigurableLafProvider;
 import org.exbin.framework.ui.theme.api.LafOptionsHandler;
 import org.exbin.framework.ui.theme.api.UiThemeModuleApi;
@@ -83,29 +83,29 @@ public class TinyLafLafModule implements PluginModule {
 
     public void applyLookAndFeel(String className) {
         try {
-            PreferencesModuleApi preferencesModule = App.getModule(PreferencesModuleApi.class);
-            OptionsStorage preferences = preferencesModule.getAppPreferences();
-            LafOptions lafPreferences = new LafOptions(preferences);
+            OptionsModuleApi optionsModule = App.getModule(OptionsModuleApi.class);
+            OptionsStorage optionsStorage = optionsModule.getAppOptions();
+            LafOptions lafOptions = new LafOptions(optionsStorage);
 
-            if (lafPreferences.isDynamicLayout()) {
+            if (lafOptions.isDynamicLayout()) {
                 Toolkit.getDefaultToolkit().setDynamicLayout(true);
             }
-            if (lafPreferences.isNoEraseOnResize()) {
+            if (lafOptions.isNoEraseOnResize()) {
                 System.setProperty("sun.awt.noerasebackground", "true");
             }
 
-            if (lafPreferences.isFramesDecoration()) {
+            if (lafOptions.isFramesDecoration()) {
                 JFrame.setDefaultLookAndFeelDecorated(true);
             }
-            if (lafPreferences.isDialogsDecoration()) {
+            if (lafOptions.isDialogsDecoration()) {
                 JDialog.setDefaultLookAndFeelDecorated(true);
             }
 
             TinyLookAndFeel laf = new TinyLookAndFeel();
             UIManager.setLookAndFeel(laf);
 
-            if (lafPreferences.isUseBuildInTheme()) {
-                String buildInTheme = lafPreferences.getBuildInTheme();
+            if (lafOptions.isUseBuildInTheme()) {
+                String buildInTheme = lafOptions.getBuildInTheme();
                 if (buildInTheme != null && !buildInTheme.isEmpty()) {
                     ThemeDescription[] availableThemes = Theme.getAvailableThemes();
                     for (ThemeDescription theme : availableThemes) {
@@ -117,7 +117,7 @@ public class TinyLafLafModule implements PluginModule {
                     }
                 }
             } else {
-                String customThemeFile = lafPreferences.getCustomFileTheme();
+                String customThemeFile = lafOptions.getCustomFileTheme();
                 Theme.loadTheme(new File(customThemeFile));
                 UIManager.setLookAndFeel(laf);
             }

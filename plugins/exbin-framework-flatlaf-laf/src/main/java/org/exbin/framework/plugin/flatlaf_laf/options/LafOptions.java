@@ -17,8 +17,8 @@ package org.exbin.framework.plugin.flatlaf_laf.options;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import org.exbin.framework.options.api.OptionsData;
-import org.exbin.framework.preferences.api.OptionsStorage;
+import org.exbin.framework.options.settings.api.SettingsOptions;
+import org.exbin.framework.options.api.OptionsStorage;
 
 /**
  * FlatLaf options.
@@ -26,7 +26,7 @@ import org.exbin.framework.preferences.api.OptionsStorage;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class LafOptions implements OptionsData {
+public class LafOptions implements SettingsOptions {
 
     public static final String KEY_USE_BUILDIN_THEME = "flatlaf.useBuildInTheme";
     public static final String KEY_BUILDIN_THEME = "flatlaf.buildInTheme";
@@ -83,7 +83,7 @@ public class LafOptions implements OptionsData {
     }
 
     @Override
-    public void copyTo(OptionsData options) {
+    public void copyTo(SettingsOptions options) {
         LafOptions with = (LafOptions) options;
         with.setBuildInTheme(getBuildInTheme());
         with.setCustomThemeFile(getCustomFileTheme());

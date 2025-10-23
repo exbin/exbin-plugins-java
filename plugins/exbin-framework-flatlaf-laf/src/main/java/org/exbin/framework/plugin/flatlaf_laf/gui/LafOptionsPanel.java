@@ -24,8 +24,8 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import org.exbin.framework.App;
 import org.exbin.framework.language.api.LanguageModuleApi;
-import org.exbin.framework.options.api.OptionsComponent;
-import org.exbin.framework.options.api.OptionsModifiedListener;
+import org.exbin.framework.options.settings.api.SettingsComponent;
+import org.exbin.framework.options.settings.api.SettingsModifiedListener;
 import org.exbin.framework.plugin.flatlaf_laf.FlatLafLafModule;
 import org.exbin.framework.plugin.flatlaf_laf.options.LafOptions;
 
@@ -35,11 +35,11 @@ import org.exbin.framework.plugin.flatlaf_laf.options.LafOptions;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class LafOptionsPanel extends javax.swing.JPanel implements OptionsComponent<LafOptions> {
+public class LafOptionsPanel extends javax.swing.JPanel implements SettingsComponent<LafOptions> {
 
     private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(LafOptionsPanel.class);
 
-    private OptionsModifiedListener optionsModifiedListener;
+    private SettingsModifiedListener settingsModifiedListener;
 
     public LafOptionsPanel() {
         initComponents();
@@ -235,8 +235,8 @@ public class LafOptionsPanel extends javax.swing.JPanel implements OptionsCompon
     // End of variables declaration//GEN-END:variables
 
     private void notifyModified() {
-        if (optionsModifiedListener != null) {
-            optionsModifiedListener.wasModified();
+        if (settingsModifiedListener != null) {
+            settingsModifiedListener.wasModified();
         }
     }
 
@@ -273,7 +273,7 @@ public class LafOptionsPanel extends javax.swing.JPanel implements OptionsCompon
     }
 
     @Override
-    public void setOptionsModifiedListener(OptionsModifiedListener optionsModifiedListener) {
-        this.optionsModifiedListener = optionsModifiedListener;
+    public void setSettingsModifiedListener(SettingsModifiedListener settingsModifiedListener) {
+        this.settingsModifiedListener = settingsModifiedListener;
     }
 }
