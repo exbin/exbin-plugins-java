@@ -27,7 +27,6 @@ import com.formdev.flatlaf.util.SystemInfo;
 import java.io.File;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -37,8 +36,9 @@ import org.exbin.framework.plugin.flatlaf_laf.gui.LafOptionsPanel;
 import org.exbin.framework.plugin.flatlaf_laf.options.LafOptions;
 import org.exbin.framework.options.api.OptionsStorage;
 import org.exbin.framework.options.api.OptionsModuleApi;
+import org.exbin.framework.options.settings.api.SettingsComponent;
+import org.exbin.framework.options.settings.api.SettingsComponentProvider;
 import org.exbin.framework.ui.theme.api.ConfigurableLafProvider;
-import org.exbin.framework.ui.theme.api.LafOptionsHandler;
 import org.exbin.framework.ui.theme.api.UiThemeModuleApi;
 
 /**
@@ -89,8 +89,14 @@ public class FlatLafLafModule implements PluginModule {
 
             @Nonnull
             @Override
-            public LafOptionsHandler getOptionsHandler() {
-                return new FlatLafLafOptionsHandler();
+            public SettingsComponentProvider getSettingsComponentProvider() {
+                return new SettingsComponentProvider() {
+                    @Nonnull
+                    @Override
+                    public SettingsComponent createComponent() {
+                        return new LafOptionsPanel();
+                    }
+                };
             }
         });
     }
@@ -138,28 +144,6 @@ public class FlatLafLafModule implements PluginModule {
             }
         } catch (Throwable ex) {
             System.err.println("Failed to initialize LaF");
-        }
-    }
-
-    @ParametersAreNonnullByDefault
-    private class FlatLafLafOptionsHandler implements LafOptionsHandler {
-
-        private LafOptionsPanel lafOptionsPanel = new LafOptionsPanel();
-
-        @Nonnull
-        @Override
-        public JComponent createOptionsComponent() {
-            return lafOptionsPanel;
-        }
-
-        @Override
-        public void loadFromPreferences(OptionsStorage preferences) {
-            lafOptionsPanel.loadFromOptions(new LafOptions(preferences));
-        }
-
-        @Override
-        public void saveToPreferences(OptionsStorage preferences) {
-            lafOptionsPanel.saveToOptions(new LafOptions(preferences));
         }
     }
 }
