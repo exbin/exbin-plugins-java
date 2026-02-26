@@ -1,0 +1,3 @@
+rootProject.name = 'exbin-framework-quaqua-fd'
+
+apply from: '../plugins-settings.gradle'

@@ -18,7 +18,6 @@ package org.exbin.framework.plugin.tinylaf_laf.gui;
 import java.io.File;
 import java.util.ResourceBundle;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
@@ -28,7 +27,6 @@ import net.sf.tinylaf.Theme;
 import net.sf.tinylaf.ThemeDescription;
 import net.sf.tinylaf.controlpanel.ControlPanel;
 import org.exbin.framework.App;
-import org.exbin.framework.context.api.ActiveContextProvider;
 import org.exbin.framework.language.api.LanguageModuleApi;
 import org.exbin.framework.options.settings.api.SettingsComponent;
 import org.exbin.framework.options.settings.api.SettingsModifiedListener;
@@ -252,7 +250,7 @@ public class LafOptionsPanel extends javax.swing.JPanel implements SettingsCompo
     }
 
     @Override
-    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
+    public void loadFromOptions(SettingsOptionsProvider settingsOptionsProvider) {
         LafOptions options = settingsOptionsProvider.getSettingsOptions(LafOptions.class);
         boolean useBuildInTheme = options.isUseBuildInTheme();
         if (useBuildInTheme) {
@@ -278,7 +276,7 @@ public class LafOptionsPanel extends javax.swing.JPanel implements SettingsCompo
     }
 
     @Override
-    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider, @Nullable ActiveContextProvider contextProvider) {
+    public void saveToOptions(SettingsOptionsProvider settingsOptionsProvider) {
         LafOptions options = settingsOptionsProvider.getSettingsOptions(LafOptions.class);
         options.setUseBuildInTheme(includedRadioButton.isSelected());
         options.setBuildInTheme(themeComboBox.getSelectedIndex() == 0 ? "" : (String) themeComboBox.getSelectedItem());

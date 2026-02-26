@@ -19,6 +19,7 @@ import com.bulenkov.darcula.DarculaLaf;
 import com.bulenkov.darcula.DarculaLookAndFeelInfo;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -42,6 +43,7 @@ public class DarculaLafModule implements PluginModule {
     public void register() {
         UiThemeModuleApi themeModule = App.getModule(UiThemeModuleApi.class);
         themeModule.registerLafPlugin(new LafProvider() {
+            @Nonnull
             @Override
             public String getLafId() {
                 return DarculaLaf.class.getName();
@@ -53,6 +55,7 @@ public class DarculaLafModule implements PluginModule {
                 applyLookAndFeel(className);
             }
 
+            @Nonnull
             @Override
             public String getLafName() {
                 return DarculaLaf.NAME;
