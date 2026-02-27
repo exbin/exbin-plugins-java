@@ -13,12 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.plugin.quaqua_fd;
+package org.exbin.framework.plugin.quaqua_jfc_laf;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import org.exbin.framework.App;
 import org.exbin.framework.PluginModule;
 import org.exbin.framework.file.api.FileModuleApi;
@@ -26,6 +32,8 @@ import org.exbin.framework.file.api.FileDialogsProvider;
 import org.exbin.framework.file.api.FileTypes;
 import org.exbin.framework.file.api.OpenFileResult;
 import org.exbin.framework.file.api.UsedDirectoryApi;
+import org.exbin.framework.ui.theme.api.LafProvider;
+import org.exbin.framework.ui.theme.api.UiThemeModuleApi;
 
 /**
  * Quaqua file dialogs plugin.
@@ -33,11 +41,12 @@ import org.exbin.framework.file.api.UsedDirectoryApi;
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class QuaquaFdModule implements PluginModule {
+public class QuaquaJfcLafModule implements PluginModule {
     
-    public static final String PROVIDER_ID = "quaqua";
+    public static final String LAF_NAME = "Quaqua JFC";
+    public static final String PROVIDER_ID = "quaqua-jfc";
 
-    public QuaquaFdModule() {
+    public QuaquaJfcLafModule() {
     }
 
     @Override
@@ -62,6 +71,45 @@ public class QuaquaFdModule implements PluginModule {
             }
             
         });
+
+        UiThemeModuleApi themeModule = App.getModule(UiThemeModuleApi.class);
+        themeModule.registerLafPlugin(new LafProvider() {
+            @Override
+            public String getLafId() {
+                return ch.randelshofer.quaqua.QuaquaLookAndFeel.class.getName();
+            }
+
+            @Override
+            public void applyLaf() {
+                String className = ch.randelshofer.quaqua.QuaquaLookAndFeel.class.getName();
+                applyLookAndFeel(className);
+            }
+
+            @Override
+            public String getLafName() {
+                return LAF_NAME;
+            }
+
+            @Override
+            public void installLaf() {
+                String className = ch.randelshofer.quaqua.QuaquaLookAndFeel.class.getName();
+                UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo(LAF_NAME, className));
+            }
+        });
+    }
+
+    public void applyLookAndFeel(String className) {
+        try {
+            SwingUtilities.invokeAndWait(() -> {
+                try {
+                    UIManager.setLookAndFeel(ch.randelshofer.quaqua.QuaquaManager.getLookAndFeel());
+                } catch (UnsupportedLookAndFeelException ex) {
+                    Logger.getLogger(QuaquaJfcLafModule.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        } catch (InterruptedException | InvocationTargetException ex) {
+            Logger.getLogger(QuaquaJfcLafModule.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void unregisterModule(String moduleId) {

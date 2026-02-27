@@ -1,12 +1,14 @@
 <?xml version="1.0"?>
 <module>
-  <plugin>org.exbin.framework.plugin.quaqua_fd.QuaquaFdModule</plugin>
-  <name>Quaqua file dialogs</name>
+  <plugin>org.exbin.framework.plugin.quaqua_jfc_laf.QuaquaJfcLafModule</plugin>
+  <name>Quaqua JFC look and feel</name>
   <provider>ExBin Project</provider>
   <homepage>https://exbin.org</homepage>
-  <description>Module to provide Quaqua file dialogs</description>
+  <description>Module to provide Quaqua JFC look and feel</description>
   <dependency>
+    <module id="org.exbin.framework.ui.theme.api.UiThemeModuleApi" />
     <module id="org.exbin.framework.file.api.FileModuleApi" />
+    <library maven="com.weirdkid:quaqua-jfc:25.6" />
     <library maven="com.twelvemonkeys.imageio:imageio-core:3.10.1" />
     <library maven="com.twelvemonkeys.imageio:imageio-metadata:3.10.1" />
     <library maven="com.twelvemonkeys.imageio:imageio-icns:3.10.1" />
