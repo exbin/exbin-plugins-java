@@ -36,6 +36,8 @@ import org.exbin.framework.plugin.flatlaf_laf.gui.LafOptionsPanel;
 import org.exbin.framework.plugin.flatlaf_laf.options.LafOptions;
 import org.exbin.framework.options.api.OptionsStorage;
 import org.exbin.framework.options.api.OptionsModuleApi;
+import org.exbin.framework.options.settings.api.OptionsSettingsManagement;
+import org.exbin.framework.options.settings.api.OptionsSettingsModuleApi;
 import org.exbin.framework.options.settings.api.SettingsComponent;
 import org.exbin.framework.options.settings.api.SettingsComponentProvider;
 import org.exbin.framework.ui.theme.api.ConfigurableLafProvider;
@@ -62,6 +64,10 @@ public class FlatLafLafModule implements PluginModule {
 
     @Override
     public void register() {
+        OptionsSettingsModuleApi settingsModule = App.getModule(OptionsSettingsModuleApi.class);
+        OptionsSettingsManagement settingsManagement = settingsModule.getMainSettingsManager();
+        settingsManagement.registerSettingsOptions(LafOptions.class, (optionsStorage) -> new LafOptions(optionsStorage));
+
         UiThemeModuleApi themeModule = App.getModule(UiThemeModuleApi.class);
         themeModule.registerLafPlugin(new ConfigurableLafProvider() {
             @Nonnull

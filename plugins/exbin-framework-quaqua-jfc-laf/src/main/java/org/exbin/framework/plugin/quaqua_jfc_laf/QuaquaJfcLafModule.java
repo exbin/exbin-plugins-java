@@ -15,6 +15,7 @@
  */
 package org.exbin.framework.plugin.quaqua_jfc_laf;
 
+import java.awt.Component;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
@@ -22,13 +23,17 @@ import java.util.logging.Logger;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.swing.JFileChooser;
+import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.filechooser.FileFilter;
 import org.exbin.framework.App;
 import org.exbin.framework.PluginModule;
 import org.exbin.framework.file.api.FileModuleApi;
 import org.exbin.framework.file.api.FileDialogsProvider;
+import org.exbin.framework.file.api.FileType;
 import org.exbin.framework.file.api.FileTypes;
 import org.exbin.framework.file.api.OpenFileResult;
 import org.exbin.framework.file.api.UsedDirectoryApi;
@@ -42,7 +47,8 @@ import org.exbin.framework.ui.theme.api.UiThemeModuleApi;
  */
 @ParametersAreNonnullByDefault
 public class QuaquaJfcLafModule implements PluginModule {
-    
+
+    public static final String ALL_FILES_FILTER = "AllFilesFilter";
     public static final String LAF_NAME = "Quaqua JFC";
     public static final String PROVIDER_ID = "quaqua-jfc";
 
@@ -55,21 +61,77 @@ public class QuaquaJfcLafModule implements PluginModule {
         fileModule.registerFileDialogsProvider(PROVIDER_ID, new FileDialogsProvider() {
             @Nonnull
             public String getProviderName() {
-                return "Quaqua";
+                return "Quaqua JFC";
             }
 
             @Nonnull
-            public OpenFileResult showOpenFileDialog(FileTypes fileTypes, @Nullable File selectedFile, @Nullable UsedDirectoryApi usedDirectory, @Nullable String dialogName) {
-                // TODO
-                return null;
+            @Override
+            public OpenFileResult showOpenFileDialog(Component parentComponent, FileTypes fileTypes, @Nullable File selectedFile, @Nullable UsedDirectoryApi usedDirectory, @Nullable String dialogName) {
+                LookAndFeel lookAndFeel = UIManager.getLookAndFeel();
+                applyLookAndFeel();
+                JFileChooser openFileChooser = new JFileChooser();
+                setupFileFilters(openFileChooser, fileTypes);
+                if (usedDirectory != null) {
+                    openFileChooser.setCurrentDirectory(usedDirectory.getLastUsedDirectory().orElse(null));
+                }
+                if (selectedFile != null) {
+                    openFileChooser.setSelectedFile(selectedFile);
+                }
+                if (dialogName != null) {
+                    openFileChooser.setDialogTitle(dialogName);
+                }
+                int dialogResult = openFileChooser.showOpenDialog(parentComponent);
+                FileFilter fileFilter = openFileChooser.getFileFilter();
+                try {
+                    UIManager.setLookAndFeel(lookAndFeel);
+                } catch (UnsupportedLookAndFeelException ex) {
+                    Logger.getLogger(QuaquaJfcLafModule.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                return new OpenFileResult(
+                        dialogResult, openFileChooser.getSelectedFile(),
+                        fileFilter instanceof FileType ? (FileType) fileFilter : null
+                );
             }
 
-            @Nonnull
-            public OpenFileResult showSaveFileDialog(FileTypes fileTypes, @Nullable File selectedFile, @Nullable UsedDirectoryApi usedDirectory, @Nullable String dialogName) {
-                // TODO
-                return null;
+            @Override
+            public OpenFileResult showSaveFileDialog(Component parentComponent, FileTypes fileTypes, @Nullable File selectedFile, @Nullable UsedDirectoryApi usedDirectory, @Nullable String dialogName) {
+                LookAndFeel lookAndFeel = UIManager.getLookAndFeel();
+                applyLookAndFeel();
+                JFileChooser saveFileChooser = new JFileChooser();
+                saveFileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+                setupFileFilters(saveFileChooser, fileTypes);
+                if (usedDirectory != null) {
+                    saveFileChooser.setCurrentDirectory(usedDirectory.getLastUsedDirectory().orElse(null));
+                }
+                if (selectedFile != null) {
+                    saveFileChooser.setSelectedFile(selectedFile);
+                }
+                if (dialogName != null) {
+                    saveFileChooser.setDialogTitle(dialogName);
+                }
+                int dialogResult = saveFileChooser.showSaveDialog(parentComponent);
+                FileFilter fileFilter = saveFileChooser.getFileFilter();
+                try {
+                    UIManager.setLookAndFeel(lookAndFeel);
+                } catch (UnsupportedLookAndFeelException ex) {
+                    Logger.getLogger(QuaquaJfcLafModule.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                return new OpenFileResult(
+                        dialogResult, saveFileChooser.getSelectedFile(),
+                        fileFilter instanceof FileType ? (FileType) fileFilter : null
+                );
             }
-            
+
+            public void setupFileFilters(JFileChooser fileChooser, FileTypes fileTypes) {
+                fileChooser.setAcceptAllFileFilterUsed(false);
+                for (FileType fileType : fileTypes.getFileTypes()) {
+                    fileChooser.addChoosableFileFilter((FileFilter) fileType);
+                }
+
+                if (fileTypes.allowAllFiles()) {
+                    fileChooser.addChoosableFileFilter(new AllFilesFilter());
+                }
+            }
         });
 
         UiThemeModuleApi themeModule = App.getModule(UiThemeModuleApi.class);
@@ -81,8 +143,7 @@ public class QuaquaJfcLafModule implements PluginModule {
 
             @Override
             public void applyLaf() {
-                String className = ch.randelshofer.quaqua.QuaquaLookAndFeel.class.getName();
-                applyLookAndFeel(className);
+                applyLookAndFeel();
             }
 
             @Override
@@ -98,7 +159,7 @@ public class QuaquaJfcLafModule implements PluginModule {
         });
     }
 
-    public void applyLookAndFeel(String className) {
+    public void applyLookAndFeel() {
         try {
             SwingUtilities.invokeAndWait(() -> {
                 try {
@@ -111,7 +172,28 @@ public class QuaquaJfcLafModule implements PluginModule {
             Logger.getLogger(QuaquaJfcLafModule.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void unregisterModule(String moduleId) {
+    }
+
+    @ParametersAreNonnullByDefault
+    public static class AllFilesFilter extends FileFilter implements FileType {
+
+        @Override
+        public boolean accept(File file) {
+            return true;
+        }
+
+        @Nonnull
+        @Override
+        public String getDescription() {
+            return "All files (*)";
+        }
+
+        @Nonnull
+        @Override
+        public String getFileTypeId() {
+            return ALL_FILES_FILTER;
+        }
     }
 }
