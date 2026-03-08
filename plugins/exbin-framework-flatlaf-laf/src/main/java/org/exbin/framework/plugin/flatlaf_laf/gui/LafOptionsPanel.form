@@ -104,6 +104,9 @@
       </Events>
     </Component>
     <Component class="javax.swing.JComboBox" name="themeComboBox">
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="themeComboBoxItemStateChanged"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
@@ -161,6 +164,9 @@
           <ResourceString bundle="org/exbin/framework/plugin/flatlaf_laf/gui/resources/LafOptionsPanel.properties" key="useWindowDecorationsCheckBox.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="useWindowDecorationsCheckBoxItemStateChanged"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JCheckBox" name="embeddedMenuBarCheckBox">
       <Properties>
@@ -168,6 +174,9 @@
           <ResourceString bundle="org/exbin/framework/plugin/flatlaf_laf/gui/resources/LafOptionsPanel.properties" key="embeddedMenuBarCheckBox.text" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="embeddedMenuBarCheckBoxItemStateChanged"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

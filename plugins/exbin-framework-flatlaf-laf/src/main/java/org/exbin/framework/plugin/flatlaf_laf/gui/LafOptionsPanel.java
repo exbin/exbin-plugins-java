@@ -38,9 +38,9 @@ import org.exbin.framework.plugin.flatlaf_laf.options.LafOptions;
 @ParametersAreNonnullByDefault
 public class LafOptionsPanel extends javax.swing.JPanel implements SettingsComponent {
 
-    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(LafOptionsPanel.class);
+    protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(LafOptionsPanel.class);
 
-    private SettingsModifiedListener settingsModifiedListener;
+    protected SettingsModifiedListener settingsModifiedListener;
 
     public LafOptionsPanel() {
         initComponents();
@@ -97,6 +97,12 @@ public class LafOptionsPanel extends javax.swing.JPanel implements SettingsCompo
             }
         });
 
+        themeComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                themeComboBoxItemStateChanged(evt);
+            }
+        });
+
         themeButtonGroup.add(customThemeRadioButton);
         customThemeRadioButton.setText(resourceBundle.getString("customThemeRadioButton.text")); // NOI18N
         customThemeRadioButton.addItemListener(new java.awt.event.ItemListener() {
@@ -125,8 +131,18 @@ public class LafOptionsPanel extends javax.swing.JPanel implements SettingsCompo
         });
 
         useWindowDecorationsCheckBox.setText(resourceBundle.getString("useWindowDecorationsCheckBox.text")); // NOI18N
+        useWindowDecorationsCheckBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                useWindowDecorationsCheckBoxItemStateChanged(evt);
+            }
+        });
 
         embeddedMenuBarCheckBox.setText(resourceBundle.getString("embeddedMenuBarCheckBox.text")); // NOI18N
+        embeddedMenuBarCheckBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                embeddedMenuBarCheckBoxItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -218,8 +234,21 @@ public class LafOptionsPanel extends javax.swing.JPanel implements SettingsCompo
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             customThemeFileTextField.setText(fileChooser.getSelectedFile().getAbsolutePath());
+            notifyModified();
         }
     }//GEN-LAST:event_selectFileButtonActionPerformed
+
+    private void themeComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_themeComboBoxItemStateChanged
+        notifyModified();
+    }//GEN-LAST:event_themeComboBoxItemStateChanged
+
+    private void useWindowDecorationsCheckBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_useWindowDecorationsCheckBoxItemStateChanged
+        notifyModified();
+    }//GEN-LAST:event_useWindowDecorationsCheckBoxItemStateChanged
+
+    private void embeddedMenuBarCheckBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_embeddedMenuBarCheckBoxItemStateChanged
+        notifyModified();
+    }//GEN-LAST:event_embeddedMenuBarCheckBoxItemStateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> accentColorComboBox;

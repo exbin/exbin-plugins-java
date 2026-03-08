@@ -41,9 +41,9 @@ import org.exbin.framework.plugin.tinylaf_laf.options.LafOptions;
 @ParametersAreNonnullByDefault
 public class LafOptionsPanel extends javax.swing.JPanel implements SettingsComponent {
 
-    private final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(LafOptionsPanel.class);
+    protected final java.util.ResourceBundle resourceBundle = App.getModule(LanguageModuleApi.class).getBundle(LafOptionsPanel.class);
 
-    private SettingsModifiedListener settingsModifiedListener;
+    protected SettingsModifiedListener settingsModifiedListener;
 
     public LafOptionsPanel() {
         initComponents();

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.exbin.framework.plugin.vaqua_laf;
+package org.exbin.framework.plugin.quaqua_laf;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -24,36 +24,35 @@ import org.exbin.framework.ui.theme.api.LafProvider;
 import org.exbin.framework.ui.theme.api.UiThemeModuleApi;
 
 /**
- * VAqua look and feel plugin.
+ * Quaqua look and feel plugin.
  *
  * @author ExBin Project (https://exbin.org)
  */
 @ParametersAreNonnullByDefault
-public class VAquaLafModule implements Module {
+public class QuaquaLafModule implements Module {
 
-    public static final String VAQUA_LAF_CLASS = "org.violetlib.aqua.AquaLookAndFeel";
+    public static final String LAF_NAME = "Quaqua";
+    public static final String QUAQUA_LAF_CLASS = "ch.randelshofer.quaqua.QuaquaLookAndFeel";
 
-    public VAquaLafModule() {
+    public QuaquaLafModule() {
         if (System.getProperty("os.name", "").startsWith("Mac OS")) {
             UiThemeModuleApi themeModule = App.getModule(UiThemeModuleApi.class);
             themeModule.registerLafPlugin(new LafProvider() {
                 @Nonnull
                 @Override
                 public String getLafId() {
-                    return VAQUA_LAF_CLASS;
+                    return QUAQUA_LAF_CLASS;
                 }
 
                 @Nonnull
                 @Override
                 public String getLafName() {
-                    return "VAqua";
+                    return LAF_NAME;
                 }
 
                 @Override
                 public void installLaf() {
                     UIManager.installLookAndFeel(new UIManager.LookAndFeelInfo(getLafName(), getLafId()));
-//                UIManager.installLookAndFeel("VAqua", VAQUA_LAF_CLASS);
-                    // registerLafPlugin(flatDarkClassName, this);
                 }
 
                 @Override
@@ -65,11 +64,23 @@ public class VAquaLafModule implements Module {
     }
 
     public void applyLookAndFeel(String className) {
-        try {
-            UIManager.setLookAndFeel(VAQUA_LAF_CLASS);
-        } catch (Throwable ex) {
+         // set system properties here that affect Quaqua
+         // for example the default layout policy for tabbed
+         // panes:
+         System.setProperty(
+            "Quaqua.tabLayoutPolicy","wrap"
+
+         );
+         
+         // set the Quaqua Look and Feel in the UIManager
+         try {
+              UIManager.setLookAndFeel(
+                  ch.randelshofer.quaqua.QuaquaManager.getLookAndFeel()
+              );
+             // set UI manager properties here that affect Quaqua
+         } catch (Exception e) {
             System.err.println("Failed to initialize LaF");
-        }
+         }
     }
 
     public void unregisterModule(String moduleId) {
