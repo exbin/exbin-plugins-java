@@ -23,7 +23,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
@@ -37,14 +36,17 @@ import org.apache.commons.lang3.StringEscapeUtils;
  */
 public class AggregateLanguageFile {
 
-    private static final String PLUGIN_CODE = "undef";
-    private static final String LANGUAGE_CODE = PLUGIN_CODE;
+    private static final String LANGUAGE_CODE = "undef";
+    private static final String PLUGIN_CODE = LANGUAGE_CODE;
+//    private static final String PLUGIN_CODE = "undef~";
 //    private static final String PLUGIN_CODE = "en_US";
 //    private static final String LANGUAGE_CODE = "";
     private static final String PROJECT_DIR = "../../../bined";
     private static final String FRAMEWORK_DIR = "../../../exbin-framework-java";
     private static final String TARGET_DIR = "../../plugins/exbin-framework-language-" + PLUGIN_CODE + "/src/main/resources";
-    private static final Set<String> subGroups = new HashSet<>(Arrays.asList("bined", "editor", "addon", "action", "window", "operation"));
+
+    // private static final Set<String> subGroups = new HashSet<>(java.util.Arrays.asList("bined", "editor", "addon", "action", "window", "operation"));
+    private static final Set<String> subGroups = new HashSet<>(java.util.Arrays.asList("bined", "editor"));
 
     public static void main(String[] args) {
         aggregateByCollecting();
@@ -114,10 +116,53 @@ public class AggregateLanguageFile {
             if (childFile.isDirectory()) {
                 String childModule = moduleName;
                 // Additional groups
+                // System.out.println(moduleName + " : " + childFile.getName());
                 if ("help".equals(moduleName) && "online".equals(childFile.getName())) {
                     childModule = "help-online";
+                } else if ("help".equals(moduleName) && "local".equals(childFile.getName())) {
+                    childModule = "help-local";
+                } else if ("menu".equals(moduleName) && "popup".equals(childFile.getName())) {
+                    childModule = "menu-popup";
+                } else if ("document".equals(moduleName) && "text".equals(childFile.getName())) {
+                    childModule = "document-text";
+                } else if ("document".equals(moduleName) && "recent".equals(childFile.getName())) {
+                    childModule = "document-recent";
+                } else if ("document".equals(moduleName) && "syntax".equals(childFile.getName())) {
+                    childModule = "document-syntax";
+                } else if ("docking".equals(moduleName) && "multi".equals(childFile.getName())) {
+                    childModule = "docking-multi";
+                } else if ("ui".equals(moduleName) && "theme".equals(childFile.getName())) {
+                    childModule = "ui-theme";
+                } else if ("options".equals(moduleName) && "settings".equals(childFile.getName())) {
+                    childModule = "options-settings";
+                } else if ("text".equals(moduleName) && "encoding".equals(childFile.getName())) {
+                    childModule = "text-encoding";
+                } else if ("text".equals(moduleName) && "font".equals(childFile.getName())) {
+                    childModule = "text-font";
+                } else if ("action".equals(moduleName) && "manager".equals(childFile.getName())) {
+                    childModule = "action-manager";
+                } else if ("addon".equals(moduleName) && "manager".equals(childFile.getName())) {
+                    childModule = "addon-manager";
+                } else if ("addon".equals(moduleName) && "catalog".equals(childFile.getName())) {
+                    childModule = "addon-catalog";
+                } else if ("operation".equals(moduleName) && "manager".equals(childFile.getName())) {
+                    childModule = "operation-manager";
+                } else if ("operation".equals(moduleName) && "undo".equals(childFile.getName())) {
+                    childModule = "operation-undo";
+                } else if ("window".equals(moduleName) && "api".equals(childFile.getName())) {
+                    childModule = "window-api";
+                } else if ("addon".equals(moduleName) && "update".equals(childFile.getName())) {
+                    childModule = "addon-update";
+                } else if ("addon".equals(moduleName) && "packs".equals(childFile.getName())) {
+                    childModule = "addon-packs";
                 } else if ("bined-operation".equals(moduleName) && "bouncycastle".equals(childFile.getName())) {
                     childModule = "bined-operation-bouncycastle";
+                } else if ("bined-operation".equals(moduleName) && "code".equals(childFile.getName())) {
+                    childModule = "bined-operation-code";
+                } else if ("bined-inspector".equals(moduleName) && "pixelmap".equals(childFile.getName())) {
+                    childModule = "bined-inspector-pixelmap";
+                } else if ("bined-inspector".equals(moduleName) && "table".equals(childFile.getName())) {
+                    childModule = "bined-inspector-table";
                 } else if ("bined-tool".equals(moduleName) && "content".equals(childFile.getName())) {
                     childModule = "bined-tool-content";
                 }
@@ -137,12 +182,51 @@ public class AggregateLanguageFile {
                             String keyValue;
                             int valuePos = line.indexOf("=");
                             if (valuePos > 0) {
-                                keyValue = line.substring(0, valuePos) + "=" + StringEscapeUtils.unescapeJava(line.substring(valuePos + 1));
+                                keyValue = line.substring(0, valuePos) + "=" + StringEscapeUtils.unescapeJava(line.substring(valuePos + 1).replace("\\n", "\\\\n"));
                             } else {
                                 keyValue = line;
                             }
 
-                            out.write(moduleName + "." + propertiesFileName + "." + keyValue + "\n");
+                            String outputLine = moduleName + "." + propertiesFileName + "." + keyValue;
+                            // Temporary conversion 0.2.4 -> 0.2.5
+                            if (outputLine.startsWith("action.ActionModule.popup")) {
+                                outputLine = "action.ActionModule." + Character.toLowerCase(outputLine.charAt(25)) + outputLine.substring(26);
+                            } else if (outputLine.startsWith("action-popup.DefaultPopupMenu.")) {
+                                outputLine = "menu-popup.DefaultPopupMenu." + outputLine.substring(30);
+                            } else if (outputLine.startsWith("ui.MainOptionsManager.")) {
+                                outputLine = "ui-theme.UiThemeModule." + outputLine.substring(22);
+                            } else if (outputLine.startsWith("editor-text.Text")) {
+                                out.write("document-text.Text" + outputLine.substring(16) + "\n");
+                                outputLine = "text-font.Text" + outputLine.substring(16);
+                            } else if (outputLine.startsWith("bined.BinedModule.")) {
+                                out.write(outputLine + "\n");
+                                outputLine = "bined-viewer.BinedViewerModule." + outputLine.substring(18);
+                            } else if (outputLine.startsWith("bined.ColorProfilePanel.")) {
+                                outputLine = "bined-theme.ColorProfilePanel." + outputLine.substring(24);
+                            } else if (outputLine.startsWith("bined.LayoutProfilePanel.")) {
+                                outputLine = "bined-theme.LayoutProfilePanel." + outputLine.substring(25);
+                            } else if (outputLine.startsWith("bined.ThemeProfilePanel.")) {
+                                outputLine = "bined-theme.ThemeProfilePanel." + outputLine.substring(24);
+                            } else if (outputLine.startsWith("editor.UnsavedFilesPanel.")) {
+                                outputLine = "docking-multi.ModifiedDocumentsPanel." + outputLine.substring(25);
+                            } else if (outputLine.startsWith("editor-text.EditorTextModule.")) {
+                                outputLine = "document-text.DocumentTextModule." + outputLine.substring(29);
+                            } else if (outputLine.startsWith("editor-text.FindTextPanel.")) {
+                                outputLine = "document-text.FindTextPanel." + outputLine.substring(26);
+                            } else if (outputLine.startsWith("bined.EditSelectionPanel.")) {
+                                out.write("document-text.EditSelectionPanel." + outputLine.substring(25) + "\n");
+                                outputLine = "bined-editor.EditSelectionPanel." + outputLine.substring(25);
+                            } else if (outputLine.startsWith("bined.EditSelectionPanel.")) {
+                                outputLine = "bined-editor.EditSelectionPanel." + outputLine.substring(25);
+                            } else if (outputLine.startsWith("bined.CodeAreaOptionsPanel.")) {
+                                outputLine = "bined-viewer.CodeAreaSettingsPanel." + outputLine.substring(27);
+                            } else if (outputLine.startsWith("ui.MainOptionsPanel.")) {
+                                outputLine = "ui-theme.ThemeSettingsPanel." + outputLine.substring(20);
+                            } else if (outputLine.startsWith("file.FileModule.")) {
+                                out.write(outputLine + "\n");
+                                outputLine = "docking.DockingModule." + outputLine.substring(16);
+                            }
+                            out.write(outputLine + "\n");
                         }
                     }
                 } catch (IOException ex) {
@@ -251,6 +335,9 @@ public class AggregateLanguageFile {
                 String fileName = childFile.getName();
                 String targetFileName = fileName.substring(0, fileName.length() - 11) + "_" + LANGUAGE_CODE + ".properties";
                 File targetFile = new File(targetDir, targetFileName);
+                if (!targetFile.isFile()) {
+                    continue;
+                }
 
                 try (FileInputStream source = new FileInputStream(targetFile)) {
                     InputStreamReader isr = new InputStreamReader(source, "UTF-8");
@@ -263,7 +350,7 @@ public class AggregateLanguageFile {
                             String keyValue;
                             int valuePos = line.indexOf("=");
                             if (valuePos > 0) {
-                                keyValue = line.substring(0, valuePos) + "=" + StringEscapeUtils.unescapeJava(line.substring(valuePos + 1));
+                                keyValue = line.substring(0, valuePos) + "=" + StringEscapeUtils.unescapeJava(line.substring(valuePos + 1).replace("\\n", "\\\\n"));
                             } else {
                                 keyValue = line;
                             }

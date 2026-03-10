@@ -221,6 +221,12 @@ public class UpdateByAggregate {
                 String fileName = childFile.getName();
                 String targetFileName = fileName.substring(0, fileName.length() - 11) + "_" + LANGUAGE_CODE + ".properties";
                 File targetFile = new File(targetDir, targetFileName);
+                if (!targetFile.isFile()) {
+                    if (childFile.length() > 5 && !"BinedEditorApp.properties".equals(childFile.getName())) {
+                        System.out.println("Skipping: " + targetFile.getName());
+                    }
+                    continue;
+                }
 
                 // Copy file to memory
                 byte[] fileContent;
@@ -255,6 +261,7 @@ public class UpdateByAggregate {
                                         String override = aggregatePropertyFileKeys == null ? null : aggregatePropertyFileKeys.get(key.trim());
                                         if (override != null) {
                                             out.write(key + "=" + StringEscapeUtils.escapeJava(override) + "\n");
+                                            // out.write(key + "=" + override + "\n");
                                         } else {
                                             if (diffOut != null) {
                                                 diffOut.write(moduleName + "." + propertiesFileName + "." + line + "\n");

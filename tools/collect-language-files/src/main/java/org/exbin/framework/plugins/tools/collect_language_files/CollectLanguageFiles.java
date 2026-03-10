@@ -110,38 +110,41 @@ public class CollectLanguageFiles {
             if (childFile.isDirectory()) {
                 processModuleResources(module, prefix + "/" + childFile.getName());
             } else if (childFile.isFile() && childFile.getName().endsWith(".properties")) {
-                File targetDir = new File(TARGET_DIR + prefix);
-//                new File(targetDir, child.getName()).delete();
-                targetDir.mkdirs();
-                String fileName = childFile.getName();
-                String targetFileName = fileName.substring(0, fileName.length() - 11) + ".properties";
-                File targetFile = new File(targetDir, targetFileName);
-
-                try (FileOutputStream fos = new FileOutputStream(targetFile)) {
-                    OutputStreamWriter out = new OutputStreamWriter(fos, "UTF-8");
-
-                    try (FileInputStream source = new FileInputStream(childFile)) {
-                        InputStreamReader isr = new InputStreamReader(source, "UTF-8");
-                        try (BufferedReader reader = new BufferedReader(isr)) {
-                            while (reader.ready()) {
-                                String line = reader.readLine();
-                                int valuePos = line.indexOf("=");
-                                if (valuePos > 0) {
-                                    String key = line.substring(0, valuePos).trim();
-                                    if (EXCEPTIONS.contains(key)) {
-                                        continue;
-                                    }
-                                }
-
-                                if (line.contains(".smallIcon=") || line.contains(".icon=") || line.contains(".accelerator=") || line.contains("_url=") || line.contains("options.path=") || line.contains("options.name=") || (!line.isEmpty() && line.indexOf("=") == line.length() - 1)) {
+                FileOutputStream fos = null;
+                OutputStreamWriter out = null;
+                try (FileInputStream source = new FileInputStream(childFile)) {
+                    InputStreamReader isr = new InputStreamReader(source, "UTF-8");
+                    try (BufferedReader reader = new BufferedReader(isr)) {
+                        while (reader.ready()) {
+                            String line = reader.readLine();
+                            int valuePos = line.indexOf("=");
+                            if (valuePos > 0) {
+                                String key = line.substring(0, valuePos).trim();
+                                if (EXCEPTIONS.contains(key)) {
                                     continue;
                                 }
-                                out.write(line + "\n");
                             }
+
+                            if (line.contains(".smallIcon=") || line.contains(".icon=") || line.contains(".accelerator=") || line.contains("_url=") || line.contains("options.path=") || line.contains("options.name=") || (!line.isEmpty() && line.indexOf("=") == line.length() - 1)) {
+                                continue;
+                            }
+                            if (out == null) {
+                                File targetDir = new File(TARGET_DIR + prefix);
+                //                new File(targetDir, child.getName()).delete();
+                                targetDir.mkdirs();
+                                String fileName = childFile.getName();
+                                String targetFileName = fileName.substring(0, fileName.length() - 11) + ".properties";
+                                File targetFile = new File(targetDir, targetFileName);
+                                
+                                fos = new FileOutputStream(targetFile);
+                                out = new OutputStreamWriter(fos, "UTF-8");
+                            }
+                            out.write(line + "\n");
                         }
+                    }
+                    if (out != null) {
                         out.close();
-                    } catch (IOException ex) {
-                        Logger.getLogger(CollectLanguageFiles.class.getName()).log(Level.SEVERE, null, ex);
+                        fos.close();
                     }
                 } catch (IOException ex) {
                     Logger.getLogger(CollectLanguageFiles.class.getName()).log(Level.SEVERE, null, ex);
