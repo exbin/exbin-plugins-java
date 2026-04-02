@@ -1,0 +1,3 @@
+rootProject.name = 'jaguif-laf-tinylaf'
+
+apply from: '../plugins-settings.gradle'

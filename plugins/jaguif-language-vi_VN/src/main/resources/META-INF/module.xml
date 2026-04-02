@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<module>
+  <plugin>org.exbin.jaguif.plugin.language.vi_VN.LanguageViVnModule</plugin>
+  <name>Vietnamese language</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://exbin.org</homepage>
+  <description>Vietnamese language plugin</description>
+  <dependency>
+    <module id="org.exbin.jaguif.language.api.LanguageModuleApi" />
+  </dependency>
+</module>

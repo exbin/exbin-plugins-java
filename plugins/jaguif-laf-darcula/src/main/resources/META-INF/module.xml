@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<module>
+  <plugin>org.exbin.jaguif.plugin.darcula_laf.DarculaLafModule</plugin>
+  <name>Darcula look and feel plugin</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://exbin.org</homepage>
+  <description>Module to provide Darcula look and feel</description>
+  <dependency>
+    <module id="org.exbin.jaguif.ui.theme.api.UiThemeModuleApi" />
+    <library maven="org.freeplane.bulenkov:darcula:2021.7" />
+  </dependency>
+</module>

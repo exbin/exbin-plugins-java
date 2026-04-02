@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<module>
+  <plugin>org.exbin.jaguif.plugin.language.ko_KR.LanguageKoKrModule</plugin>
+  <name>Korean language plugin</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://exbin.org</homepage>
+  <description>Korean language plugin</description>
+  <dependency>
+    <module id="org.exbin.jaguif.language.api.LanguageModuleApi" />
+  </dependency>
+</module>

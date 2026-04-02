@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<module>
+  <plugin>org.exbin.jaguif.plugin.language.es_ES.LanguageEsEsModule</plugin>
+  <name>Spanish language plugin</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://exbin.org</homepage>
+  <description>Spanish language plugin</description>
+  <dependency>
+    <module id="org.exbin.jaguif.language.api.LanguageModuleApi" />
+  </dependency>
+</module>

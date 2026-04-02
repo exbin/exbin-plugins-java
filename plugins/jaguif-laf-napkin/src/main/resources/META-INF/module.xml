@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<module>
+  <plugin>org.exbin.jaguif.plugin.napkin_laf.NapkinLafModule</plugin>
+  <name>Napkin look and feel</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://exbin.org</homepage>
+  <description>Module to provide Napkin look and feel</description>
+  <dependency>
+    <module id="org.exbin.jaguif.ui.theme.api.UiThemeModuleApi" />
+    <library jar="napkinlaf-1.2.1-SNAPSHOT.jar" />
+  </dependency>
+</module>

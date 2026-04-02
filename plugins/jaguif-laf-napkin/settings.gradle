@@ -1,0 +1,3 @@
+rootProject.name = 'jaguif-laf-napkin'
+
+apply from: '../plugins-settings.gradle'

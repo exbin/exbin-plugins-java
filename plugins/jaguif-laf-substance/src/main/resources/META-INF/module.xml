@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<module>
+  <plugin>org.exbin.jaguif.plugin.substance_laf.SubstanceLafModule</plugin>
+  <name>Substance look and feel plugin</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://exbin.org</homepage>
+  <description>Module to provide Substance look and feel</description>
+  <dependency>
+    <module id="org.exbin.jaguif.ui.theme.api.UiThemeModuleApi" />
+    <library maven="com.github.insubstantial:substance:7.3" />
+    <library maven="com.github.insubstantial:laf-plugin:7.3" />
+    <library maven="com.github.insubstantial:laf-widget:7.3" />
+    <library maven="com.github.insubstantial:trident:7.3" />
+  </dependency>
+</module>

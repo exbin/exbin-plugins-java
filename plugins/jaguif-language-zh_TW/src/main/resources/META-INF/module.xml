@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<module>
+  <plugin>org.exbin.jaguif.plugin.language.zh_TW.LanguageZhTwModule</plugin>
+  <name>Chinese language plugin</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://exbin.org</homepage>
+  <description>Module to provide various utilities</description>
+  <dependency>
+    <module id="org.exbin.jaguif.language.api.LanguageModuleApi" />
+  </dependency>
+</module>

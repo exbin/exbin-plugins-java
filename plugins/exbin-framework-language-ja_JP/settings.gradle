@@ -1,3 +1,0 @@
-rootProject.name = 'exbin-framework-language-ja_JP'
-
-apply from: '../plugins-settings.gradle'

@@ -1,7 +1,9 @@
-ExBin Project - Plugins
-=======================
+Java GUI Framework - Additional Modules
+=======================================
 
-Plugins for ExBin project related applications. These plugins are distributed separately as an optional functionality and can have different licenses.
+Additional modules for Java GUI Fraework for ExBin project (jaguif).
+
+These plugins are distributed separately as an optional functionality and can have different licenses.
 
 Homepage: https://exbin.org  
 

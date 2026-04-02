@@ -1,14 +1,14 @@
 // Shared plugins build
 
-version = '0.2.5'
-def repositoryName = "exbin-plugins"
+version = '0.3.0-SNAPSHOT'
+def repositoryName = "jaguif-extra"
 def libraryUrl = 'https://exbin.org'
 
-ext.depsThis = 'ExbinPluginsJava'
+ext.depsThis = 'JaguifExtra'
 
-ext.depsExbinFrameworkJava = [
+ext.depsJaguif = [
     githubProfile: 'exbin',
-    githubRepo: 'exbin-framework-java',
+    githubRepo: 'jaguif',
     version: '0.3.0-SNAPSHOT'
 ]
 

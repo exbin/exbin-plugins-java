@@ -1,0 +1,3 @@
+rootProject.name = 'jaguif-language-it_IT'
+
+apply from: '../plugins-settings.gradle'

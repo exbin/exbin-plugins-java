@@ -52,7 +52,7 @@ task javadocJar (type: Jar, dependsOn: javadoc) {
 }
 
 if (!hasProperty('mainClass')) {
-    ext.mainClass = 'org.exbin.framework.plugins.tools.collect_language_files.CollectLanguageFiles'
+    ext.mainClass = 'org.exbin.jaguif.plugins.tools.collect_language_files.CollectLanguageFiles'
     ext.appArgs = '-dev'
 }
 

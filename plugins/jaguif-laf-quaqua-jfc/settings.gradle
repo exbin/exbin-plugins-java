@@ -1,0 +1,3 @@
+rootProject.name = 'jaguif-laf-quaqua-jfc'
+
+apply from: '../plugins-settings.gradle'

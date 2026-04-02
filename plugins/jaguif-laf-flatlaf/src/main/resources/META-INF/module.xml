@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<module>
+  <plugin>org.exbin.jaguif.plugin.flatlaf_laf.FlatLafLafModule</plugin>
+  <name>FlatLaf look and feel</name>
+  <provider>ExBin Project</provider>
+  <homepage>https://exbin.org</homepage>
+  <description>Module to provide FlatLaf look and feel</description>
+  <dependency>
+    <module id="org.exbin.jaguif.ui.theme.api.UiThemeModuleApi" />
+    <module id="org.exbin.jaguif.language.api.LanguageModuleApi" />
+    <module id="org.exbin.jaguif.options.settings.api.OptionsSettingsModuleApi" />
+    <library maven="com.formdev:flatlaf:3.5.4" />
+  </dependency>
+</module>
